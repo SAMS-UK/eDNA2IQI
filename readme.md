@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# eDNA2IQI
+# eDNA2IQI v2.1
 
 <!-- badges: start -->
 
