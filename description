@@ -1,0 +1,37 @@
+Package: eDNA2IQI
+Title: Predict IQI from eDNA
+Version: 1.0.0
+Authors@R: c(
+    person("Stevie", "Brain", role = "aut", comment = c(ORCID = "0000-0001-8272-6996")),
+    person("Esmee", "Roosenmaallen", role = "aut", comment = c(ORCID = "0000-0003-0519-3721")),
+    person("Tom", "Wilding", role = "aut", email = "tom.wilding@sams.ac.uk"),
+    person("Adam", "Wyness",  role = c("aut", "cre"), email = "adam.wyness@sams.ac.uk", comment = c(ORCID = "0000-0003-1202-6358")))
+Description: Tidy and clean bacterial DNA sequence reads.
+    Allocate taxa names to unique sequences, using a curated SILVA v138.1 database as a reference.
+    Predict IQI using a trained random forest algorithm.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+biocViews:
+Imports:
+    Biostrings,
+    caret,
+    crayon,
+    dada2,
+    dplyr,
+    easyr,
+    fs,
+    grDevices,
+    magrittr,
+    randomForest,
+    rlang,
+    ShortRead,
+    stringr,
+    tibble,
+    utils,
+    vegan,
+    vroom
+Depends:
+    R (>= 3.5.0)
+LazyData: true
