@@ -1,8 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-# WARNING: No model included in the download. please save one to desktop
 
-# eDNA2IQI v2.1
+# eDNA2IQI
 
 <!-- badges: start -->
 
