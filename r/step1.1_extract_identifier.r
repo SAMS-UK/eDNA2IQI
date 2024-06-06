@@ -7,8 +7,7 @@
 #'
 #' @return A data frame.
 Step1.1_extract_identifier <- function(folder) {
-  #browser()
-  #folder=TWFP#code testing
+  
   messageColour("Function starting: 'Step1.1_extract_identifier'
    Extracting unique instrument_run pairs and sample names from fastq files \n\n",
                 "message")
@@ -44,6 +43,6 @@ Step1.1_extract_identifier <- function(folder) {
   }
 
   messageColour("Function finished: 'Step1.1_extract_identifier' \n\n", "message")
-  #browser()
+
   return(samples)
 }
