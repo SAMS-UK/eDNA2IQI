@@ -10,19 +10,16 @@
 #'
 Step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
   message("Function: Step2.1_taxa_allocation")
-  #messageColour("Function starting: 'taxa_allocation'
-  #Converting sequence reads to bacteria taxa names, reference database - SILVA v138.1
-  #\n", "message")
-
+ 
+  
 
   # Use reference database to allocate taxa
-  #this is taking 18 GB memory at home#
   reference <- file.path(find.package("eDNA2IQI"),
                          "extdata/referenceDatabase_full.fa.gz")
-  #collated_asv_batches=MyASVs#code testing
+
   taxa <- as.data.frame(dada2::assignTaxonomy(as.matrix(collated_asv_batches), reference,
                                              multithread = TRUE))
-  #taxa2<<-taxa
+
   # Remove categories that are not part of the taxon
   taxa[] <- lapply(taxa, function(x) stringr::str_replace(x, ";", ""))
   # removes leading and tailing white_spaces
@@ -63,10 +60,10 @@ Step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
 
   S16_reads <- taxa_combined[, grepl("Bacteria", names(taxa_combined))]
   # Only keep Bacteria columns
-  #S16_readsAA<<-S16_reads
+
 
   message("Function Step2.1_taxa_allocation finished")
-  #S16_reads2<<-S16_reads#code testing
+
   return(S16_reads)
 }
 
