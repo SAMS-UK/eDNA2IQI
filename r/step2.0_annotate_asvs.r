@@ -13,11 +13,10 @@ Step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
 {
   message("Function: Step2.0_annotate_ASV")
   message("rda used in taxa_allocation call")
-  #trivial change
-
+  
   ####1.Get reference database if missing####
   #Check for correct reference database, download if missing
-  #move this to the taxonomy section
+  
   if (!file.exists(file.path(find.package("eDNA2IQI"),#CORRECT VERSION, INSTALLS IF REQUIRED.
                              "/extdata/referenceDatabase_full.fa.gz"))) {
     url <- "https://thredds.sams.ac.uk/thredds/fileServer/Full_database/referenceDatabase_full.fa.gz"
@@ -29,8 +28,7 @@ Step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
   }
 
     taxalevel=ExtractParameters(parameteroptions,"global","taxalevel")
-  #taxalevel="Family"#code testing
-  #folder=TWFP#code testing
+  
   message("Calling Step2.1_taxa_allocation")
   S16_reads=Step2.1_taxa_allocation(folder, collated_asv_batches, taxalevel)#class(S16_reads)
 
