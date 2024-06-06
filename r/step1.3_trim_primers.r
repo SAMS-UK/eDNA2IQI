@@ -12,14 +12,12 @@
 #'
 Step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
                          parameteroptions) {
-  #note the ordering here is remove_Ns (in folder no_Ns, then trim (done here), the pass trimmed sequences to dada2
-  #to generate the filtered sequences)
-  #browser()
+  
   messageColour("Function starting: 'trim_primers'
   Removing primer sequences from sequence reads \n\n", "message")
 
   #### Set file to store details of cleaning and filtering####
-  #TW edit- changed from file.path to paste
+ 
   dataCleanfile <- paste(folder, "outputData/dataCleaningDetails.txt",sep="")
   sink(dataCleanfile, append = TRUE)
   cat(as.character(Sys.time()))
@@ -27,7 +25,7 @@ Step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   sink()
 
   #### Change folder of no_Ns to trimmed ####
-  #TW edit- changed from file.path to paste
+  #
   path_trimmed <- paste(folder, "outputData/intermediate/", "trimmed",sep="")
 
   if (!dir.exists(path_trimmed)) {
@@ -38,8 +36,7 @@ Step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   rev_trimmed <- sub("no_Ns", "trimmed", rev_no_unspec)#and reverse
 
   # Skip step and if files already present
-  #why the complex code here - just evaluate to TRUE or FALSE for one file (or both)? TW 13 Jan 24
-  if ((sum(!file.exists(fwd_trimmed)) + sum(!file.exists(rev_trimmed))) != 0) { #this is TRUE when the files don't exist
+  if ((sum(!file.exists(fwd_trimmed)) + sum(!file.exists(rev_trimmed))) != 0) { 
 
   #### Load the cutadapt tool if required ####
   if (!file.exists(file.path(find.package("eDNA2IQI"),
@@ -52,8 +49,7 @@ Step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   cutadapt_exe <- file.path(find.package("eDNA2IQI"), "extdata/cutadapt_v1.exe")
 
 
-  #TW edit 13 Jan
-  #### Specify primer sequences [should replace with a call to extract_parameteroptions] ####
+  #### Specify primer sequences  ####
   p=ExtractParameters(parameteroptions,"global","primers")
 
   primers <- c(sub(",.*", "", p), sub(".*,", "", p))
@@ -68,7 +64,7 @@ Step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   fwd_flags <- paste("-g", fwd_primer, "-a", rev_primer_rc)
   rev_flags <- paste("-G", rev_primer, "-A", fwd_primer_rc)
 
-  #...wo.. without folder
+  #
   #fwd_trimmed is the complete path
   #fwd_trimmed_wo_folder is the path minus the folder
   (fwd_trimmed_wo_folder <- sub(folder, "", fwd_trimmed))#output trimmed file name and location
@@ -84,8 +80,7 @@ Step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
     rev_no_unspec_wo_folder <- sub("/", "", rev_no_unspec_wo_folder)
   }
 
-  setwd(folder)#tw hashed this out, 13 Jan.TW may have inserted this during debugging.
-  #getwd()
+  setwd(folder)
   #### Set variables
   ####
     n=ExtractParameters(parameteroptions,"cutadapt","-n","Char2Vect")
@@ -93,7 +88,7 @@ Step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
     j=ExtractParameters(parameteroptions,"cutadapt","-j","Char2Vect")
 
        #### Cut the primer sequences off the sequences ####
-  #folder or location bug in here - doesnt' seem to be a location bug, have
+  
   for (i in seq_along(fwd_no_unspec)) {
     system2(cutadapt_exe, args = c(fwd_flags, rev_flags, "--discard-untrimmed",
                                    "-n", n, "-m", m, "-j", j, "-o",
@@ -101,7 +96,7 @@ Step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
                       fwd_no_unspec_wo_folder[i], rev_no_unspec_wo_folder[i],
                                    "--quiet"))
   }
-  #getwd()
+
 
   # Calculations for data flags
   names <- c()
