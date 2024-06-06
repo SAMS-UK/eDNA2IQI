@@ -4,12 +4,10 @@
 #' @param raw_files A string. List of files from same location.
 #'
 #' @return A list.
-#' called by readFastq_TW (under 'MAIN LOOP')
 
 Step1.2_remove_unspecified <- function(folder, raw_files) {
 #  browser()
 
-  #raw_files=sample_IDs[[i]]#code testing
   messageColour("Function starting: 'remove_unspecified'
            Removing unspecified bases from sequence reads \n\n", "message")
 
@@ -19,49 +17,38 @@ Step1.2_remove_unspecified <- function(folder, raw_files) {
   cat(as.character(Sys.time()))
   cat("\n\nFunction 1.2: remove_unspecified \n\n")
   sink()
-  #raw_files=A
 
 
   # Set file name of raw data in input folder
-  #"_R1_...case sensitive.
-  #requires coercion of the raw_files list, correct.
   AA=unlist(raw_files)
-  #file.path changed to paste, 13 Jan 24
+
   fwd_input <- paste(folder, AA[grep("_R1_001.fastq.gz",AA,ignore.case = TRUE)],sep="")
   rev_input <- paste(folder, AA[grep("_R2_001.fastq.gz",AA,ignore.case = TRUE)],sep="")
 
-  #previous version. Not case sensitive, required coercion
-  #fwd_input <- file.path(folder, stringr::str_subset(raw_files,"_R1_001.fastq.gz"))
-  #rev_input <- file.path(folder, stringr::str_subset(raw_files,"_R2_001.fastq.gz"))
 
   # Set file name of raw data in intermediate folder
-  #file.path changed to paste 13 Jan 24
   path_no_unspec <- paste(folder, "outputData/intermediate/no_Ns",sep="")
-  #path_no_unspec2 <- file.path(folder, "outputData/intermediate/no_Ns")
 
-  #TW edit/question:
-  #what does this do or what is this for?  AA[1] identical to gsub("^.*/", "", fwd_input)
-  #getwd()#code testing
+
   if (!dir.exists(path_no_unspec)) {dir.create(path_no_unspec)}
   fwd_no_unspec <- paste(path_no_unspec, gsub("^.*/", "", fwd_input), sep = "/")
   rev_no_unspec <- paste(path_no_unspec, gsub("^.*/", "", rev_input), sep = "/")
 
-  #fwd_no_unspec <- paste(folder,"outputData/intermediate/",AA[[1]],sep="")
 
   # Skip step and if files already present
   if ((sum(!file.exists(fwd_no_unspec)) +
        sum(!file.exists(rev_no_unspec))) != 0) {
 
   # Remove Ns from the sequences and save as .gz files in intermediate folder
-    #how does dada2 know to remove Ns in this call?
+    
   dada2::filterAndTrim(fwd_input, fwd_no_unspec, rev_input, rev_no_unspec,
                        maxN = 0, multithread = FALSE, verbose = FALSE)
 
 
   # DATA FLAG: flag if <15000 reads per sample before denoising
-    #
+    
   names <- c()
-  #TW case dependency issue, _R1.
+  
   for (x in seq_along(fwd_input)) {
     fw_in_L <- length(ShortRead::id(ShortRead::readFastq(fwd_input[x])))
     if (fw_in_L < 15000) {
