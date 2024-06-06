@@ -16,15 +16,14 @@
 
 Step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trimmed,
                                    parameteroptions) {
-  #inputfolder<<-folder#code testing
-  #raw_files<<-raw_files#code testing
+ 
   message("Function: Step1.4_filter_quality_chimera")
   message("generates ASVs from filtered files (in 'intermediate/filtered'")
 
   messageColour("Function starting: 'filter_quality_chimera' Removing low quality sequences \n\n", "message")
   #### 0.5 Write output and create files ####
   # Set file to store details of cleaning and filtering
-  #folder=TWFP#code testing
+
   dataCleanfile <- file.path(folder, "outputData/dataCleaningDetails.txt")
   sink(dataCleanfile, append = TRUE)
   cat(as.character(Sys.time()))
@@ -34,7 +33,7 @@ Step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   # Change folder of trimmed to filtered
   path_filtered <- file.path(folder, "outputData/intermediate", "filtered")
 
-  #path_filtered=paste(folder, "outputData/intermediate/filtered",sep="")#code testing
+  
 
   if (!dir.exists(path_filtered)) {
     dir.create(path_filtered)
@@ -47,17 +46,7 @@ Step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   #### 1.Get dada2 filter parameters ####
   message("1.Get dada2 filter parameters")
   # Get parameter options
-    #this should be put into a loop.
-    #dada2params=c("maxn","maxEE","truncLen","rm.phix", "truncQ", "compress", "minLen",
-     #                  "maxLen", "id.field", "matchIDs",
-      #                 "minQ", "multithread","n" , "OMP",
-       #                "orient.fwd", "qualityType",
-        #               "rm.lowcomplex", "trimLeft",
-         #              "trimRight", "verbose")
-  #loop through dada2params, calling the function with the appropriate parameter name (will need
-  #changing for some - maybe change naming in parameteroptions instead).
-  #Also required, a qualifier for whether Char2Vect is required.
-  #build the dada2params vector
+
 
     maxn=ExtractParameters(parameteroptions,"filterAndTrim","maxN","Char2Vect")
     E1_E2=ExtractParameters(parameteroptions,"filterAndTrim","maxEE","Char2Vect")
@@ -106,10 +95,7 @@ Step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   (qtype=ExtractParameters(parameteroptions,"learnErrors","qualityType"))
   (v=ExtractParameters(parameteroptions,"learnErrors","verbose","Char2Vect"))
 
-  #insert correction here, for the difference between the files listed in SampleID
-  #difference between what is in raw_files (SampleIDs)
-  #Adam's code, emailed 14 Feb 24
-
+ 
   #re-extract sample names in case samples have been removed (no reads passing filter)
   fwd_actual <- stringr::str_subset(dir(path_filtered), "_R1_001.fastq.gz")
   rev_actual <- stringr::str_subset(dir(path_filtered), "_R2_001.fastq.gz")
@@ -167,10 +153,7 @@ Step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   fw_out_L <- c()
   sink(dataCleanfile, append = TRUE)
   cat(as.character(Sys.time()))
-  #fwd_filtered<<-fwd_filtered#code testing
-  #fwd_trimmed<<-fwd_trimmed#code testing
-  #rev_trimmed<<-rev_trimmed#code testing
-  #rev_filtered<<-rev_filtered#code testing
+  
 
   #determine the difference in reads between trimmed and filtered.
   #and report
@@ -223,7 +206,7 @@ Step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
                                     justConcatenate = jC, trimOverhang = tO)
 
   # Construct ASV reads table and remove chimera reads
-  #merged_reads<<-merged_reads#code testing
+  
   message("making sequence table- very fast ")
   ASV_table_raw <- dada2::makeSequenceTable(merged_reads)
   #####write output to dataCleanfile ####
@@ -231,10 +214,9 @@ Step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   fw_unique <- c()
   sink(dataCleanfile, append = TRUE)
   cat(as.character(Sys.time()))
-  #browser()
-  for (x in seq_along(fwd_filtered)) {#tw edit, fwd_trimmed (character vector) includes file names that
-    #are dropped in the filtration process.
-  #for (x in seq_along(fwd_trimmed)) {#old version
+
+  for (x in seq_along(fwd_filtered)) {
+  
     fw_all[x]    <- sum(ASV_table_raw[x, ])
     fw_unique[x] <- sum(ASV_table_raw[x, ] > 0)
 
@@ -274,10 +256,7 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
                                                  method = mth,
                                                  multithread = TRUE,
                                                  verbose = v)
-  #ASV_table_no_chim is returned from this function
-  #following transposition, via tibble
-
-  #Retained_samples=rownames(ASV_table_no_chim)
+  
   #####write output to dataCleanfile ####
 
   fw_all2 <- length(colnames(ASV_table_raw))
@@ -300,8 +279,7 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
     cat("\nHigh loss of reads when removing chimeras, data of low quality.")
     cat("\nThe following samples lost >70% of reads.\nTreat IQI ")
     cat("predictions with caution\nTW_needs debugging.\n")
-    #A=rowSums(ASV_table_no_chim) / rowSums(ASV_table_raw)
-    #A=A[is.nan(A)]=0
+    
     for (y in names[(rowSums(ASV_table_no_chim) / rowSums(ASV_table_raw)) < 0.3]){
 
       cat(y, "\n")
@@ -309,24 +287,13 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
     cat("\n\n")
     sink()
   }
-  #folder=TWFP#code testing
-  #raw_files=unlist(Step1.1_extract_identifier(folder))#code testing
-  #raw_files are passed to this function, delisted fromthe Step1.1 function
-  #BECAUSE THIS IS IN BATCHES, I CANNOT REFER BACK TO FOLDER FILTERED TO GET INFORMATION ON WHICH
-  #HAVE MADE IT TRHOUGH TO FILTERED.
-  #NAMES IN ASV_TABLE_RAW MIGHT BE BETTER
-  #THERE IS THE PROBLEM WITH //
+  
 
-  #this won't work with multiple batches, because they are added sequentially.
-  #we need the names of files that are retained by the filtering process.
+
 
   C=list.files(paste(folder,"outputData/intermediate/filtered/",sep=""))
 
-  #this has to operate at the local level, of files that
-  #have passed the filter.
-  #unless they have beeen written by now.
-  #ASV_table_no_chim is the final product returned
-  #this contains only those samples that have passed the full filtration process.
+ 
 
   Retained_samples=rownames(ASV_table_no_chim)
   fwd_input2=file.path(folder,Retained_samples)
@@ -337,8 +304,7 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
     fw_in_L[x] <- length(ShortRead::id(ShortRead::readFastq(fwd_input3[x])))#gives the total read count for all the samples
   }
   # DATA FLAG: flag if data loss >70%
-  #CURRENT ERROR FLAGGED HERE - ASV_TABLE IS BASED ONLY ON THOSE MAKING IT TO FILTERING STAGE
-  message("bug at line 316, Step1.4")
+  
 
   if (length(names[(rowSums(ASV_table_no_chim) / fw_in_L) < 0.3]) > 0) {
     messageColour("High loss of reads during denoising, data of low quality.
@@ -348,16 +314,14 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
     cat("\nTW_High loss of reads during denoising, data of low quality.\n")
     cat("The following samples lost >70% of reads.\nTreat IQI predictions with caution.\n")
 
-    #for (y in names[(rowSums(ASV_table_no_chim) / fw_in_L) < 0.3])#previous code
-     #    {cat(y, "\n")}
-    ##revised code
+   
     A=as.data.frame(ASV_table_no_chim)#ASV_table_no_chim is a matrix_array.
     (B=(rowSums(A)/fw_in_L)<0.3)
     C=names(B)
     for (y in C)
          {cat(y, "\n")}
 
-    #junk ends.
+    
     cat("\n\n")
     sink()
   }
