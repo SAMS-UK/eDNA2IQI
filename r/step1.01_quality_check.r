@@ -4,7 +4,7 @@
 #'
 #'
 
-#quality_check(TWFP)
+#quality_check
 Step1.01_quality_check <- function(folder) {
   messageColour("Function starting: 'quality_check'
   Checking quality of fastq data \n\n", "message")
@@ -15,7 +15,6 @@ Step1.01_quality_check <- function(folder) {
   #class(plotCycleQuality)#function.
 
   # Get file names to check
-  #folder=TWFP
   fls <- dir(folder, pattern = "*fastq*", full.names = TRUE)
 
   # Generate quality checks report
@@ -32,7 +31,7 @@ Step1.01_quality_check <- function(folder) {
   #library(ragg)
   path1 <- file.path(folder, "outputData", "qualityScores.png")
   per_plot<-plotCycleQuality(perCycle$quality)
-  #class(per_plot)#trellis (lattice) object?
+  #class(per_plot)
   grDevices::png(path1, width = 1920, height = 1080); print(per_plot);
 
   grDevices::dev.off()
