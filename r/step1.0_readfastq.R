@@ -14,9 +14,9 @@
 
 Step1.0_readFastq=function(folder, parameteroptions) {
   message("Function: Step1.0_readFastq")
-  message("TW edit, 13 Jan, 16:46")
+  
 #### 1.Load parameteroptions dataframe if missing from function call ####
-  #browser()
+  
   if (missing(parameteroptions)) {
     utils::data("parameteroptions", envir = environment())#
   }
@@ -25,7 +25,7 @@ Step1.0_readFastq=function(folder, parameteroptions) {
   taxalevel=ExtractParameters(parameteroptions,"global","taxalevel")
 
 #### 2.Check taxa level and generate folders ####
-  # Check taxa level is set correctly
+ 
 taxas <- c("Family", "Genus", "Species", "Order", "Class", "Phylum", "Kingdom")
   if (!taxalevel %in% taxas) {
     messageColour("Taxanomic level specified not valid \n
@@ -63,7 +63,7 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
 #### 6.Extract data frame of unique instrument_run identifier, sort in batches ####
   #batches are separate members of list.
   sample_IDs=Step1.1_extract_identifier(folder)
-  #folder=TWFP
+  
 #### 7.MAIN LOOP denoise different batches separately, output CSV file, per batch ####
   #note that this passes batches of files, not individual files.
     for (i in seq_along(sample_IDs))
@@ -82,7 +82,7 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
     #this will error if additional samples to the same batch are copied into the test folder, without resetting
     #could error check this, based on sample names comparison.
     #if samples are added, then the whole batch would need to be redone.
-    #could check the number of files.
+
      messageColour("Data already denoised, delete 'intermediate' folder to repeat, \n\n", "warnMessage")
 
         } else ##################################### main function calls here:
@@ -96,7 +96,7 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
       fwd_no_unspec <- no_unspec[[1]]; rev_no_unspec <- no_unspec[[2]]
 
       # Trim primer sequences from the files in intermediate folder
-      #edit(trim_primers)
+      
       ####Step1.3_trim_primers ####
       trimmed <- Step1.3_trim_primers(folder, fwd_no_unspec, rev_no_unspec, parameteroptions)
       fwd_trimmed <- trimmed[[1]]; rev_trimmed <- trimmed[[2]]
@@ -116,14 +116,12 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
       }
       } #end of loop, writing a csv file of ASV reads to outputData folder, per batch of denoised samples, as CSV and rda files.
       ####
-  #be good to return the compiled ASV batch at this stage.
-  #but these are created in 2.1
-  #maybe bring 2.1 collation in here, as a function call.
-  #folder=TWFP#code testing
+
+ 
   CollateASVBatches=CollateASVBatches(folder)
   message("End of function: Step1.0_readFastq")
   return(CollateASVBatches)
-}#Step1.0...function ends
+}
 
 CollateASVBatches=function(folder){
   message("Function: CollateASVBatches, for input to Step2.0")
@@ -131,7 +129,7 @@ CollateASVBatches=function(folder){
   path=paste(folder,"outputData",sep="")
   asv_per_batch=list.files(path,pattern = "batch.*\\.rda$",full.names = TRUE)
 
-  Combined_ASV_batches=data.frame() #empty df.
+  Combined_ASV_batches=data.frame() 
   for (files_to_combine in asv_per_batch){
   A1=get(load(files_to_combine))
   Combined_ASV_batches=dplyr::bind_rows(A1,Combined_ASV_batches)
