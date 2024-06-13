@@ -1,13 +1,19 @@
-#' A_CapitaliseR1_R2
-#' Reads in the input data, capitalises any r1 and r2 in string L001_R1 etc
-#' convenient function, to address MS Explorer converting files to lower case during transfer.
-#' @param fastqfolder string naming the location of the files to be processed
+#' step0.5_capitaliseR1_R2
+#'
+#' Reads in the input data, capitalises any "r1" and "r2" in the file metadata componenets of 
+#' an Illumina Miseq output filename
+#' This addresses software and filesharing bugs that lose case sensitivity, resulting in the 
+#' conversion of filenames to lower case. 
+#' The read orientation (R*) is essential for the bioinformatic process, and making it the 
+#' correct case saves further unnessecarily flexible code.
+#'
+#' @param folder, string naming the location of the raw FASTQ files to be processed
 #'
 #' @return NULL, code changes the capitalisation on the input files
 #' @export
 #'
-#' @examples CapitaliseR1_R2(path_to_fastq_folder)
-Step0.5_capitaliseR1_R2 <- function(fastqfolder) {
+#' @examples step0.5_capitaliseR1_R2(folder)
+step0.5_capitaliseR1_R2 <- function(folder) {
 
   # Set the path to the directory containing the files
   directory_path=fastqfolder
