@@ -51,14 +51,14 @@ Step0.5_capitaliseR1_R2 <- function(fastqfolder) {
 
 #' B_fastparameteroptions
 #' Function author: TomW
-#' Last edit date: 14 Jan 24
+#' 
 #' updates parameteroptions to 'fast' options, for debugging
 #'
 #' @param parameterOptions
 #' parameterOptions is loaded as part of the package
 #'
 #' @return dataframe, with fast parameter options for code testing
-#' @export
+#' 
 #'
 #' @examples fastparameteroptions(parameterOptions)
 B_fastparameteroptions=function(parameterOptions){
