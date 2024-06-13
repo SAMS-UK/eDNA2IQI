@@ -8,7 +8,7 @@
 #' @param ... optional modifications (?necessary)
 #'
 #' @return a character, logical or numerical value
-#' @export
+#'
 #'
 #' @examples ExtractParameters(parameteroptions,"cutadapt","-m")
 ExtractParameters=function(parameteroptions,FunctionName,ParameterName,...){
