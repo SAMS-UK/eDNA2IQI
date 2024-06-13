@@ -2,7 +2,7 @@
 #'
 #' @param text A string. Text that is to be outputted.
 #' @param version A string. Specifies which colour setting to use.
-#' @export
+#' 
 #'
 messageColour <- function(text, version) {
 
