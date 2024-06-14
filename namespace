@@ -2,7 +2,7 @@
 
 export(B_fastparameteroptions)
 export(ExtractParameters)
-export(Step0.5_capitaliseR1_R2)
+export(step0.5_capitaliseR1_R2)
 export(Step1.0_readFastq)
 export(Step1.4_filter_quality_chimera)
 export(Step2.0_annotate_ASVs)
