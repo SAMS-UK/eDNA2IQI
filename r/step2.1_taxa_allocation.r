@@ -13,7 +13,7 @@ Step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
  
   
 
-  # Use reference database to allocate taxa
+  # Use reference database to allocate taxa#comment
   reference <- file.path(find.package("eDNA2IQI"),
                          "extdata/referenceDatabase_full.fa.gz")
 
