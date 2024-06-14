@@ -13,7 +13,7 @@ Step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
  
   
 
-  # Use reference database to allocate taxa#comment
+  # Use reference database to allocate taxa#
   reference <- file.path(find.package("eDNA2IQI"),
                          "extdata/referenceDatabase_full.fa.gz")
 
@@ -22,6 +22,7 @@ Step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
 
   # Remove categories that are not part of the taxon
   taxa[] <- lapply(taxa, function(x) stringr::str_replace(x, ";", ""))
+  taxa[] <- lapply(taxa, function(x) stringr::str_replace(x, " ", ""))
   # removes leading and tailing white_spaces
   taxa[] <- lapply(taxa, trimws, which = "both")
   # Set NA values to "Xunidentified"
