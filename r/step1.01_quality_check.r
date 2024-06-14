@@ -5,7 +5,7 @@
 #'
 
 #quality_check
-Step1.01_quality_check <- function(folder) {
+step1.01_quality_check <- function(folder) {
   messageColour("Function starting: 'quality_check'
   Checking quality of fastq data \n\n", "message")
 
