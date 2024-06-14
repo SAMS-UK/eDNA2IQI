@@ -16,7 +16,7 @@
 step0.5_capitaliseR1_R2 <- function(folder) {
 
   # Set the path to the directory containing the files
-  directory_path=fastqfolder
+  directory_path=folder
 
   # List all files in the directory
   files <- list.files(directory_path, full.names = TRUE)
