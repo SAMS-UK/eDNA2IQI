@@ -21,8 +21,13 @@ Step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
                                              multithread = TRUE))
 
   # Remove categories that are not part of the taxon
-  taxa[] <- lapply(taxa, function(x) stringr::str_replace(x, ";", ""))
-  taxa[] <- lapply(taxa, function(x) stringr::str_replace(x, " ", ""))
+  #tomw edit, 16 June 2024
+  ReplaceInsertae=function(x){ifelse(grepl("incertae|unknown",x,ignore.case = TRUE),NA,x)}
+  taxa[] <- lapply(taxa, function(x) ReplaceInsertae(x))
+  taxa[] <- lapply(taxa, function(x) stringr::str_replace_all(x, ";", ""))
+  taxa[] <- lapply(taxa, function(x) stringr::str_replace_all(x, " ", ""))
+  #tomw edit end. 
+                   
   # removes leading and tailing white_spaces
   taxa[] <- lapply(taxa, trimws, which = "both")
   # Set NA values to "Xunidentified"
