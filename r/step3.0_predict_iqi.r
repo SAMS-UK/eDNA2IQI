@@ -99,6 +99,6 @@ are not present in the testing data: \n\n", "warning")
   rare_data$predicted_IQI <- stats::predict(RF_final_reduced, rare_data)
   
   rare_data=rare_data[, c("predicted_IQI", setdiff(names(rare_data), "predicted_IQI"))]
-  rare_data2<<-rare_data
+  
   return(rare_data)
 }
