@@ -4,7 +4,7 @@
 #' an Illumina Miseq output filename
 #' This addresses software and filesharing bugs that lose case sensitivity, resulting in the 
 #' conversion of filenames to lower case. 
-#' The read orientation (R*) is essential for the bioinformatic process, and making it the 
+#' The read orientation, indicated by R1 or R2 is essential for the bioinformatic process, and making it the 
 #' correct case saves further unnessecarily flexible code.
 #'
 #' @param folder, string naming the location of the raw FASTQ files to be processed
