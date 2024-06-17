@@ -7,7 +7,7 @@
 #' @return A dataframe, written to file, combing ASVs across multiple batches
 #' @export
 #'
-#' @examples This is the examples section, under Roxygen standard header
+#' @examples myASVs <- step2.0_annotate_ASVs(folder,parameteroptions,collated_asv_batches)
 
 Step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
 {
