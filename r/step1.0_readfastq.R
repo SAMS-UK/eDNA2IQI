@@ -108,7 +108,7 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
                                              parameteroptions)
 
       #### Save dataframe of ASV reads ####
-      if(class(ASV_reads_batch)=="data.frame")#error check, only writes if a dataframe returned
+      if(inherits(ASV_reads_batch, "data.frame"))#error check, only writes if a dataframe returned
         {#batch_name is e.g. "ASV_reads_batch_1.csv";batch_name2 is the rda equivalent.
       utils::write.csv(ASV_reads_batch, file=file.path(folder, "outputData", batch_name),row.names = FALSE)
       save(ASV_reads_batch,      file=file.path(folder, "outputData", batch_name2))
