@@ -66,7 +66,7 @@ step0.5_capitaliseR1_R2 <- function(folder) {
 #' @return dataframe, with fast parameter options for code testing
 #' 
 #'
-#' @examples fastparameteroptions(parameterOptions)
+#' @examples B_fastparameteroptions(parameterOptions)
 B_fastparameteroptions=function(parameterOptions){
 #create debugging parameters
 #turn off quality check if it is working
