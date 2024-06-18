@@ -1,4 +1,1 @@
-the only purpose for edna2iqi_push is to run devtools (in 'untitled' file)
-no editing. 
 
-Testing of the compiled packaged should be conducted in separate project.  
