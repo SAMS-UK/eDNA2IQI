@@ -11,7 +11,7 @@
 #'
 #'
 #' @examples ExtractParameters(parameteroptions,"cutadapt","-m")
-ExtractParameters=function(parameteroptions,FunctionName,ParameterName,...){
+extractParameters=function(parameteroptions,FunctionName,ParameterName,...){
   #message("Extracting parameter start")
   p=parameteroptions
   A=unlist(list(...))
