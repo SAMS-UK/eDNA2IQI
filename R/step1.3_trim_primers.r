@@ -50,7 +50,7 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
 
 
   #### Specify primer sequences  ####
-  p=ExtractParameters(parameteroptions,"global","primers")
+  p=extractParameters(parameteroptions,"global","primers")
 
   primers <- c(sub(",.*", "", p), sub(".*,", "", p))
   fwd_primer <- primers[1]
@@ -83,9 +83,9 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   setwd(folder)
   #### Set variables
   ####
-    n=ExtractParameters(parameteroptions,"cutadapt","-n","Char2Vect")
-    m=ExtractParameters(parameteroptions,"cutadapt","-m","Char2Vect")
-    j=ExtractParameters(parameteroptions,"cutadapt","-j","Char2Vect")
+    n=extractParameters(parameteroptions,"cutadapt","-n","Char2Vect")
+    m=extractParameters(parameteroptions,"cutadapt","-m","Char2Vect")
+    j=extractParameters(parameteroptions,"cutadapt","-j","Char2Vect")
 
        #### Cut the primer sequences off the sequences ####
   
