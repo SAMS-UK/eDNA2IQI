@@ -12,7 +12,7 @@
 #' @return NULL, code changes the capitalisation on the input files
 #' @export
 #'
-#' @examples step0.5_capitaliseR1_R2(folder)
+#' @section Example usage: step0.5_capitaliseR1_R2(folder)
 step0.5_capitaliseR1_R2 <- function(folder) {
 
   # Set the path to the directory containing the files
@@ -64,8 +64,7 @@ step0.5_capitaliseR1_R2 <- function(folder) {
 #' parameterOptions is loaded as part of the package
 #'
 #' @return dataframe, with fast parameter options for code testing
-#'
-#' @examples fastparameteroptions(parameterOptions)
+
 fastparameteroptions <- function(parameterOptions){
 #create debugging parameters
 #turn off quality check if it is working
