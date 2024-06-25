@@ -9,11 +9,11 @@
 #' @return A data frame. Table of reads per taxa, sorted by sample.
 #'
 #' @section Example usage:
-#' data <- Step1.0_readFastq(folder = "C:/full/file/path/to/fastq/")
+#' data <- step1.0_readFastq(folder = "C:/full/file/path/to/fastq/")
 #'
 
-Step1.0_readFastq=function(folder, parameteroptions) {
-  message("Function: Step1.0_readFastq")
+step1.0_readFastq=function(folder, parameteroptions) {
+  message("Function: step1.0_readFastq")
   
 #### 1.Load parameteroptions dataframe if missing from function call ####
   
@@ -62,7 +62,7 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
 
 #### 6.Extract data frame of unique instrument_run identifier, sort in batches ####
   #batches are separate members of list.
-  sample_IDs=Step1.1_extract_identifier(folder)
+  sample_IDs=step1.1_extract_identifier(folder)
   
 #### 7.MAIN LOOP denoise different batches separately, output CSV file, per batch ####
   #note that this passes batches of files, not individual files.
@@ -92,18 +92,18 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
       #sample_IDs[[i]] - a list of sample names, per batch
       ####Step1.2 remove unspecified ####
 
-      no_unspec <- Step1.2_remove_unspecified(folder, sample_IDs[[i]])
+      no_unspec <- step1.2_remove_unspecified(folder, sample_IDs[[i]])
       fwd_no_unspec <- no_unspec[[1]]; rev_no_unspec <- no_unspec[[2]]
 
       # Trim primer sequences from the files in intermediate folder
       
       ####Step1.3_trim_primers ####
-      trimmed <- Step1.3_trim_primers(folder, fwd_no_unspec, rev_no_unspec, parameteroptions)
+      trimmed <- step1.3_trim_primers(folder, fwd_no_unspec, rev_no_unspec, parameteroptions)
       fwd_trimmed <- trimmed[[1]]; rev_trimmed <- trimmed[[2]]
 
       #### Step1.4 Filter, adjust with error model, merge, chimera check ####
       # loop cycles through sample_IDs list, batch-by-batch
-      ASV_reads_batch=Step1.4_filter_quality_chimera(folder, sample_IDs[[i]],
+      ASV_reads_batch=step1.4_filter_quality_chimera(folder, sample_IDs[[i]],
                                              fwd_trimmed, rev_trimmed,
                                              parameteroptions)
 
