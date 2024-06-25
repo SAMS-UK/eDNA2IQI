@@ -67,7 +67,7 @@ step0.5_capitaliseR1_R2 <- function(folder) {
 #' 
 #'
 #' @examples B_fastparameteroptions(parameterOptions)
-B_fastparameteroptions=function(parameterOptions){
+B_fastparameteroptions <- function(parameterOptions){
 #create debugging parameters
 #turn off quality check if it is working
 parameterOptions[3,3] = "FALSE"
