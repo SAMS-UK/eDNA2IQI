@@ -14,7 +14,7 @@
 #called by:
 #raw_files are sample_IDs[[1]], these are batches of fastq on the same sequencing run, must be denoised collectively
 
-Step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trimmed,
+step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trimmed,
                                    parameteroptions) {
  
   message("Function: Step1.4_filter_quality_chimera")
