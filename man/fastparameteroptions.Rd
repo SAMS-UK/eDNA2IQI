@@ -16,6 +16,3 @@ dataframe, with fast parameter options for code testing
 \description{
 updates parameteroptions to 'fast' options, for debugging
 }
-\examples{
-fastparameteroptions(parameterOptions)
-}
