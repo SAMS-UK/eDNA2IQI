@@ -64,7 +64,6 @@ step0.5_capitaliseR1_R2 <- function(folder) {
 #' parameterOptions is loaded as part of the package
 #'
 #' @return dataframe, with fast parameter options for code testing
-#' 
 #'
 #' @examples B_fastparameteroptions(parameterOptions)
 B_fastparameteroptions <- function(parameterOptions){
