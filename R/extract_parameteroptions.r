@@ -10,7 +10,7 @@
 #' @return a character, logical or numerical value
 #'
 #'
-#' @examples ExtractParameters(parameteroptions,"cutadapt","-m")
+#' @examples extractParameters(parameteroptions,"cutadapt","-m")
 extractParameters=function(parameteroptions,FunctionName,ParameterName,...){
   #message("Extracting parameter start")
   p=parameteroptions
