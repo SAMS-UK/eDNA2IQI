@@ -48,26 +48,26 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   # Get parameter options
 
 
-    maxn=ExtractParameters(parameteroptions,"filterAndTrim","maxN","Char2Vect")
-    E1_E2=ExtractParameters(parameteroptions,"filterAndTrim","maxEE","Char2Vect")
-    row_tL <- ExtractParameters(parameteroptions,"filterAndTrim","truncLen","Char2Vect")
-    rp <- ExtractParameters(parameteroptions,"filterAndTrim","rm.phix","Char2Vect")
-    tQ=ExtractParameters(parameteroptions,"filterAndTrim","truncQ","Char2Vect")
-    minL=ExtractParameters(parameteroptions,"filterAndTrim","minLen","Char2Vect")
-    maxL=ExtractParameters(parameteroptions,"filterAndTrim","maxLen","Char2Vect")
-    c=ExtractParameters(parameteroptions,"filterAndTrim","compress","Char2Vect")
-    idf=ExtractParameters(parameteroptions,"filterAndTrim","id.field","Char2Vect")
-    minQ=ExtractParameters(parameteroptions,"filterAndTrim","minQ","Char2Vect")
-    matchID=ExtractParameters(parameteroptions,"filterAndTrim","matchIDs","Char2Vect")
-    multi=ExtractParameters(parameteroptions,"filterAndTrim","multithread","Char2Vect")
-    n=ExtractParameters(parameteroptions,"filterAndTrim","n","Char2Vect")
-    OMP=ExtractParameters(parameteroptions,"filterAndTrim","OMP","Char2Vect")
-    orient=ExtractParameters(parameteroptions,"filterAndTrim","orient.fwd","Char2Vect")
-    qtype=ExtractParameters(parameteroptions,"filterAndTrim","qualityType")
-    rmlow=ExtractParameters(parameteroptions,"filterAndTrim","rm.lowcomplex","Char2Vect")
-    tleft=ExtractParameters(parameteroptions,"filterAndTrim","trimLeft","Char2Vect")
-    tright=ExtractParameters(parameteroptions,"filterAndTrim","trimRight","Char2Vect")
-    v=ExtractParameters(parameteroptions,"filterAndTrim","verbose","Char2Vect")
+    maxn=extractParameters(parameteroptions,"filterAndTrim","maxN","Char2Vect")
+    E1_E2=extractParameters(parameteroptions,"filterAndTrim","maxEE","Char2Vect")
+    row_tL <- extractParameters(parameteroptions,"filterAndTrim","truncLen","Char2Vect")
+    rp <- extractParameters(parameteroptions,"filterAndTrim","rm.phix","Char2Vect")
+    tQ=extractParameters(parameteroptions,"filterAndTrim","truncQ","Char2Vect")
+    minL=extractParameters(parameteroptions,"filterAndTrim","minLen","Char2Vect")
+    maxL=extractParameters(parameteroptions,"filterAndTrim","maxLen","Char2Vect")
+    c=extractParameters(parameteroptions,"filterAndTrim","compress","Char2Vect")
+    idf=extractParameters(parameteroptions,"filterAndTrim","id.field","Char2Vect")
+    minQ=extractParameters(parameteroptions,"filterAndTrim","minQ","Char2Vect")
+    matchID=extractParameters(parameteroptions,"filterAndTrim","matchIDs","Char2Vect")
+    multi=extractParameters(parameteroptions,"filterAndTrim","multithread","Char2Vect")
+    n=extractParameters(parameteroptions,"filterAndTrim","n","Char2Vect")
+    OMP=extractParameters(parameteroptions,"filterAndTrim","OMP","Char2Vect")
+    orient=extractParameters(parameteroptions,"filterAndTrim","orient.fwd","Char2Vect")
+    qtype=extractParameters(parameteroptions,"filterAndTrim","qualityType")
+    rmlow=extractParameters(parameteroptions,"filterAndTrim","rm.lowcomplex","Char2Vect")
+    tleft=extractParameters(parameteroptions,"filterAndTrim","trimLeft","Char2Vect")
+    tright=extractParameters(parameteroptions,"filterAndTrim","trimRight","Char2Vect")
+    v=extractParameters(parameteroptions,"filterAndTrim","verbose","Char2Vect")
 
 
   #### 2.Run dada2 filterAndTrim ####
@@ -87,13 +87,13 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
    # Calculate dada2 error rates
   #### 3.Learn-error parameters ####
   message("3.Get learn-error parameters")
-  (nB=ExtractParameters(parameteroptions,"learnErrors","nbases","Char2Vect"))
-  (rnd=ExtractParameters(parameteroptions,"learnErrors","randomise","Char2Vect"))
-  (multi=ExtractParameters(parameteroptions,"learnErrors","multithread","Char2Vect"))
-  (mc=ExtractParameters(parameteroptions,"learnErrors","MAX_CONSIST","Char2Vect"))
-  (oc=ExtractParameters(parameteroptions,"learnErrors","OMEGA_C","Char2Vect"))
-  (qtype=ExtractParameters(parameteroptions,"learnErrors","qualityType"))
-  (v=ExtractParameters(parameteroptions,"learnErrors","verbose","Char2Vect"))
+  (nB=extractParameters(parameteroptions,"learnErrors","nbases","Char2Vect"))
+  (rnd=extractParameters(parameteroptions,"learnErrors","randomise","Char2Vect"))
+  (multi=extractParameters(parameteroptions,"learnErrors","multithread","Char2Vect"))
+  (mc=extractParameters(parameteroptions,"learnErrors","MAX_CONSIST","Char2Vect"))
+  (oc=extractParameters(parameteroptions,"learnErrors","OMEGA_C","Char2Vect"))
+  (qtype=extractParameters(parameteroptions,"learnErrors","qualityType"))
+  (v=extractParameters(parameteroptions,"learnErrors","verbose","Char2Vect"))
 
  
   #re-extract sample names in case samples have been removed (no reads passing filter)
@@ -129,11 +129,11 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   message("5.Get dada2 inference parameters")
   # Get parameter options
 
-  (eEF=ExtractParameters(parameteroptions,"dada","errorEstimationFunction"))
-  (multi=ExtractParameters(parameteroptions,"dada","multithread","Char2Vect"))
-  (v=ExtractParameters(parameteroptions,"dada","verbose","Char2Vect"))
-  (selfC=ExtractParameters(parameteroptions,"dada","selfConsist","Char2Vect"))
-  (pool=ExtractParameters(parameteroptions,"dada","pool","Char2Vect"))
+  (eEF=extractParameters(parameteroptions,"dada","errorEstimationFunction"))
+  (multi=extractParameters(parameteroptions,"dada","multithread","Char2Vect"))
+  (v=extractParameters(parameteroptions,"dada","verbose","Char2Vect"))
+  (selfC=extractParameters(parameteroptions,"dada","selfConsist","Char2Vect"))
+  (pool=extractParameters(parameteroptions,"dada","pool","Char2Vect"))
 
 
   #### 6.Run error model on the filtered reads, in the filtered directory ####
@@ -189,13 +189,13 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   #### 8.Merge forward and backward reads ####
   message("8.Merge forward and backward reads")
   # Get parameter options
-  (MinO=ExtractParameters(parameteroptions,"mergePairs","minOverlap","Char2Vect"))
-  (maxMis=ExtractParameters(parameteroptions,"mergePairs","maxMismatch","Char2Vect"))
-  (propC=ExtractParameters(parameteroptions,"mergePairs","propagateCol","Char2Vect"))
-  (rR=ExtractParameters(parameteroptions,"mergePairs","returnRejects","Char2Vect"))
-  (v=ExtractParameters(parameteroptions,"mergePairs","verbose","Char2Vect"))
-  (jC=ExtractParameters(parameteroptions,"mergePairs","justConcatenate","Char2Vect"))
-  (tO=ExtractParameters(parameteroptions,"mergePairs","trimOverhang","Char2Vect"))
+  (MinO=extractParameters(parameteroptions,"mergePairs","minOverlap","Char2Vect"))
+  (maxMis=extractParameters(parameteroptions,"mergePairs","maxMismatch","Char2Vect"))
+  (propC=extractParameters(parameteroptions,"mergePairs","propagateCol","Char2Vect"))
+  (rR=extractParameters(parameteroptions,"mergePairs","returnRejects","Char2Vect"))
+  (v=extractParameters(parameteroptions,"mergePairs","verbose","Char2Vect"))
+  (jC=extractParameters(parameteroptions,"mergePairs","justConcatenate","Char2Vect"))
+  (tO=extractParameters(parameteroptions,"mergePairs","trimOverhang","Char2Vect"))
 
   #######merging reads
   message("merging reads")
@@ -247,8 +247,8 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
   #### 9.Remove chimeras and print cleaning details ####
   message("9.Remove chimera read and print cleaning details")
   # Get parameter options
-  (mth=ExtractParameters(parameteroptions,"removeBimeraDenovo","method"))
-  (v=ExtractParameters(parameteroptions,"removeBimeraDenovo","verbose","Char2Vect"))
+  (mth=extractParameters(parameteroptions,"removeBimeraDenovo","method"))
+  (v=extractParameters(parameteroptions,"removeBimeraDenovo","verbose","Char2Vect"))
 
   #ASV_table_raw created by dada2 in above step ('makesequencetable').
   message("very CPU intensive >100%, note that multithread=TRUE, but fast step")
