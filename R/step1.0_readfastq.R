@@ -22,7 +22,7 @@ step1.0_readFastq=function(folder, parameteroptions) {
   }
 
 # Get taxalevel
-  taxalevel=ExtractParameters(parameteroptions,"global","taxalevel")
+  taxalevel=extractParameters(parameteroptions,"global","taxalevel")
 
 #### 2.Check taxa level and generate folders ####
  
@@ -53,14 +53,14 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
   sink()
 
 #### 5.Check raw data quality - call Step_quality_check####
-  doCheck=ExtractParameters(parameteroptions,"global","qualityCheck","Char2Vect")
+  doCheck=extractParameters(parameteroptions,"global","qualityCheck","Char2Vect")
   message("set qualityCheck [3,3] in parameteroptions to 'FALSE' to disable")
   if (doCheck) {step1.01_quality_check(folder)#outputs quality score graphics (no return)
   }
 ####
 
 
-#### 6.Extract data frame of unique instrument_run identifier, sort in batches ####
+#### 6.extract data frame of unique instrument_run identifier, sort in batches ####
   #batches are separate members of list.
   sample_IDs=step1.1_extract_identifier(folder)
   
