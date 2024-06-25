@@ -20,3 +20,7 @@ conversion of filenames to lower case.
 The read orientation, indicated by R1 or R2 is essential for the bioinformatic process, and making it the
 correct case saves further unnessecarily flexible code.
 }
+\section{Example usage}{
+ step0.5_capitaliseR1_R2(folder)
+}
+
