@@ -1,4 +1,4 @@
-#' Step1.2_trim_primers
+#' Step1.3_trim_primers
 #' Remove the primer sequences from the sequence reads
 #'
 #' @param folder A string. Location of raw data files.
@@ -10,7 +10,7 @@
 #'
 #' @return A list.
 #'
-Step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
+step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
                          parameteroptions) {
   
   messageColour("Function starting: 'trim_primers'
