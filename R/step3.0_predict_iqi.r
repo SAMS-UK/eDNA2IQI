@@ -8,8 +8,8 @@
 #'
 #' @return A data frame. As inputted, with added 'predicted_IQI' column
 #' @export
+#' @section Example usage: predicted_IQIs <- step3.0_predict_iqi(S16_reads = myTAXA)
 #'
-
 
 step3.0_predict_iqi <- function(S16_reads) {
   messageColour("Function starting: 'predict_iqi'

@@ -7,7 +7,7 @@
 #' @return A dataframe, written to file, combing ASVs across multiple batches
 #' @export
 #'
-#' @examples myASVs <- step2.0_annotate_ASVs(folder,parameteroptions,collated_asv_batches)
+#' @section Example usage: myASVs <- step2.0_annotate_ASVs(folder,parameteroptions,collated_asv_batches)
 
 step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
 {
