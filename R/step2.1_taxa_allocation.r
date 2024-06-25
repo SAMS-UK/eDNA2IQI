@@ -8,7 +8,7 @@
 #' @export
 #' @return A dataframe.
 #'
-Step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
+step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
   message("Function: Step2.1_taxa_allocation")
  
   
