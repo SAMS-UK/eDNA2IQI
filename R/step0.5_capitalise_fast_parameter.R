@@ -55,7 +55,7 @@ step0.5_capitaliseR1_R2 <- function(folder) {
 
 }
 
-#' B_fastparameteroptions
+#' fastparameteroptions
 #' Function author: TomW
 #' 
 #' updates parameteroptions to 'fast' options, for debugging
@@ -65,8 +65,8 @@ step0.5_capitaliseR1_R2 <- function(folder) {
 #'
 #' @return dataframe, with fast parameter options for code testing
 #'
-#' @examples B_fastparameteroptions(parameterOptions)
-B_fastparameteroptions <- function(parameterOptions){
+#' @examples fastparameteroptions(parameterOptions)
+fastparameteroptions <- function(parameterOptions){
 #create debugging parameters
 #turn off quality check if it is working
 parameterOptions[3,3] = "FALSE"
