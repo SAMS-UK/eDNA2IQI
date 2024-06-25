@@ -27,7 +27,7 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
     utils::download.file(url, filePath, quiet = TRUE)
   }
 
-    taxalevel=ExtractParameters(parameteroptions,"global","taxalevel")
+    taxalevel=extractParameters(parameteroptions,"global","taxalevel")
   
   message("Calling Step2.1_taxa_allocation")
   S16_reads=step2.1_taxa_allocation(folder, collated_asv_batches, taxalevel)#class(S16_reads)
