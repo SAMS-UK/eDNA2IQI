@@ -9,7 +9,7 @@
 #'
 #' @examples myASVs <- step2.0_annotate_ASVs(folder,parameteroptions,collated_asv_batches)
 
-Step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
+step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
 {
   message("Function: Step2.0_annotate_ASV")
   message("rda used in taxa_allocation call")
@@ -30,7 +30,7 @@ Step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
     taxalevel=ExtractParameters(parameteroptions,"global","taxalevel")
   
   message("Calling Step2.1_taxa_allocation")
-  S16_reads=Step2.1_taxa_allocation(folder, collated_asv_batches, taxalevel)#class(S16_reads)
+  S16_reads=step2.1_taxa_allocation(folder, collated_asv_batches, taxalevel)#class(S16_reads)
 
   S16_readsB=S16_reads
   S16_readsB$SampleID=rownames(S16_readsB)
