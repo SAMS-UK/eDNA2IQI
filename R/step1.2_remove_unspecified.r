@@ -5,7 +5,7 @@
 #'
 #' @return A list.
 
-Step1.2_remove_unspecified <- function(folder, raw_files) {
+step1.2_remove_unspecified <- function(folder, raw_files) {
 #  browser()
 
   messageColour("Function starting: 'remove_unspecified'
