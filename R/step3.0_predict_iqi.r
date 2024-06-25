@@ -11,7 +11,7 @@
 #'
 
 
-Step3.0_predict_iqi <- function(S16_reads) {
+step3.0_predict_iqi <- function(S16_reads) {
   messageColour("Function starting: 'predict_iqi'
   Predicting IQI using optimized random forest model  \n\n", "message")
   
