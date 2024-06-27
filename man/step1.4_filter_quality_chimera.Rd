@@ -7,8 +7,8 @@
 step1.4_filter_quality_chimera(
   folder,
   raw_files,
-  fwd_trimmed,
-  rev_trimmed,
+  fwd_no_unspec,
+  rev_no_unspec,
   parameteroptions
 )
 }
@@ -17,10 +17,10 @@ step1.4_filter_quality_chimera(
 
 \item{raw_files}{A string. List of files from same location.}
 
-\item{fwd_trimmed}{A character vector. the file name of forward
+\item{fwd_no_unspec}{A character vector. the file name of forward
 reads of the input samples where primer sequences were removed.}
 
-\item{rev_trimmed}{A character vector. Contains the file location of reverse
+\item{rev_no_unspec}{A character vector. Contains the file location of reverse
 reads of the input samples where primer sequences were removed.}
 
 \item{parameteroptions}{A dataframe.}
