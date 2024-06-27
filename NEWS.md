@@ -1,3 +1,6 @@
+# eDNA2IQI 2.0.5
+biocmananager added, new parameteroptions
+
 # eDNA2IQI 2.0.4
 renaming functions to remove capitalisation
 # eDNA2IQI 2.0.2
