@@ -1,3 +1,6 @@
+# eDNA2IQI 2.1.0
+removed step1.3, and trimming primers by length using the dada2:filterandTrim
+
 # eDNA2IQI 2.0.5
 biocmananager added, new parameteroptions
 
