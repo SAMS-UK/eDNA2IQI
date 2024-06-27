@@ -11,6 +11,14 @@ Oban UK (sams.ac.uk) for more information.
 
 ## Installation
 
+You will need to first install BiocManager, to enable installation from source for serveral packages
+
+``` r
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+    install.packages("BiocManager")
+```
+
 You can install eDNA2IQI directly from GitHub with:
 
 ``` r
