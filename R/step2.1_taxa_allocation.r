@@ -26,7 +26,8 @@ step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
   taxa[] <- lapply(taxa, function(x) ReplaceInsertae(x))
   taxa[] <- lapply(taxa, function(x) stringr::str_replace_all(x, ";", ""))
   taxa[] <- lapply(taxa, function(x) stringr::str_replace_all(x, " ", ""))
-  taxa[] <- lapply(taxa, function(x) stringr::str_replace_all(x, ".", ""))
+  taxa[] <- lapply(taxa, function(x) stringr::str_replace_all(x, "\\.", ""))
+  taxa[] <- lapply(taxa, function(x) stringr::str_replace_all(x, "-", ""))
   #tomw edit end. 
                    
   # removes leading and tailing white_spaces
