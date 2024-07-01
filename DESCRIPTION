@@ -1,6 +1,6 @@
 Package: eDNA2IQI
 Title: Predict IQI from eDNA
-Version: 2.1.0
+Version: 2.1.1
 Authors@R: c(
     person("Stevie", "Brain", role = "aut", comment = c(ORCID = "0000-0001-8272-6996")),
     person("Esmee", "Roosenmaallen", role = "aut", comment = c(ORCID = "0000-0003-0519-3721")),
