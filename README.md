@@ -118,7 +118,7 @@ In a fresh R or R studio session, load the eDNA2IQI library
 library(eDNA2IQI)
 ```
 
-Create a value for the filepath of the input directory
+Create a value for the filepath of the input directory, ///remember the forward slash at the end!///
 
 ``` r
 folder <- “C:/Users/AdW/IQI_generation/FinFishFarmA/input/”
