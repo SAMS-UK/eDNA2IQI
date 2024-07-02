@@ -11,15 +11,23 @@ Oban UK (sams.ac.uk) for more information.
 
 ## Installation
 
-You will need to first install BiocManager, to enable installation from source for serveral packages
+First install several packages through BiocManager
 
 ``` r
 
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
+
+BiocManager::install(c("zlibbioc", "IRanges", "S4Vectors", "XVector", 
+                       "GenomeInfoDb", "SparseArray", "DelayedArray", 
+                       "S4Arrays", "Biobase", "Rhtslib", "BiocParallel", 
+                       "Rsamtools", "Biostrings", "SummarizedExperiment", 
+                       "GenomicRanges", "GenomicAlignments", "ShortRead", 
+                       "dada2"))
 ```
 
-You can install eDNA2IQI directly from GitHub with:
+
+Then you can install eDNA2IQI directly from GitHub with:
 
 ``` r
 install.packages("devtools")
