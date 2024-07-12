@@ -14,9 +14,9 @@
 
 step1.0_readFastq=function(folder, parameteroptions) {
   message("Function: step1.0_readFastq")
-
+  
 #### 1.Load parameteroptions dataframe if missing from function call ####
-
+  
   if (missing(parameteroptions)) {
     utils::data("parameteroptions", envir = environment())#
   }
@@ -25,7 +25,7 @@ step1.0_readFastq=function(folder, parameteroptions) {
   taxalevel=extractParameters(parameteroptions,"global","taxalevel")
 
 #### 2.Check taxa level and generate folders ####
-
+ 
 taxas <- c("Family", "Genus", "Species", "Order", "Class", "Phylum", "Kingdom")
   if (!taxalevel %in% taxas) {
     messageColour("Taxanomic level specified not valid \n
@@ -63,7 +63,7 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
 #### 6.extract data frame of unique instrument_run identifier, sort in batches ####
   #batches are separate members of list.
   sample_IDs=step1.1_extract_identifier(folder)
-
+  
 #### 7.MAIN LOOP denoise different batches separately, output CSV file, per batch ####
   #note that this passes batches of files, not individual files.
     for (i in seq_along(sample_IDs))
@@ -86,7 +86,7 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
      messageColour("Data already denoised, delete 'intermediate' folder to repeat, \n\n", "warnMessage")
 
         } else ##################################### main function calls here:
-          #calls to generate NS and filtered.
+          #calls to generate NS and trimmed and filtered.
         {
       #Load raw files, remove Ns, and save files into 'intermediate' folder
       #sample_IDs[[i]] - a list of sample names, per batch
@@ -95,10 +95,16 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
       no_unspec <- step1.2_remove_unspecified(folder, sample_IDs[[i]])
       fwd_no_unspec <- no_unspec[[1]]; rev_no_unspec <- no_unspec[[2]]
 
+      # Trim primer sequences from the files in intermediate folder
+      
+      ####Step1.3_trim_primers ####
+      trimmed <- step1.3_trim_primers(folder, fwd_no_unspec, rev_no_unspec, parameteroptions)
+      fwd_trimmed <- trimmed[[1]]; rev_trimmed <- trimmed[[2]]
+
       #### Step1.4 Filter, adjust with error model, merge, chimera check ####
       # loop cycles through sample_IDs list, batch-by-batch
       ASV_reads_batch=step1.4_filter_quality_chimera(folder, sample_IDs[[i]],
-                                             fwd_no_unspec, rev_no_unspec,
+                                             fwd_trimmed, rev_trimmed,
                                              parameteroptions)
 
       #### Save dataframe of ASV reads ####
@@ -111,7 +117,7 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
       } #end of loop, writing a csv file of ASV reads to outputData folder, per batch of denoised samples, as CSV and rda files.
       ####
 
-
+ 
   CollateASVBatches=CollateASVBatches(folder)
   message("End of function: Step1.0_readFastq")
   return(CollateASVBatches)
@@ -123,7 +129,7 @@ CollateASVBatches=function(folder){
   path=paste(folder,"outputData",sep="")
   asv_per_batch=list.files(path,pattern = "batch.*\\.rda$",full.names = TRUE)
 
-  Combined_ASV_batches=data.frame()
+  Combined_ASV_batches=data.frame() 
   for (files_to_combine in asv_per_batch){
   A1=get(load(files_to_combine))
   Combined_ASV_batches=dplyr::bind_rows(A1,Combined_ASV_batches)
@@ -140,3 +146,11 @@ CollateASVBatches=function(folder){
   message("Function:CollateASVBatches complete")
   return(Combined_ASV_batches)
 }
+
+
+
+
+
+
+
+
