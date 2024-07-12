@@ -1,3 +1,7 @@
+# eDNA2IQI 2.2.0
+restored cutadapt, options etc. 
+
+
 # eDNA2IQI 2.1.1
 fixed taxa allocation version snafu, 
 removed cutadapt parameters from parameteroptions !!this may cause issues!!
