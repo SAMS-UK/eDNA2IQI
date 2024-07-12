@@ -137,8 +137,8 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
 
 
   #### 6.Run error model on the filtered reads, in the filtered directory ####
-  message("6.Run error model on the filtered reads, in the filtered directory")
-  message("forward error being processed - not memory intensive (~12GB")
+  message("6.Run error model on the filtered reads, in the filtered directory - memory leak may occur here, check non-paged pool")
+  message("forward error being processed")
 
   dada2_fwd <- dada2::dada(fwd_filtered, err = error_fwd, multithread = multi,
                            verbose = v, selfConsist = selfC, pool = pool)
