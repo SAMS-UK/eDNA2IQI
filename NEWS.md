@@ -1,4 +1,7 @@
 # eDNA2IQI 2.2.0
+removed bug of primertrimming still left in dada2
+
+# eDNA2IQI 2.2.0
 restored cutadapt, options etc. 
 
 
