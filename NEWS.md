@@ -1,3 +1,5 @@
+# eDNA2IQI 2.2.2
+new parameteroptions file with row for cutadapt filepath
 # eDNA2IQI 2.2.1
 removed bug of primertrimming still left in dada2
 
