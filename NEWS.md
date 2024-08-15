@@ -1,3 +1,6 @@
+# eDNA2IQI 2.2.3
+datacleaningdetails.txt now includes a line of output stating package version used
+
 # eDNA2IQI 2.2.2
 new parameteroptions file with row for cutadapt filepath
 
