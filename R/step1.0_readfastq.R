@@ -46,6 +46,8 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
   sink(dataCleanfile, append = TRUE)
   cat(as.character(Sys.time()))
   cat("\n\n")
+  cat("eDNA2IQI Package Version:", as.character(packageVersion("eDNA2IQI")))
+  cat("\n\n")
   cat("Parameter options used: \n")
   utils::write.table(parameteroptions[c(1:3)], file = dataCleanfile,
                     row.names = FALSE, quote = FALSE, sep = "\t", append = TRUE,col.names = TRUE)
