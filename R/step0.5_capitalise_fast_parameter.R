@@ -10,7 +10,7 @@
 #' @param folder, string naming the location of the raw FASTQ files to be processed
 #'
 #' @return NULL, code changes the capitalisation on the input files
-#' @export
+#'
 #'
 #' @section Example usage: step0.5_capitaliseR1_R2(folder)
 step0.5_capitaliseR1_R2 <- function(folder) {
@@ -89,5 +89,3 @@ parameterOptions[48,3] = "TRUE"
 parameterOptions[50,3] = "TRUE"
 return(parameterOptions)
 }
-
-
