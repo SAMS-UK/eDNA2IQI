@@ -45,6 +45,7 @@ step3.0_predict_iqi <- function(S16_reads) {
    if(nrow(S16_reads)==0){message("\nNo samples exceeded rarefaction limit, breaking");return(NULL)}
   # Rarefy data
   #output is a matrix
+	set.seed(123)
     rare_data <- vegan::rrarefy(S16_reads, rarefaction_rate)
     rare_data <- as.data.frame(rare_data)
 
