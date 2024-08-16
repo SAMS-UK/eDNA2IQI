@@ -137,16 +137,6 @@ stability and ease of use.
 
 ## Full Tutorial
 
-**STEP 0.5**
-
-This is a very quick step to repair any case sensitivity lost by file
-transfer applications which is a known bug in windows. It is usually not
-necessary! But just in case…
-
-``` r
-eDNA2IQI::Step0.5_capitaliseR1_R2(folder)
-```
-
 **STEP 1**
 
 This step will take your raw FASTQ files, and turn them into a
@@ -189,7 +179,7 @@ that during certain steps such as error learning, no intermediate files
 will be created.
 
 ``` r
-myASVs <- eDNA2IQI::Step1.0_readFastq(folder, parameteroptions)
+myASVs <- eDNA2IQI::step1.0_readFastq(folder, parameteroptions)
 ```
 
 **STEP 2**
@@ -201,7 +191,7 @@ will be annotated against the SILVA 138.1 database which will be stored
 locally after being downloaded on the first use.
 
 ``` r
-myTAXA <- eDNA2IQI::Step2.0_annotate_ASVs(folder, parameteroptions, myASVs)
+myTAXA <- eDNA2IQI::step2.0_annotate_ASVs(folder, parameteroptions, myASVs)
 ```
 
 **STEP 3**
@@ -213,7 +203,7 @@ downloaded prior to this step on the first use. If a sample has fewer
 reads than the number required, the IQI can not be predicted.
 
 ``` r
-predicted_IQIs <- eDNA2IQI::Step3.0_predict_iqi(myTAXA)
+predicted_IQIs <- eDNA2IQI::step3.0_predict_iqi(myTAXA)
 ```
 
 Predicted IQIs can then be exported as a .csv file:
