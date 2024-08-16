@@ -1,4 +1,9 @@
 # eDNA2IQI 2.2.3
+seed set at beginning and before rarefaction for iqi prediction. 
+moved step 0.5 into step 1, so executes as default. 
+roxygen updated
+
+# eDNA2IQI 2.2.3
 datacleaningdetails.txt now includes a line of output stating package version used
 
 # eDNA2IQI 2.2.2
