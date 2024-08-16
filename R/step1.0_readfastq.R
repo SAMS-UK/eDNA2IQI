@@ -15,6 +15,12 @@
 step1.0_readFastq=function(folder, parameteroptions) {
   message("Function: step1.0_readFastq")
   
+#### 0.5 Run step0.5capitaliseR1_R2 as default. ####
+
+  step0.5_capitaliseR1_R2(folder)
+  cat("File name syntax checked, and corrected where necessary")
+
+  
 #### 1.Load parameteroptions dataframe if missing from function call ####
   
   if (missing(parameteroptions)) {
@@ -68,6 +74,8 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
   
 #### 7.MAIN LOOP denoise different batches separately, output CSV file, per batch ####
   #note that this passes batches of files, not individual files.
+	set.seed(123)
+	
     for (i in seq_along(sample_IDs))
     {
       #i=1#code testing
@@ -148,11 +156,3 @@ CollateASVBatches=function(folder){
   message("Function:CollateASVBatches complete")
   return(Combined_ASV_batches)
 }
-
-
-
-
-
-
-
-
