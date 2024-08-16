@@ -18,7 +18,7 @@ step1.0_readFastq=function(folder, parameteroptions) {
 #### 0.5 Run step0.5capitaliseR1_R2 as default. ####
 
   step0.5_capitaliseR1_R2(folder)
-  cat("File name syntax checked, and corrected where necessary")
+  message("File name syntax checked, and corrected where necessary")
 
   
 #### 1.Load parameteroptions dataframe if missing from function call ####
