@@ -49,6 +49,10 @@ step3.0_predict_iqi <- function(S16_reads) {
     rare_data <- vegan::rrarefy(S16_reads, rarefaction_rate)
     rare_data <- as.data.frame(rare_data)
 
+  # write rarefied dataframe
+	  utils::write.csv(rare_data, file = file.path(folder,
+               "/outputData/rarefied_taxa_allocated_reads", taxalevel, ".csv", fsep = ""),row.names = FALSE)
+
   # Clean sample names
   rownames(rare_data)=sub("_R1.*", "", rownames(rare_data),ignore.case = TRUE)
 
