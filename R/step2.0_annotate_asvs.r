@@ -69,7 +69,7 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
 
 #collate non top 20 into others
 	ST <- ST %>%
-		dplyr::mutate(Taxon = ifelse(Taxon %in% top_20_taxa, Taxon, "Others"))
+		dplyr::mutate(Taxon = ifelse(Taxon %in% top_20_taxa, Taxon, "Other_Bacteria"))
 
 #collate others and order by sample
 	reorder_data <- ST %>%
@@ -78,7 +78,7 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
 		dplyr::arrange(SampleID,desc(Total_Abundance))
 
 #add "Others" onto top_20_taxa vector
-	top_20_taxa <- c(top_20_taxa, "Others")
+	top_20_taxa <- c(top_20_taxa, "Other_Bacteria")
 
 
 #reorder
