@@ -106,7 +106,7 @@ are not present in the testing data: \n\n", "warning")
   
   rare_data=rare_data[, c("predicted_IQI", setdiff(names(rare_data), "predicted_IQI"))]
   
-  return(rare_data)
+ 
   
   # Make rarefied data taxaplot
   
@@ -182,6 +182,7 @@ taxaplot <- ggplot2::ggplot(reordered_data, aes(x = SampleID, y = Total_Abundanc
        y = "Read Count",
        fill = "Taxa")
 
-ggplot2::ggsave(filename = file.path(folder,"/outputData/rarefied_read_taxaplot.png"), plot = taxaplot, height = 8, units = "in")
+ggplot2::ggsave(filename = file.path(folder,"/outputData/rarefied_read_taxaplot.png"), plot = taxaplot, height = 8, units = "in") 
+return(rare_data)
  }
 }
