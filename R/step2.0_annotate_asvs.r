@@ -94,11 +94,11 @@ custom_palette <- c(palette1, palette2)
 
 #ggplot barplot
 taxaplot <- ggplot2::ggplot(reordered_data, aes(x = SampleID, y = Total_Abundance, fill = Taxon)) +
-  geom_bar(stat = "identity") +
-  scale_fill_manual(values = custom_palette) +
-  scale_y_continuous(expand = c(0,0))+
-  theme_classic() +
-  theme(
+ ggplot2::geom_bar(stat = "identity") +
+  ggplot2::scale_fill_manual(values = custom_palette) +
+  ggplot2::scale_y_continuous(expand = c(0,0))+
+  ggplot2::theme_classic() +
+  ggplot2::theme(
     legend.position = "right",
     legend.box = "vertical",
     legend.direction = "vertical",
@@ -106,8 +106,8 @@ taxaplot <- ggplot2::ggplot(reordered_data, aes(x = SampleID, y = Total_Abundanc
     legend.text = element_text(size = 8),
     plot.margin = margin(1, 1, 2, 1, "cm")
   ) +
-  guides(fill = guide_legend(ncol = 1)) +
-  labs(title = "Raw Read Counts of Top 20 Taxa and 'Others'",
+  ggplot2::guides(fill = guide_legend(ncol = 1)) +
+  ggplot2::labs(title = "Raw Read Counts of Top 20 Taxa and 'Others'",
        x = "Sample",
        y = "Read Count",
        fill = "Taxa")
