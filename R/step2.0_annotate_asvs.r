@@ -32,7 +32,7 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
   message("Calling Step2.1_taxa_allocation")
   S16_reads=step2.1_taxa_allocation(folder, collated_asv_batches, taxalevel)#class(S16_reads)
 
-	return(S16_reads)
+	
 
   S16_readsB=S16_reads
   S16_readsB$SampleID=rownames(S16_readsB)
@@ -115,6 +115,7 @@ taxaplot <- ggplot2::ggplot(reordered_data, aes(x = SampleID, y = Total_Abundanc
 ggplot2::ggsave(filename = file.path(folder,"/outputData/raw_read_taxaplot.png"), plot = taxaplot, height = 8, units = "in")
 
 messageColour("Raw Taxa Plot saved in Output folder \n\n", "message")
-
+	
+return(S16_reads)
 }
 
