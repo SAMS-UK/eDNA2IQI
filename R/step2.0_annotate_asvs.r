@@ -112,7 +112,7 @@ taxaplot <- ggplot2::ggplot(reordered_data, aes(x = SampleID, y = Total_Abundanc
        y = "Read Count",
        fill = "Taxa")
 
-ggplot2::ggsave(file = file.path(folder,"/outputData/raw_read_taxaplot.png"), plot = taxaplot, height = 8, units = "in")
+ggplot2::ggsave(filename = file.path(folder,"/outputData/raw_read_taxaplot.png"), plot = taxaplot, height = 8, units = "in")
 
 messageColour("Raw Taxa Plot saved in Output folder \n\n", "message")
 
