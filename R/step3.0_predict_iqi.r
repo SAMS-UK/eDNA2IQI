@@ -143,9 +143,9 @@ ST <- ST %>%
 
 #collate others and order by sample
 reorder_data <- ST %>%
-  group_by(SampleID,Taxon) %>%
-  summarise(Total_Abundance = sum(reads), .groups = 'drop') %>%
-  arrange(SampleID,desc(Total_Abundance))
+  dplyr::group_by(SampleID,Taxon) %>%
+  dplyr::summarise(Total_Abundance = sum(reads), .groups = 'drop') %>%
+  dplyr::arrange(SampleID,desc(Total_Abundance))
 
 #add "Others" onto top_20_taxa vector
 top_20_taxa <- c(top_20_taxa, "Others")
@@ -154,7 +154,7 @@ top_20_taxa <- c(top_20_taxa, "Others")
 #reorder
 reordered_data <- reorder_data %>%
   dplyr::mutate(Taxon = factor(Taxon, levels = top_20_taxa)) %>%
-  arrange(SampleID, Taxon)
+  dplyr::arrange(SampleID, Taxon)
 
 
 #make colour palette
