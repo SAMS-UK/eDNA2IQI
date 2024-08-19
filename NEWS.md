@@ -1,3 +1,6 @@
+# eDNA2IQI 2.3.0
+Increase of outputs, including barplots and rarefied dataset.  
+
 # eDNA2IQI 2.2.4
 seed set at beginning and before rarefaction for iqi prediction. 
 moved step 0.5 into step 1, so executes as default. 
