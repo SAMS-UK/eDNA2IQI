@@ -106,7 +106,7 @@ taxaplot <- ggplot2::ggplot(reordered_data, aes(x = SampleID, y = Total_Abundanc
     legend.text = ggplot2::element_text(size = 8),
     plot.margin = ggplot2::margin(1, 1, 2, 1, "cm")
   ) +
-  ggplot2::guides(fill = guide_legend(ncol = 1)) +
+  ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1)) +
   ggplot2::labs(title = "Raw Read Counts of Top 20 Taxa and 'Others'",
        x = "Sample",
        y = "Read Count",
