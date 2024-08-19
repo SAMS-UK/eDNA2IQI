@@ -99,7 +99,7 @@ are not present in the testing data: \n\n", "warning")
       }
       messageColour("Treat IQI predictions with caution. \n\n", "warning")
     }
-  }
+  
 
   # Make predictions with the trained random forest
   rare_data$predicted_IQI <- stats::predict(RF_final_reduced, rare_data)
@@ -183,5 +183,5 @@ taxaplot <- ggplot2::ggplot(reordered_data, aes(x = SampleID, y = Total_Abundanc
        fill = "Taxa")
 
 ggplot2::ggsave(file = file.path(folder,"/outputData/rarefied_read_taxaplot.png"), plot = taxaplot, height = 8, units = "in")
-
+ }
 }
