@@ -32,6 +32,8 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
   message("Calling Step2.1_taxa_allocation")
   S16_reads=step2.1_taxa_allocation(folder, collated_asv_batches, taxalevel)#class(S16_reads)
 
+	return(S16_reads)
+
   S16_readsB=S16_reads
   S16_readsB$SampleID=rownames(S16_readsB)
   A=grep("SampleID",colnames(S16_readsB))#move SampleID to first column
@@ -40,8 +42,77 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
   # Save dataframe
   message(paste("Writing annotated data here:",folder))
   utils::write.csv(S16_readsB, file = file.path(folder,
-               "/outputData/taxaAllocatedReads_", taxalevel, ".csv", fsep = ""),row.names = FALSE)
-  messageColour("Function finished: 'taxa_allocation' \n\n", "message")
-  return(S16_reads)
+               "/outputData/taxaAllocatedReads_", taxalevel, ".csv", fsep = ""),row.names = FALSE) 
+  messageColour("Function finished: 'taxa_allocation' \n Taxa allocated reads written to file \n\n", "message")
+  
+ ### Generate raw read taxa plots
+
+	#shorten sample name
+	S16_readsB <- S16_readsB %>%
+	mutate(SampleID = stringr::str_remove(SampleID, "_S.*"))
+
+	#long format
+	ST <- tidyr::pivot_longer(S16_readsB,cols=grep("Bact",colnames(S16_readsB)),
+                 names_to = "Taxon",
+                 values_to = "reads")
+
+	#get total abundance
+	total_abundance <- ST %>%
+		dplyr::group_by(Taxon) %>%
+		dplyr::summarise(Total_Abundance = sum(reads), .groups = 'drop') %>%
+		dplyr::arrange(desc(Total_Abundance))
+
+#get top 20
+	top_20_taxa <- total_abundance %>%
+		dplyr::top_n(20, Total_Abundance) %>%
+		dplyr::pull(Taxon)
+
+#collate non top 20 into others
+	ST <- ST %>%
+		mutate(Taxon = ifelse(Taxon %in% top_20_taxa, Taxon, "Others"))
+
+#collate others and order by sample
+	reorder_data <- ST %>%
+		group_by(SampleID,Taxon) %>%
+		summarise(Total_Abundance = sum(reads), .groups = 'drop') %>%
+		arrange(SampleID,desc(Total_Abundance))
+
+#add "Others" onto top_20_taxa vector
+	top_20_taxa <- c(top_20_taxa, "Others")
+
+
+#reorder
+reordered_data <- reorder_data %>%
+  mutate(Taxon = factor(Taxon, levels = top_20_taxa)) %>%
+  arrange(SampleID, Taxon)
+
+
+#make colour palette
+palette1 <- RColorBrewer::brewer.pal(n = 12, "Set3")
+palette2 <- RColorBrewer::brewer.pal(n = 9, "Paired")
+custom_palette <- c(palette1, palette2)
+
+#ggplot barplot
+taxaplot <- gplot2:ggplot(reordered_data, aes(x = SampleID, y = Total_Abundance, fill = Taxon)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = custom_palette) +
+  scale_y_continuous(expand = c(0,0))+
+  theme_classic() +
+  theme(
+    legend.position = "right",
+    legend.box = "vertical",
+    legend.direction = "vertical",
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 8),
+    plot.margin = margin(1, 1, 2, 1, "cm")
+  ) +
+  guides(fill = guide_legend(ncol = 1)) +
+  labs(title = "Raw Read Counts of Top 20 Taxa and 'Others'",
+       x = "Sample",
+       y = "Read Count",
+       fill = "Taxa")
+
+ggplot2::ggsave(file = file.path(folder,"/outputData/raw_read_taxaplot.png"), plot = taxaplot, height = 8, units = "in")
+ 
 }
 
