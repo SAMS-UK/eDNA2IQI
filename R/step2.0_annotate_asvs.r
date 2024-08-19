@@ -69,22 +69,22 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
 
 #collate non top 20 into others
 	ST <- ST %>%
-		mutate(Taxon = ifelse(Taxon %in% top_20_taxa, Taxon, "Others"))
+		dplyr::mutate(Taxon = ifelse(Taxon %in% top_20_taxa, Taxon, "Others"))
 
 #collate others and order by sample
 	reorder_data <- ST %>%
-		group_by(SampleID,Taxon) %>%
-		summarise(Total_Abundance = sum(reads), .groups = 'drop') %>%
-		arrange(SampleID,desc(Total_Abundance))
+		dplyr::group_by(SampleID,Taxon) %>%
+		dplyr::summarise(Total_Abundance = sum(reads), .groups = 'drop') %>%
+		dplyr::arrange(SampleID,desc(Total_Abundance))
 
 #add "Others" onto top_20_taxa vector
 	top_20_taxa <- c(top_20_taxa, "Others")
 
 
 #reorder
-reordered_data <- reorder_data %>%
-  mutate(Taxon = factor(Taxon, levels = top_20_taxa)) %>%
-  arrange(SampleID, Taxon)
+reordered_data <- dplyr::reorder_data %>%
+  dplyr::mutate(Taxon = factor(Taxon, levels = top_20_taxa)) %>%
+  dplyr::arrange(SampleID, Taxon)
 
 
 #make colour palette
