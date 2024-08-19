@@ -178,7 +178,7 @@ taxaplot <- ggplot2::ggplot(reordered_data, aes(x = SampleID, y = Total_Abundanc
     axis.text.x = ggplot2::element_text(size = 8, angle = 90, hjust = 1, vjust = 0.5)
   ) +
   ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1)) +
-  ggplot2::labs(title = "Raw Read Counts of Top 20 Taxa and 'Others'",
+  ggplot2::labs(title = "Raw Read Counts of Top 20 Taxa and 'Other Bacteria'",
        x = "Sample",
        y = "Read Count",
        fill = "Taxa")
