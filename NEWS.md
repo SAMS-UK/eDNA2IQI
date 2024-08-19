@@ -1,3 +1,6 @@
+# eDNA2IQI 2.3.1
+bug fix
+
 # eDNA2IQI 2.3.0
 Increase of outputs, including barplots and rarefied dataset.  
 
