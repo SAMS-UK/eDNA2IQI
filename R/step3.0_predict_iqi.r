@@ -172,9 +172,9 @@ taxaplot <- ggplot2::ggplot(reordered_data, aes(x = SampleID, y = Total_Abundanc
     legend.position = "right",
     legend.box = "vertical",
     legend.direction = "vertical",
-    legend.title = element_text(size = 10),
-    legend.text = element_text(size = 8),
-    plot.margin = margin(1, 1, 2, 1, "cm")
+    legend.title = ggplot2::element_text(size = 10),
+    legend.text = ggplot2::element_text(size = 8),
+    plot.margin = ggplot2::margin(1, 1, 2, 1, "cm")
   ) +
   ggplot2::guides(fill = guide_legend(ncol = 1)) +
   ggplot2::labs(title = "Raw Read Counts of Top 20 Taxa and 'Others'",
