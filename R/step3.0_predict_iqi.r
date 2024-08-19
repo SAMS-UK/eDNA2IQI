@@ -22,8 +22,8 @@ step3.0_predict_iqi <- function(S16_reads) {
   RF <- subset(potenRfs, grepl(glob2rx("*/RF*.Rdata"), potenRfs,ignore.case = TRUE))
   load(RF);class(RF)
   RF=tolower(RF)
-  (rarefaction_rate <- as.numeric(stringr::str_extract_all(RF,
-                                            "(?<=rf_rarefy_).+(?=_taxalevel)")))
+  rarefaction_rate <- as.numeric(stringr::str_extract(RF, "(?<=rarefy_)[0-9]+"))
+  taxalevel <- as.character(stringr::str_extract(RF, "(?<=_taxalevel_)[^\\.]+"))
 
 
   # Check for samples  with fewer reads than rarefaction rate
@@ -48,10 +48,11 @@ step3.0_predict_iqi <- function(S16_reads) {
 	set.seed(123)
     rare_data <- vegan::rrarefy(S16_reads, rarefaction_rate)
     rare_data <- as.data.frame(rare_data)
+	for_barplot <- rare_data
 
   # write rarefied dataframe
 	  utils::write.csv(rare_data, file = file.path(folder,
-               "/outputData/rarefied_taxa_allocated_reads", taxalevel, ".csv", fsep = ""),row.names = FALSE)
+               "/outputData/rarefied_taxa_allocated_reads_", taxalevel, ".csv", fsep = ""),row.names = TRUE)
 
   # Clean sample names
   rownames(rare_data)=sub("_R1.*", "", rownames(rare_data),ignore.case = TRUE)
@@ -106,4 +107,81 @@ are not present in the testing data: \n\n", "warning")
   rare_data=rare_data[, c("predicted_IQI", setdiff(names(rare_data), "predicted_IQI"))]
   
   return(rare_data)
+  
+  # Make rarefied data taxaplot
+  
+S16_readsB=for_barplot
+S16_readsB$SampleID=rownames(S16_readsB)
+A=grep("SampleID",colnames(S16_readsB))
+
+#move SampleID to first column
+S16_readsB=S16_readsB[,c(A,1:(A-1))]
+
+#shorten sample name
+S16_readsB <- S16_readsB %>%
+  dplyr::mutate(SampleID = stringr::str_remove(SampleID, "_S.*"))
+
+#long format
+ST <- tidyr::pivot_longer(S16_readsB,cols=grep("Bact",colnames(S16_readsB)),
+                          names_to = "Taxon",
+                          values_to = "reads")
+
+#get total abundance
+total_abundance <- ST %>%
+  dplyr::group_by(Taxon) %>%
+  dplyr::summarise(Total_Abundance = sum(reads), .groups = 'drop') %>%
+  dplyr::arrange(desc(Total_Abundance))
+
+#get top 20
+top_20_taxa <- total_abundance %>%
+  dplyr::top_n(20, Total_Abundance) %>%
+  dplyr::pull(Taxon)
+
+#collate non top 20 into others
+ST <- ST %>%
+  mutate(Taxon = ifelse(Taxon %in% top_20_taxa, Taxon, "Others"))
+
+#collate others and order by sample
+reorder_data <- ST %>%
+  group_by(SampleID,Taxon) %>%
+  summarise(Total_Abundance = sum(reads), .groups = 'drop') %>%
+  arrange(SampleID,desc(Total_Abundance))
+
+#add "Others" onto top_20_taxa vector
+top_20_taxa <- c(top_20_taxa, "Others")
+
+
+#reorder
+reordered_data <- reorder_data %>%
+  mutate(Taxon = factor(Taxon, levels = top_20_taxa)) %>%
+  arrange(SampleID, Taxon)
+
+
+#make colour palette
+palette1 <- RColorBrewer::brewer.pal(n = 12, "Set3")
+palette2 <- RColorBrewer::brewer.pal(n = 9, "Paired")
+custom_palette <- c(palette1, palette2)
+
+#ggplot barplot
+taxaplot <- ggplot2::ggplot(reordered_data, aes(x = SampleID, y = Total_Abundance, fill = Taxon)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = custom_palette) +
+  scale_y_continuous(expand = c(0,0))+
+  theme_classic() +
+  theme(
+    legend.position = "right",
+    legend.box = "vertical",
+    legend.direction = "vertical",
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 8),
+    plot.margin = margin(1, 1, 2, 1, "cm")
+  ) +
+  guides(fill = guide_legend(ncol = 1)) +
+  labs(title = "Raw Read Counts of Top 20 Taxa and 'Others'",
+       x = "Sample",
+       y = "Read Count",
+       fill = "Taxa")
+
+ggplot2::ggsave(file = file.path(folder,"/outputData/rarefied_read_taxaplot.png"), plot = taxaplot, height = 8, units = "in")
+
 }
