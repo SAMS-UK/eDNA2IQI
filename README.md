@@ -24,6 +24,7 @@ BiocManager::install(c("zlibbioc", "IRanges", "S4Vectors", "XVector",
                        "Rsamtools", "Biostrings", "SummarizedExperiment", 
                        "GenomicRanges", "GenomicAlignments", "ShortRead", 
                        "dada2"))
+}
 ```
 
 
