@@ -93,7 +93,7 @@ palette2 <- RColorBrewer::brewer.pal(n = 9, "Paired")
 custom_palette <- c(palette1, palette2)
 
 #ggplot barplot
-taxaplot <- ggplot2:ggplot(reordered_data, aes(x = SampleID, y = Total_Abundance, fill = Taxon)) +
+taxaplot <- ggplot2::ggplot(reordered_data, aes(x = SampleID, y = Total_Abundance, fill = Taxon)) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = custom_palette) +
   scale_y_continuous(expand = c(0,0))+
