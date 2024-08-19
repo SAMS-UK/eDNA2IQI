@@ -139,7 +139,7 @@ top_20_taxa <- total_abundance %>%
 
 #collate non top 20 into others
 ST <- ST %>%
-  mutate(Taxon = ifelse(Taxon %in% top_20_taxa, Taxon, "Others"))
+  dplyr::mutate(Taxon = ifelse(Taxon %in% top_20_taxa, Taxon, "Others"))
 
 #collate others and order by sample
 reorder_data <- ST %>%
@@ -153,7 +153,7 @@ top_20_taxa <- c(top_20_taxa, "Others")
 
 #reorder
 reordered_data <- reorder_data %>%
-  mutate(Taxon = factor(Taxon, levels = top_20_taxa)) %>%
+  dplyr::mutate(Taxon = factor(Taxon, levels = top_20_taxa)) %>%
   arrange(SampleID, Taxon)
 
 
