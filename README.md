@@ -58,7 +58,7 @@ packageVersion("eDNA2IQI")
 Successful installation indicated by correct version number:
 
 ``` r
-[1] ‘2.2.2’
+[1] ‘2.3.0’
 ```
 
 **Ensure to execute eDNA2IQI within a fresh R or R studio session after
