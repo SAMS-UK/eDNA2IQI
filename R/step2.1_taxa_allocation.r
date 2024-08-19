@@ -62,18 +62,15 @@ step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
                                           group = colnames(taxa_combined),
                                           na.rm = TRUE)))
   # Sum the reads in columns with the same names
-
   taxa_combined <- taxa_combined %>%
     dplyr::select(-dplyr::contains("chloroplast")) %>%
     dplyr::select(-dplyr::contains("mitochondria"))
-
+# Only keep Bacteria columns
   S16_reads <- taxa_combined[, grepl("Bacteria", names(taxa_combined))]
-  # Only keep Bacteria columns
-
-
+  
+  return(S16_reads)                
   message("Function Step2.1_taxa_allocation finished")
-
-  return(S16_reads)
+  
 }
 
 
