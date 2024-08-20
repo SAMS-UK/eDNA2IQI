@@ -18,7 +18,12 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
  if (missing(parameteroptions)) {
     utils::data("parameteroptions", envir = environment())
   }
-  
+
+####Check Folder name and add / at the end if its not there
+
+if (substr(folder, nchar(folder), nchar(folder)) != "/") {
+  folder <- paste0(folder, "/")
+}
   ####1.Get reference database if missing####
   #Check for correct reference database, download if missing
   
