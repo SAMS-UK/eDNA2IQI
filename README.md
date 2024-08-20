@@ -149,17 +149,17 @@ outputted:
 
 > - An image file of read quality per sample, and averaged over all
 >   samples for perusal and investigation to follow up on
->   any issues in IQI generation (if “qualitycheck” = TRUE)
+>   any issues in IQI generation (if “qualitycheck” = TRUE)  
 >   (qualityScores.png, qualityScores_averaged.png)
 
 > - Individual batch files as .rda and .csv files, and a
 >   collated_asv_batches.rda file containing all samples,
->   The collated file can be imported for Step 2
+>   The collated file can be imported for Step 2  
 >   (ASV_reads_batch_1.csv, ASV_reads_batch_1.rda, collated_asv_batches.rda).
 
 > - A text file that contains all parameters used for the
 >   denoising, and statistics of how many reads were lost at each stage
->   for investigation upon IQI generation issues
+>   for investigation upon IQI generation issues  
 >   (dataCleaningDetails.txt).
 
 > - A directory containing the intermediary files
@@ -210,7 +210,7 @@ These will be:
 >   (raw_read_taxaplot.png)
 
 > - A .csv and .rda of taxa allocated reads,
->   the .rda can be imported for Step 3
+>   the .rda can be imported for Step 3  
 >   (taxaAllocatedReads_Family.csv, taxaAllocatedReads_Family.rda)
 
 
@@ -232,14 +232,14 @@ More files will populate the "outputData" directory at this stage.
 These will be:
 
 > - An image file of a taxa barplot of the top 20 families that
->   the rarefied reads used for IQI prediction were allocated to
+>   the rarefied reads used for IQI prediction were allocated to  
 >   (rarefied_read_taxaplot.png).
 
-> - A .csv of the rarefied taxa allocated reads used for IQI prediction
+> - A .csv of the rarefied taxa allocated reads used for IQI prediction  
 >   (rarefied_taxa_allocated_reads_family.csv).
 
 > - A .csv of predicted_IQIs, and the abundance of bacterial families
->   in each sample that were important for model prediction
+>   in each sample that were important for model prediction  
 >   (predicted_IQIs.csv).
 
 **Full eDNA2IQI pipeline**
