@@ -15,7 +15,7 @@
 step1.0_readFastq=function(folder, parameteroptions) {
   message("Function: step1.0_readFastq")
 
-####Check Folder name and correct
+####Check Folder name and add / at the end if its not there
 
 if (substr(folder, nchar(folder), nchar(folder)) != "/") {
   folder <- paste0(folder, "/")
