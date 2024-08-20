@@ -206,7 +206,7 @@ More files will populate the "outputData" directory at this stage.
 These will be:
 
 > - An image file of a taxa barplot of the top 20 families that
->   raw reads were allocated to
+>   raw reads were allocated to  
 >   (raw_read_taxaplot.png)
 
 > - A .csv and .rda of taxa allocated reads,
