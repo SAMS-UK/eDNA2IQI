@@ -173,10 +173,11 @@ data(“parameteroptions”)
 parameteroptions[3,3] <- “FALSE”
 ```
 
-You are ready to execute Step 1, this process can take several hours, if
-in doubt that the pipeline is progressing, the intermediate directories
-can be checked via windows explorer for ongoing population. Note however
-that during certain steps such as error learning, no intermediate files
+You are ready to execute Step 1, this process can take several hours,
+depending on the number of samples. If you are in doubt that the 
+pipeline is progressing, the intermediate directories can be checked 
+via a file explorer for ongoing population. Note however that during 
+certain steps such as error learning, no intermediate files
 will be created.
 
 ``` r
@@ -212,3 +213,20 @@ Predicted IQIs can then be exported as a .csv file:
 ``` r
 write.csv(file = "predicted_IQIs.csv", predicted_IQIs)
 ```
+
+**Full eDNA2IQI pipeline**
+
+The full pipeline can be executed using the wrapper function:
+
+``` r
+results <- edna2iqi(folder)
+```
+
+This will output the data created in steps 1, 2 and 3 into the global 
+environment as "results" in addition to saving data files and output as in the 
+above steps.
+The results can be navigated as: 
+
+step 1 output = results$myASVs
+step 2 output = results$myTaxa
+step 3 output = results$myPreds
