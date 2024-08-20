@@ -14,6 +14,11 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
   message("Function: Step2.0_annotate_ASV")
   message("rda used in taxa_allocation call")
   
+  #instate parameteroptions
+ if (missing(parameteroptions)) {
+    utils::data("parameteroptions", envir = environment())
+  }
+  
   ####1.Get reference database if missing####
   #Check for correct reference database, download if missing
   
@@ -43,6 +48,10 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
   message(paste("Writing annotated data here:",folder))
   utils::write.csv(S16_readsB, file = file.path(folder,
                "/outputData/taxaAllocatedReads_", taxalevel, ".csv", fsep = ""),row.names = FALSE) 
+  
+  save(S16_reads, file = file.path(folder,"outputData/taxaAllocatedReads_", taxalevel, ".rda", fsep = ""))
+
+  
   messageColour("Function finished: 'taxa_allocation' \n Taxa allocated reads written to file \n\n", "message")
   
  ### Generate raw read taxa plots
