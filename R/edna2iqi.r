@@ -33,7 +33,7 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
 
   myTaxa <- step2.0_annotate_ASVs(folder,parameteroptions, myASVs)
 
-  myPreds <- step3.0_predict_iqi(myTaxa)
+  myPreds <- step3.0_predict_iqi(folder, myTaxa)
 
   message("edna2iqi finished")
 
