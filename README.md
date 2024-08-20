@@ -147,14 +147,20 @@ denoising. It will create an output directory within the input directory
 (“C:/Users/AdW/FinFishFarmA/input/outputData”), within which will be
 outputted:
 
-> - A summary of read quality for perusal and investigation following
->   any issues in IQI generation.
+> - An image file of read quality per sample, and averaged over all
+>   samples for perusal and investigation to follow up on
+>   any issues in IQI generation (if “qualitycheck” = TRUE)
+>   (qualityScores.png, qualityScores_averaged.png)
 
-> - Individual batch files as .rda and .csv files.
+> - Individual batch files as .rda and .csv files, and a
+>   collated_asv_batches.rda file containing all samples,
+>   The collated file can be imported for Step 2
+>   (ASV_reads_batch_1.csv, ASV_reads_batch_1.rda, collated_asv_batches.rda).
 
-> - dataCleaningDetails.txt, that contains all parameters used for the
+> - A text file that contains all parameters used for the
 >   denoising, and statistics of how many reads were lost at each stage
->   for investigation upon IQI generation issues.
+>   for investigation upon IQI generation issues
+>   (dataCleaningDetails.txt).
 
 > - A directory containing the intermediary files
 >   (“C:/Users/AdW/FinFishFarmA/input/outputData/intermediate”). If the
@@ -196,6 +202,20 @@ locally after being downloaded on the first use.
 myTaxa <- eDNA2IQI::step2.0_annotate_ASVs(folder, parameteroptions, myASVs)
 ```
 
+More files will populate the "outputData" directory at this stage. 
+These will be:
+
+> - An image file of a taxa barplot of the top 20 families that
+>   raw reads were allocated to
+>   (raw_read_taxaplot.png)
+
+> - A .csv and .rda of taxa allocated reads,
+>   the .rda can be imported for Step 3
+>   (taxaAllocatedReads_Family.csv, taxaAllocatedReads_Family.rda)
+
+
+
+
 **STEP 3**
 
 Step 3 will take the annotated taxa data.frame from Step 2, and use the
@@ -208,11 +228,19 @@ reads than the number required, the IQI can not be predicted.
 myPreds <- eDNA2IQI::step3.0_predict_iqi(myTaxa)
 ```
 
-Predicted IQIs can then be exported as a .csv file:
+More files will populate the "outputData" directory at this stage. 
+These will be:
 
-``` r
-write.csv(file = "predicted_IQIs.csv", myPreds)
-```
+> - An image file of a taxa barplot of the top 20 families that
+>   the rarefied reads used for IQI prediction were allocated to
+>   (rarefied_read_taxaplot.png).
+
+> - A .csv of the rarefied taxa allocated reads used for IQI prediction
+>   (rarefied_taxa_allocated_reads_family.csv).
+
+> - A .csv of predicted_IQIs, and the abundance of bacterial families
+>   in each sample that were important for model prediction
+>   (predicted_IQIs.csv).
 
 **Full eDNA2IQI pipeline**
 
@@ -227,6 +255,6 @@ environment as "results" in addition to saving data files and output as in the
 above steps.
 The results can be navigated as: 
 
-> - step 1 output = results$myASVs
-> - step 2 output = results$myTaxa
-> - step 3 output = results$myPreds
+> - Step 1 output = results$myASVs
+> - Step 2 output = results$myTaxa
+> - Step 3 output = results$myPreds
