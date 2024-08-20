@@ -62,7 +62,7 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
 
 #### 5.Check raw data quality - call Step_quality_check####
   doCheck=extractParameters(parameteroptions,"global","qualityCheck","Char2Vect")
-  message("set qualityCheck [3,3] in parameteroptions to 'FALSE' to disable")
+  message("Quality checking raw data, Set qualityCheck [3,3] in parameteroptions to 'FALSE' to disable")
   if (doCheck) {step1.01_quality_check(folder)#outputs quality score graphics (no return)
   }
 ####

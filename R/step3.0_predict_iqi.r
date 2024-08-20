@@ -163,7 +163,7 @@ palette2 <- RColorBrewer::brewer.pal(n = 9, "Paired")
 custom_palette <- c(palette1, palette2)
 
 #ggplot barplot
-taxaplot <- ggplot2::ggplot(reordered_data, aes(x = SampleID, y = Total_Abundance, fill = Taxon)) +
+taxaplot <- ggplot2::ggplot(reordered_data, ggplot2::aes(x = SampleID, y = Total_Abundance, fill = Taxon)) +
   ggplot2::geom_bar(stat = "identity") +
   ggplot2::scale_fill_manual(values = custom_palette) +
   ggplot2::scale_y_continuous(expand = c(0,0))+
@@ -178,7 +178,7 @@ taxaplot <- ggplot2::ggplot(reordered_data, aes(x = SampleID, y = Total_Abundanc
     axis.text.x = ggplot2::element_text(size = 8, angle = 90, hjust = 1, vjust = 0.5)
   ) +
   ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1)) +
-  ggplot2::labs(title = "Rarefied Read Counts of Top 20 Taxa and 'Other Bacteria'",
+  ggplot2::labs(title = "Raw Read Counts of Top 20 Taxa and 'Other Bacteria'",
        x = "Sample",
        y = "Read Count",
        fill = "Taxa")
