@@ -16,6 +16,12 @@
 
 edna2iqi=function(folder, parameteroptions) {
 
+####Check Folder name and add / at the end if its not there
+
+if (substr(folder, nchar(folder), nchar(folder)) != "/") {
+  folder <- paste0(folder, "/")
+}
+ 
 #instate parameteroptions
  if (missing(parameteroptions)) {
     utils::data("parameteroptions", envir = environment())
