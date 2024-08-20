@@ -5,9 +5,11 @@
 \title{Generates the predicted IQI values based on the optimized random forest
 model.}
 \usage{
-step3.0_predict_iqi(S16_reads)
+step3.0_predict_iqi(folder, S16_reads)
 }
 \arguments{
+\item{folder}{A string. Location of raw fastq data files.}
+
 \item{S16_reads}{A data frame. Contains the bacterial taxa read counts which
 should be used to predict the IQI values.}
 }
