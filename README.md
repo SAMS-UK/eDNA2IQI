@@ -227,6 +227,6 @@ environment as "results" in addition to saving data files and output as in the
 above steps.
 The results can be navigated as: 
 
-step 1 output = results$myASVs
-step 2 output = results$myTaxa
-step 3 output = results$myPreds
+> - step 1 output = results$myASVs
+> - step 2 output = results$myTaxa
+> - step 3 output = results$myPreds
