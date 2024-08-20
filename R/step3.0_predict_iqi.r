@@ -15,6 +15,11 @@ step3.0_predict_iqi <- function(S16_reads) {
   messageColour("Function starting: 'predict_iqi'
   Predicting IQI using optimized random forest model  \n\n", "message")
   
+####Check Folder name and add / at the end if its not there
+
+if (substr(folder, nchar(folder), nchar(folder)) != "/") {
+  folder <- paste0(folder, "/")
+}
 
   # Find trained random forest, extract info on taxa level and rarefaction rate
   potenRfs <- dir(file.path(find.package("eDNA2IQI"), "extdata"),
