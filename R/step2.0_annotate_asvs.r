@@ -82,7 +82,7 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
 
 
 #reorder
-reordered_data <- dplyr::reorder_data %>%
+reordered_data <- reorder_data %>%
   dplyr::mutate(Taxon = factor(Taxon, levels = top_20_taxa)) %>%
   dplyr::arrange(SampleID, Taxon)
 
