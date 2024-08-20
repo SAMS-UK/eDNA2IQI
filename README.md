@@ -219,7 +219,7 @@ write.csv(file = "predicted_IQIs.csv", predicted_IQIs)
 The full pipeline can be executed using the wrapper function:
 
 ``` r
-results <- edna2iqi(folder)
+results <- eDNA2IQI::edna2iqi(folder)
 ```
 
 This will output the data created in steps 1, 2 and 3 into the global 
