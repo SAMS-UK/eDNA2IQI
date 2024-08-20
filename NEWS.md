@@ -1,3 +1,6 @@
+# eDNA2IQI 2.3.3
+folder path doesnt need /
+
 # eDNA2IQI 2.3.2
 wrapper function for all steps
 
