@@ -193,7 +193,7 @@ will be annotated against the SILVA 138.1 database which will be stored
 locally after being downloaded on the first use.
 
 ``` r
-myTAXA <- eDNA2IQI::step2.0_annotate_ASVs(folder, parameteroptions, myASVs)
+myTaxa <- eDNA2IQI::step2.0_annotate_ASVs(folder, parameteroptions, myASVs)
 ```
 
 **STEP 3**
@@ -205,7 +205,7 @@ downloaded prior to this step on the first use. If a sample has fewer
 reads than the number required, the IQI can not be predicted.
 
 ``` r
-predicted_IQIs <- eDNA2IQI::step3.0_predict_iqi(myTAXA)
+predicted_IQIs <- eDNA2IQI::step3.0_predict_iqi(myTaxa)
 ```
 
 Predicted IQIs can then be exported as a .csv file:
