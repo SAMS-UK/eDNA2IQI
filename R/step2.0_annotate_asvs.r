@@ -49,7 +49,7 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
 
 	#shorten sample name
 	S16_readsB <- S16_readsB %>%
-	mutate(SampleID = stringr::str_remove(SampleID, "_S.*"))
+	dyplyr::mutate(SampleID = stringr::str_remove(SampleID, "_S.*"))
 
 	#long format
 	ST <- tidyr::pivot_longer(S16_readsB,cols=grep("Bact",colnames(S16_readsB)),
