@@ -106,7 +106,8 @@ are not present in the testing data: \n\n", "warning")
   
   rare_data=rare_data[, c("predicted_IQI", setdiff(names(rare_data), "predicted_IQI"))]
   
- 
+  utils::write.csv(rare_data, file = file.path(folder,
+               "/outputData/predicted_IQIs.csv", fsep = ""),row.names = TRUE) 
   
   # Make rarefied data taxaplot
   
