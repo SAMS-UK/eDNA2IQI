@@ -14,7 +14,13 @@
 
 step1.0_readFastq=function(folder, parameteroptions) {
   message("Function: step1.0_readFastq")
-  
+
+####Check Folder name and correct
+
+if (substr(folder, nchar(folder), nchar(folder)) != "/") {
+  folder <- paste0(folder, "/")
+}
+	
 #### 0.5 Run step0.5capitaliseR1_R2 as default. ####
 
   step0.5_capitaliseR1_R2(folder)
