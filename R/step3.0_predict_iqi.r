@@ -1,6 +1,7 @@
 #' Generates the predicted IQI values based on the optimized random forest
 #' model.
 #'
+#' @param folder A string. Location of raw fastq data files.
 #' @param S16_reads A data frame. Contains the bacterial taxa read counts which
 #' should be used to predict the IQI values.
 #'
@@ -11,7 +12,7 @@
 #' @section Example usage: predicted_IQIs <- step3.0_predict_iqi(S16_reads = myTAXA)
 #'
 
-step3.0_predict_iqi <- function(S16_reads) {
+step3.0_predict_iqi <- function(folder, S16_reads) {
   messageColour("Function starting: 'predict_iqi'
   Predicting IQI using optimized random forest model  \n\n", "message")
   
