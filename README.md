@@ -205,13 +205,13 @@ downloaded prior to this step on the first use. If a sample has fewer
 reads than the number required, the IQI can not be predicted.
 
 ``` r
-predicted_IQIs <- eDNA2IQI::step3.0_predict_iqi(myTaxa)
+myPreds <- eDNA2IQI::step3.0_predict_iqi(myTaxa)
 ```
 
 Predicted IQIs can then be exported as a .csv file:
 
 ``` r
-write.csv(file = "predicted_IQIs.csv", predicted_IQIs)
+write.csv(file = "predicted_IQIs.csv", myPreds)
 ```
 
 **Full eDNA2IQI pipeline**
