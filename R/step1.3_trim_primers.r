@@ -12,12 +12,12 @@
 #'
 step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
                          parameteroptions) {
-  
+
   messageColour("Function starting: 'trim_primers'
   Removing primer sequences from sequence reads \n\n", "message")
 
   #### Set file to store details of cleaning and filtering####
- 
+
   dataCleanfile <- paste(folder, "outputData/dataCleaningDetails.txt",sep="")
   sink(dataCleanfile, append = TRUE)
   cat(as.character(Sys.time()))
@@ -36,7 +36,7 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   rev_trimmed <- sub("no_Ns", "trimmed", rev_no_unspec)#and reverse
 
   # Skip step and if files already present
-  if ((sum(!file.exists(fwd_trimmed)) + sum(!file.exists(rev_trimmed))) != 0) { 
+  if ((sum(!file.exists(fwd_trimmed)) + sum(!file.exists(rev_trimmed))) != 0) {
 
   #### Load the cutadapt tool if required ####
   if (!file.exists(file.path(find.package("eDNA2IQI"),
@@ -88,7 +88,7 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
     j=extractParameters(parameteroptions,"cutadapt","-j","Char2Vect")
 
        #### Cut the primer sequences off the sequences ####
-  
+
   for (i in seq_along(fwd_no_unspec)) {
     system2(cutadapt_exe, args = c(fwd_flags, rev_flags, "--discard-untrimmed",
                                    "-n", n, "-m", m, "-j", j, "-o",

@@ -1,10 +1,10 @@
 #' step0.5_capitaliseR1_R2
 #'
-#' Reads in the input data, capitalises any "r1" and "r2" in the file metadata componenets of 
+#' Reads in the input data, capitalises any "r1" and "r2" in the file metadata componenets of
 #' an Illumina Miseq output filename
-#' This addresses software and filesharing bugs that lose case sensitivity, resulting in the 
-#' conversion of filenames to lower case. 
-#' The read orientation, indicated by R1 or R2 is essential for the bioinformatic process, and making it the 
+#' This addresses software and filesharing bugs that lose case sensitivity, resulting in the
+#' conversion of filenames to lower case.
+#' The read orientation, indicated by R1 or R2 is essential for the bioinformatic process, and making it the
 #' correct case saves further unnessecarily flexible code.
 #'
 #' @param folder, string naming the location of the raw FASTQ files to be processed
@@ -57,7 +57,7 @@ step0.5_capitaliseR1_R2 <- function(folder) {
 
 #' fastparameteroptions
 #' Function author: TomW
-#' 
+#'
 #' updates parameteroptions to 'fast' options, for debugging
 #'
 #' @param parameterOptions

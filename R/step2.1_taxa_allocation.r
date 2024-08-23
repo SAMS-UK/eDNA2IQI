@@ -10,7 +10,7 @@
 #'
 step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
   message("Function: Step2.1_taxa_allocation")
- 
+
   # set seed
   set.seed(123)
 
@@ -29,8 +29,8 @@ step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
   taxa[] <- lapply(taxa, function(x) stringr::str_replace_all(x, " ", ""))
   taxa[] <- lapply(taxa, function(x) stringr::str_replace_all(x, "\\.", ""))
   taxa[] <- lapply(taxa, function(x) stringr::str_replace_all(x, "-", ""))
-  #tomw edit end. 
-                   
+  #tomw edit end.
+
   # removes leading and tailing white_spaces
   taxa[] <- lapply(taxa, trimws, which = "both")
   # Set NA values to "Xunidentified"
@@ -67,11 +67,11 @@ step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
     dplyr::select(-dplyr::contains("mitochondria"))
 # Only keep Bacteria columns
   S16_reads <- taxa_combined[, grepl("Bacteria", names(taxa_combined))]
-  
-  return(S16_reads)                
+
+  return(S16_reads)
   message("Function Step2.1_taxa_allocation finished")
-  
+
 }
 
 
-                   
+

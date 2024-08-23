@@ -49,9 +49,12 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
 
     messageColour("Data already taxa allocated, delete 'taxaAllocatedReads_*' files to repeat, \n\n", "warnMessage")
 
+
   } else
 
   {
+  load(file.path(paste(folder, "outputData/collated_asv_batches.rda", sep="")))
+  myASVs <- Combined_ASV_batches
 
   myTaxa <- step2.0_annotate_ASVs(folder,parameteroptions, myASVs)
   }

@@ -15,7 +15,7 @@
 step3.0_predict_iqi <- function(folder, S16_reads) {
   messageColour("Function starting: 'predict_iqi'
   Predicting IQI using optimized random forest model  \n\n", "message")
-  
+
 ####Check Folder name and add / at the end if its not there
 
 if (substr(folder, nchar(folder), nchar(folder)) != "/") {
@@ -43,10 +43,10 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
     messageColour("\nRead count under ", "warning")
     messageColour(rarefaction_rate, "warning")
     S16_reads <- S16_reads[!rownames(S16_reads)%in%names(too_low),]
-    
+
     }
 
-   
+
 
    if(nrow(S16_reads)==0){message("\nNo samples exceeded rarefaction limit, breaking");return(NULL)}
   # Rarefy data
@@ -63,7 +63,7 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
   # Clean sample names
   rownames(rare_data)=sub("_R1.*", "", rownames(rare_data),ignore.case = TRUE)
 
-  
+
   if(ncol(rare_data)<2){message("\nOnly one or fewer taxa match RF taxa, breaking");return(NULL)}
 
   rare_data <- rare_data[,c( colnames(rare_data) %in% RF_final_reduced$coefnames)]
@@ -74,7 +74,7 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
   if (FALSE %in% (RF_final_reduced$coefnames %in% colnames(rare_data))) {
     name <- RF_final_reduced$coefnames[!(RF_final_reduced$coefnames
                                          %in% colnames(rare_data))]
-  
+
 
     messageColour("The following taxa were used to train the randomForest but
 are not present in the testing data: \n\n", "warning")
@@ -105,18 +105,18 @@ are not present in the testing data: \n\n", "warning")
       }
       messageColour("Treat IQI predictions with caution. \n\n", "warning")
     }
-  
+
 
   # Make predictions with the trained random forest
   rare_data$predicted_IQI <- stats::predict(RF_final_reduced, rare_data)
-  
+
   rare_data=rare_data[, c("predicted_IQI", setdiff(names(rare_data), "predicted_IQI"))]
-  
+
   utils::write.csv(rare_data, file = file.path(folder,
-               "/outputData/predicted_IQIs.csv", fsep = ""),row.names = TRUE) 
-  
+               "/outputData/predicted_IQIs.csv", fsep = ""),row.names = TRUE)
+
   # Make rarefied data taxaplot
-  
+
 S16_readsB=for_barplot
 S16_readsB$SampleID=rownames(S16_readsB)
 A=grep("SampleID",colnames(S16_readsB))
@@ -166,12 +166,12 @@ reordered_data <- reorder_data %>%
 
 #make colour palette
 palette1 <- RColorBrewer::brewer.pal(n = 12, "Set3")
-palette2 <- RColorBrewer::brewer.pal(n = 9, "Paired")
+palette2 <- RColorBrewer::brewer.pal(n = 10, "Paired")
 custom_palette <- c(palette1, palette2)
 
 #ggplot barplot
 taxaplot <- ggplot2::ggplot(reordered_data, ggplot2::aes(x = SampleID, y = Total_Abundance, fill = Taxon)) +
-  ggplot2::geom_bar(stat = "identity") +
+  ggplot2::geom_bar(stat = "identity", width = 0.95) +
   ggplot2::scale_fill_manual(values = custom_palette) +
   ggplot2::scale_y_continuous(expand = c(0,0))+
   ggplot2::theme_classic() +
@@ -190,7 +190,7 @@ taxaplot <- ggplot2::ggplot(reordered_data, ggplot2::aes(x = SampleID, y = Total
        y = "Read Count",
        fill = "Taxa")
 
-ggplot2::ggsave(filename = file.path(folder,"/outputData/rarefied_read_taxaplot.png"), plot = taxaplot, height = 8, units = "in") 
+ggplot2::ggsave(filename = file.path(folder,"/outputData/rarefied_read_taxaplot.png"), plot = taxaplot, height = 8, units = "in")
 return(rare_data)
  }
 }

@@ -40,15 +40,15 @@ step1.2_remove_unspecified <- function(folder, raw_files) {
        sum(!file.exists(rev_no_unspec))) != 0) {
 
   # Remove Ns from the sequences and save as .gz files in intermediate folder
-    
+
   dada2::filterAndTrim(fwd_input, fwd_no_unspec, rev_input, rev_no_unspec,
                        maxN = 0, multithread = FALSE, verbose = FALSE)
 
 
   # DATA FLAG: flag if <15000 reads per sample before denoising
-    
+
   names <- c()
-  
+
   for (x in seq_along(fwd_input)) {
     fw_in_L <- length(ShortRead::id(ShortRead::readFastq(fwd_input[x])))
     if (fw_in_L < 15000) {
