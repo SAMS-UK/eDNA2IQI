@@ -1,3 +1,7 @@
+# eDNA2IQI 2.3.4
+download check for reference taxa database
+error handling if thredds server is down. tries from the Zenodo server. 
+
 # eDNA2IQI 2.3.3
 folder path doesnt need /
 
