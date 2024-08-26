@@ -24,7 +24,6 @@ Imports:
     magrittr,
     RColorBrewer,
     rlang,
-    scales,
     ShortRead,
     stringr,
     tibble,
