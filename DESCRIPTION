@@ -25,6 +25,7 @@ Imports:
     RColorBrewer,
     rlang,
     ShortRead,
+    stats,
     stringr,
     tibble,
     tidyr,
