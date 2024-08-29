@@ -89,14 +89,27 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
 
        #### Cut the primer sequences off the sequences ####
 
+op_sys <- Sys.info()[1]
+
+
   for (i in seq_along(fwd_no_unspec)) {
-    system2(cutadapt_exe, args = c(fwd_flags, rev_flags, "--discard-untrimmed",
+
+    if (op_sys =="Linux" || op_sys =="Darwin") {
+    system2("wine", args = c(cutadapt_exe, fwd_flags, rev_flags, "--discard-untrimmed",
                                    "-n", n, "-m", m, "-j", j, "-o",
                       fwd_trimmed_wo_folder[i], "-p", rev_trimmed_wo_folder[i],
-                      fwd_no_unspec_wo_folder[i], rev_no_unspec_wo_folder[i],
-                                   "--quiet"))
-  }
+                      fwd_no_unspec_wo_folder[i], rev_no_unspec_wo_folder[i]
+                                   ))
+    }
+    else if (op_sys =="Windows") {
+    system2(cutadapt_exe, args = c(fwd_flags, rev_flags, "--discard-untrimmed",
+                                            "-n", n, "-m", m, "-j", j, "-o",
+                                            fwd_trimmed_wo_folder[i], "-p", rev_trimmed_wo_folder[i],
+                                            fwd_no_unspec_wo_folder[i], rev_no_unspec_wo_folder[i],
+                                            "--quiet"))
 
+               }
+}
 
   # Calculations for data flags
   names <- c()
