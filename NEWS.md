@@ -1,3 +1,8 @@
+# eDNA2IQI 2.4.0
+Welcome Linux and MacOS users!
+Stable for Windows and Linux, with an updated readme. 
+Untested for Mac so far though. 
+
 # eDNA2IQI 2.3.4
 download check for reference taxa database
 error handling if thredds server is down. tries from the Zenodo server. 
