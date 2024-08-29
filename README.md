@@ -128,13 +128,50 @@ folder <- “C:/Users/AdW/IQI_generation/FinFishFarmA/input/”
 ## Running for the first time?
 
 The first time the package is run after installation or update will
-require the download of: the cutadapt v4.0
+require the download of: the Cutadapt v4.0
 \[<DOI:10.14806/ej.17.1.200>\] executable file during Step 1, the SILVA
 138.1 reference taxa database \[<DOI:10.1093/nar/gks1219>\] during Step
-2, and the most up-to-date Random Forest Model for IQI prediction. These
-will be downloaded from the SAMS THREDDS server. Cutadapt nor the SILVA
+2. These will be firstly attempted to be downloaded from maintained links 
+on the SAMS THREDDS server, then from source. Cutadapt nor the SILVA
 database are our creation, we have simply mirrored them for link
 stability and ease of use.
+These can be downloaded before your first run through with samples, 
+it is always good to be prepared:
+
+``` r
+eDNA2IQI::downloadExternal()
+```
+
+## Operating Systems
+
+The eDNA2IQI package was built for running R on Windows OS. 
+However, eDNA2IQI will yield *identical* results on Linux or Mac OS,
+it just needs a little extra setup. 
+
+Follow the installation instructions above, and also run the downloadExternal() 
+above in a fresh R session.
+
+The cutadapt.exe file is a windows executable, but can be run through R 
+using "Wine", a compatability layer that needs to be installed on your OS:
+
+On your Linux or MacOS shell
+``` bash
+sudo apt update
+sudo apt install wine
+```
+Then in R
+``` R
+file.path(find.package("eDNA2IQI"))
+```
+and navigate into the /extdata/ directory containing the cutadapt_v1.exe file
+
+then in the shell
+``` bash
+chmod 777 cutadapt_v1.exe
+```
+and then eDNA2IQI can execute the file from within R 
+
+
 
 ## Full Tutorial
 
