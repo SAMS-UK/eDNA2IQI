@@ -169,7 +169,8 @@ then in the shell
 ``` bash
 chmod 777 cutadapt_v1.exe
 ```
-and then eDNA2IQI can execute the file from within R 
+This will allow eDNA2IQI to execute the file from within R.
+
 
 
 
