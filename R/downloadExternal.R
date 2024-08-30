@@ -24,11 +24,14 @@ downloadExternal <- function() {
       tryCatch({
         # Attempt to download the file from SAMS Thredds server
         url <- "https://thredds.sams.ac.uk/thredds/fileServer/Full_database/referenceDatabase_full.fa.gz"
-        filePath <- file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz")
+        filePath <- file.path(find.package("eDNA2IQI"), "extdata", "")
         options(timeout = 300)
         messageColour("Updating taxa reference database from SAMS Thredds server \n\n", "warnMessage")
         utils::download.file(url, filePath, quiet = TRUE)
-        message("SAMS Thredds server download successful")
+        if (file.exists(file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz"))) {
+      
+       message("SAMS Thredds server download successful")
+      }
       }, error = function(e) {
         # Handle error if SAMS Thredds download fails
         message("\nSAMS Thredds server download unsuccessful \n\n", conditionMessage(e))
@@ -41,7 +44,10 @@ downloadExternal <- function() {
           options(timeout = 300)
           messageColour("Updating taxa reference database from Zenodo server \n\n", "warnMessage")
           utils::download.file(url, filePath, quiet = TRUE)
-          message("Zenodo server download successful")
+          if (file.exists(file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz"))) {
+      
+       message("Zenodo server download successful")
+      }
         }, error = function(e) {
           # Handle error if Zenodo download fails
           message("\nZenodo server download unsuccessful \n\n", conditionMessage(e))
@@ -94,8 +100,11 @@ else{
         options(timeout = 300)
         messageColour("Updating Cutadapt .exe file from SAMS Thredds server \n\n", "warnMessage")
         utils::download.file(url, filePath, quiet = TRUE)
-        message("SAMS Thredds server download successful")
-      }, error = function(e) {
+      if (file.exists(file.path(find.package("eDNA2IQI"), "extdata", "cutadapt_v1.exe"))) {
+      
+       message("SAMS Thredds server download successful")
+      }
+	  }, error = function(e) {
         # Handle error if SAMS Thredds download fails
         message("\nSAMS Thredds server download unsuccessful \n\n", conditionMessage(e))
         message("\n\n Attempting download from Github, may be unstable in the future")
@@ -107,7 +116,10 @@ else{
           options(timeout = 300)
           messageColour("Updating Cutadapt .exe file from Github \n\n", "warnMessage")
           utils::download.file(url, filePath, quiet = TRUE)
-          message("Github download successful")
+          if (file.exists(file.path(find.package("eDNA2IQI"), "extdata", "cutadapt_v1.exe"))) {
+      
+       message("SAMS Thredds server download successful")
+      }
         }, error = function(e) {
           # Handle error if Github download fails
           message("\nGithub server download unsuccessful \n\n", conditionMessage(e))
@@ -135,7 +147,7 @@ else{
 
     if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata", "cutadapt_v1.exe"))) {
       # If the file does not exist, stop execution with an error message
-      message("\n Cutadapt .exe file not successfully downloaded \n")
+      message("\nCutadapt .exe file not successfully downloaded \n")
     }
 
   }
