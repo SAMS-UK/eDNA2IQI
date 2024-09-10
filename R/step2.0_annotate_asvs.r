@@ -7,7 +7,7 @@
 #' @return A dataframe, written to file, combing ASVs across multiple batches
 #' @export
 #'
-#' @section Example usage: myASVs <- step2.0_annotate_ASVs(folder,parameteroptions,collated_asv_batches)
+#' @section Example usage: myTAXA <- step2.0_annotate_ASVs(folder,parameteroptions,myASVs)
 
 step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
 {
@@ -110,77 +110,7 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
   messageColour("Function finished: 'taxa_allocation' \n Taxa allocated reads written to file \n\n", "message")
 
  ### Generate raw read taxa plots
-
-	#shorten sample name
-	S16_readsB <- S16_readsB %>%
-	dplyr::mutate(SampleID = stringr::str_remove(SampleID, "_S.*"))
-
-	#long format
-	ST <- tidyr::pivot_longer(S16_readsB,cols=grep("Bact",colnames(S16_readsB)),
-                 names_to = "Taxon",
-                 values_to = "reads")
-
-	#get total abundance
-	total_abundance <- ST %>%
-		dplyr::group_by(Taxon) %>%
-		dplyr::summarise(Total_Abundance = sum(reads), .groups = 'drop') %>%
-		dplyr::arrange(desc(Total_Abundance))
-
-#get top 20
-	top_20_taxa <- total_abundance %>%
-		dplyr::top_n(20, Total_Abundance) %>%
-		dplyr::pull(Taxon)
-
-#collate non top 20 into others
-	ST <- ST %>%
-		dplyr::mutate(Taxon = ifelse(Taxon %in% top_20_taxa, Taxon, "Other_Bacteria"))
-
-#collate others and order by sample
-	reorder_data <- ST %>%
-		dplyr::group_by(SampleID,Taxon) %>%
-		dplyr::summarise(Total_Abundance = sum(reads), .groups = 'drop') %>%
-		dplyr::arrange(SampleID,desc(Total_Abundance))
-
-#add "Others" onto top_20_taxa vector
-	top_20_taxa <- c(top_20_taxa, "Other_Bacteria")
-
-
-#reorder
-reordered_data <- reorder_data %>%
-  dplyr::mutate(Taxon = factor(Taxon, levels = top_20_taxa)) %>%
-  dplyr::arrange(SampleID, Taxon)
-
-
-#make colour palette
-palette1 <- RColorBrewer::brewer.pal(n = 12, "Set3")
-palette2 <- RColorBrewer::brewer.pal(n = 9, "Paired")
-custom_palette <- c(palette1, palette2)
-
-#ggplot barplot
-taxaplot <- ggplot2::ggplot(reordered_data, ggplot2::aes(x = SampleID, y = Total_Abundance, fill = Taxon)) +
- ggplot2::geom_bar(stat = "identity", width = 0.95) +
-  ggplot2::scale_fill_manual(values = custom_palette) +
-  ggplot2::scale_y_continuous(expand = c(0,0))+
-  ggplot2::theme_classic() +
-  ggplot2::theme(
-    legend.position = "right",
-    legend.box = "vertical",
-    legend.direction = "vertical",
-    legend.title = ggplot2::element_text(size = 10),
-    legend.text = ggplot2::element_text(size = 8),
-    plot.margin = ggplot2::margin(1, 1, 2, 1, "cm"),
-    axis.text.x = ggplot2::element_text(size = 8, angle = 90, hjust = 1, vjust = 0.5)
-  ) +
-  ggplot2::guides(fill = ggplot2::guide_legend(ncol = 1)) +
-  ggplot2::labs(title = "Raw Read Counts of Top 20 Taxa and 'Other Bacteria'",
-       x = "Sample",
-       y = "Read Count",
-       fill = "Taxa")
-
-ggplot2::ggsave(filename = file.path(folder,"/outputData/raw_read_taxaplot.png"), plot = taxaplot, height = 8, units = "in")
-
-messageColour("Raw Taxa Plot saved in Output folder \n\n", "message")
+drawBarplot(S16_readsB, folder)
 
 return(S16_reads)
 }
-
