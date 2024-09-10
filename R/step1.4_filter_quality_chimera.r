@@ -18,9 +18,9 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
                                    parameteroptions) {
 
   message("Function: Step1.4_filter_quality_chimera")
-  message("generates ASVs from filtered files (in 'intermediate/filtered'")
+  message("Generating ASVs from filtered files (in 'intermediate/filtered'")
 
-  messageColour("Function starting: 'filter_quality_chimera' Removing low quality sequences \n\n", "message")
+  messageColour("Function starting: 'filter_quality_chimera'. Removing low quality sequences \n\n", "message")
   #### 0.5 Write output and create files ####
   # Set file to store details of cleaning and filtering
 
@@ -44,7 +44,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   rev_filtered <- sub("trimmed", "filtered", rev_trimmed)
 
   #### 1.Get dada2 filter parameters ####
-  message("1.Get dada2 filter parameters")
+  message("1.Fetching dada2 filter parameters from parameterOptions")
   # Get parameter options
 
 
@@ -71,7 +71,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
 
 
   #### 2.Run dada2 filterAndTrim ####
-  message("2.Run dada2 filterAndTrim")
+  message("2.Running dada2 filterAndTrim")
   #fwd_trimmed file exists,
   #fwd_filtered path exists, but not files
   ####data2 creates fwd_filtered files.
@@ -86,7 +86,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
 
    # Calculate dada2 error rates
   #### 3.Learn-error parameters ####
-  message("3.Get learn-error parameters")
+  message("3.Fetching learn-error parameters from parameterOptions")
   (nB=extractParameters(parameteroptions,"learnErrors","nbases","Char2Vect"))
   (rnd=extractParameters(parameteroptions,"learnErrors","randomise","Char2Vect"))
   (multi=extractParameters(parameteroptions,"learnErrors","multithread","Char2Vect"))
@@ -110,15 +110,15 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
 
 
   #### 4.Run error model, object created ####
-  message("4.Run error model, object created")
-  message("forward error:")
-  message("This is not memory intensive")
+  message("4.Producing error model, model object will be created")
+  message("Forward error:")
+  message("Not memory intensive, but may take some time")
   error_fwd <- dada2::learnErrors(fwd_filtered, multithread = multi,
                                   nbases = nB, randomize = rnd,
                                   verbose = v,
                                   MAX_CONSIST = mc, OMEGA_C = oc,
                                   qualityType = qtype)
-  message("reverse error:")
+  message("Reverse error:")
   error_rev <- dada2::learnErrors(rev_filtered, multithread = multi,
                                   nbases = nB, randomize = rnd,
                                   verbose = v,
@@ -126,7 +126,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
                                   qualityType = qtype)
 
   #### 5.Get dada2 inference parameters ####
-  message("5.Get dada2 inference parameters")
+  message("5.Fetching dada2 inference parameters from parameterOptions")
   # Get parameter options
 
   (eEF=extractParameters(parameteroptions,"dada","errorEstimationFunction"))
@@ -137,17 +137,17 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
 
 
   #### 6.Run error model on the filtered reads, in the filtered directory ####
-  message("6.Run error model on the filtered reads, in the filtered directory - memory leak may occur here, check non-paged pool")
-  message("forward error being processed")
+  message("6.Running error model on the filtered reads in the filtered directory. \n A memory leak may occur here, check non-paged pool when running samples n>36")
+  message("Forward error being processed")
 
   dada2_fwd <- dada2::dada(fwd_filtered, err = error_fwd, multithread = multi,
                            verbose = v, selfConsist = selfC, pool = pool)
-  message("reverse error being processed")
+  message("Reverse error being processed")
   dada2_rev <- dada2::dada(rev_filtered, err = error_rev, multithread = multi,
                            verbose = v, selfConsist = selfC, pool = pool)
 
   #### 7.Write detail of cleaning #####
-  message("7.Write detail of cleaning")
+  message("7.Write details of denoising to .txt file")
   dataCleanfile <- file.path(folder, "outputData/dataCleaningDetails.txt")
   fw_in_L <- c()
   fw_out_L <- c()
@@ -187,7 +187,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   }
 
   #### 8.Merge forward and backward reads ####
-  message("8.Merge forward and backward reads")
+  message("8.Merge forward and reverse reads")
   # Get parameter options
   (MinO=extractParameters(parameteroptions,"mergePairs","minOverlap","Char2Vect"))
   (maxMis=extractParameters(parameteroptions,"mergePairs","maxMismatch","Char2Vect"))
@@ -198,7 +198,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   (tO=extractParameters(parameteroptions,"mergePairs","trimOverhang","Char2Vect"))
 
   #######merging reads
-  message("merging reads")
+  message("Merging reads")
   merged_reads <- dada2::mergePairs(dada2_fwd, fwd_filtered, dada2_rev,
                                     rev_filtered, verbose = v,
                                     minOverlap = MinO, maxMismatch = maxMis,
@@ -207,7 +207,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
 
   # Construct ASV reads table and remove chimera reads
 
-  message("making sequence table- very fast ")
+  message("Constructing sequence table ")
   ASV_table_raw <- dada2::makeSequenceTable(merged_reads)
   #####write output to dataCleanfile ####
   fw_all <- c()
@@ -230,7 +230,7 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
 
   # DATA FLAG: flag if data loss >70%
   if (length(names[(fw_all / fw_out_L) < 0.3]) > 0) {
-    messageColour("High loss of reads when merging forward and backward reads,
+    messageColour("High loss of reads when merging forward and reverse reads,
                   data of low quality. Treat IQI predictions with caution.\n\n", "warning")
     sink(dataCleanfile, append = TRUE)
     cat(as.character(Sys.time()))
@@ -245,13 +245,13 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
 
 
   #### 9.Remove chimeras and print cleaning details ####
-  message("9.Remove chimera read and print cleaning details")
+  message("9.Remove chimeric reads, and printing denoising details")
   # Get parameter options
   (mth=extractParameters(parameteroptions,"removeBimeraDenovo","method"))
   (v=extractParameters(parameteroptions,"removeBimeraDenovo","verbose","Char2Vect"))
 
   #ASV_table_raw created by dada2 in above step ('makesequencetable').
-  message("very CPU intensive >100%, note that multithread=TRUE, but fast step")
+  message("very CPU intensive ~100%, but a fast step")
   ASV_table_no_chim <- dada2::removeBimeraDenovo(ASV_table_raw,
                                                  method = mth,
                                                  multithread = TRUE,
@@ -365,9 +365,7 @@ cat("Consider investigation of raw read count and denoising statistics.\n")
     sink()
   }
   #####
-  messageColour("Function finished: 'filter_quality_chimera' \n\n", "message")
+  messageColour("Function 1.4 finished: 'filter_quality_chimera' \n\n", "message")
   return(ASV_table_no_chim)#class is tibble or data.frame
   #this is a 'batch' of files, from the same sequencing run.
 }
-
-
