@@ -9,7 +9,7 @@
 #' @return A data frame. Table of reads per taxa, sorted by sample.
 #'
 #' @section Example usage:
-#' data <- step1.0_readFastq(folder = "C:/full/file/path/to/fastq/")
+#' myASVs <- step1.0_readFastq(folder = "C:/full/file/path/to/fastq/", parameteroptions)
 #'
 
 step1.0_readFastq=function(folder, parameteroptions) {
