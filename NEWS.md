@@ -1,3 +1,8 @@
+# eDNA2IQI 2.4.1
+Added barplot function seperately
+changed examples
+external download still bugged
+
 # eDNA2IQI 2.4.0
 Welcome Linux and MacOS users!
 Stable for Windows and Linux, with an updated readme. 
