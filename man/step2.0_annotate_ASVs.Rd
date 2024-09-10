@@ -20,6 +20,6 @@ A dataframe, written to file, combing ASVs across multiple batches
 Title Step2.0_annotate_ASVs
 }
 \section{Example usage}{
- myASVs <- step2.0_annotate_ASVs(folder,parameteroptions,collated_asv_batches)
+ myTAXA <- step2.0_annotate_ASVs(folder,parameteroptions,myASVs)
 }
 

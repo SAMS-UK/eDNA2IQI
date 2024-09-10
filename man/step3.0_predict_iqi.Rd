@@ -21,6 +21,6 @@ Generates the predicted IQI values based on the optimized random forest
 model.
 }
 \section{Example usage}{
- predicted_IQIs <- step3.0_predict_iqi(S16_reads = myTAXA)
+ myPREDs <- step3.0_predict_iqi(folder = "C:/full/file/path/to/fastq/S16_reads", S16_reads = myTAXA)
 }
 
