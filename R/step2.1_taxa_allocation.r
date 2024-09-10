@@ -44,8 +44,13 @@ step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
     Order <- paste(Class, Order, sep = "_")
     Family <- paste(Order, Family, sep = "_")
     Genus <- paste(Family, Genus, sep = "_")
-    Species <- paste(Family, Species, sep = "_")
+
+        # Check if 'Species' exists before trying to modify it
+    if ("Species" %in% names(taxa)) {
+      Species <- paste(Family, Species, sep = "_")
+    }
   })
+
 
   # Merge ASV reads and bacteria, set taxa level specificity as column names,
   # remove other taxa
@@ -72,6 +77,3 @@ step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
   message("Function Step2.1_taxa_allocation finished")
 
 }
-
-
-
