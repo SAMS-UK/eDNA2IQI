@@ -369,3 +369,5 @@ cat("Consider investigation of raw read count and denoising statistics.\n")
   return(ASV_table_no_chim)#class is tibble or data.frame
   #this is a 'batch' of files, from the same sequencing run.
 }
+
+

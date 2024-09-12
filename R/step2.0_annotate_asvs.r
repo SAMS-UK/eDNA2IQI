@@ -114,3 +114,4 @@ drawBarplot(S16_readsB, folder)
 
 return(S16_reads)
 }
+
