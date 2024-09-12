@@ -245,7 +245,7 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
 
 
   #### 9.Remove chimeras and print cleaning details ####
-  message("9.Remove chimeric reads, and printing denoising details")
+  message("9.Removing chimeric reads, and printing denoising details")
   # Get parameter options
   (mth=extractParameters(parameteroptions,"removeBimeraDenovo","method"))
   (v=extractParameters(parameteroptions,"removeBimeraDenovo","verbose","Char2Vect"))
