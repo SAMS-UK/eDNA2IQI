@@ -52,7 +52,7 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
   # Rarefy data
   #output is a matrix
 	set.seed(123)
-    rare_data <- vegan::rrarefy(S16_reads, rarefaction_rate)
+    rare_data <- suppressWarnings(vegan::rrarefy(S16_reads, rarefaction_rate))
     rare_data <- as.data.frame(rare_data)
 	for_barplot <- rare_data
 
