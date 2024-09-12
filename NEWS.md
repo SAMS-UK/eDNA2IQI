@@ -1,3 +1,6 @@
+# eDNA2IQI 2.4.2
+external download bug fixed. note mode = "wb"
+
 # eDNA2IQI 2.4.1
 Added barplot function seperately
 changed examples
