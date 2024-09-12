@@ -201,7 +201,7 @@ op_sys <- Sys.info()[1]
     fwd_trimmed <- file.path(path_trimmed, fwd_actual)
     rev_trimmed <- file.path(path_trimmed, rev_actual)
 
-  }
+  
 
   messageColour("Function finished: 'trim_primers' \n\n", "message")
 
