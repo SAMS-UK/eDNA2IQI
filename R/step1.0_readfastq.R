@@ -61,8 +61,8 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
   cat("eDNA2IQI Package Version:", as.character(utils::packageVersion("eDNA2IQI")))
   cat("\n\n")
   cat("Parameter options used: \n")
-  utils::write.table(parameteroptions[c(1:3)], file = dataCleanfile,
-                    row.names = FALSE, quote = FALSE, sep = "\t", append = TRUE,col.names = TRUE)
+  suppressWarnings(utils::write.table(parameteroptions[c(1:3)], file = dataCleanfile,
+                    row.names = FALSE, quote = FALSE, sep = "\t", append = TRUE,col.names = TRUE))
   cat("\n\n")
   sink()
 
