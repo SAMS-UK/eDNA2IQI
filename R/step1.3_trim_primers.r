@@ -44,7 +44,7 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
     # If the file does not exist, stop execution with an error message
     stop()
   }
-}
+
   cutadapt_exe <- file.path(find.package("eDNA2IQI"), "extdata/cutadapt_v1.exe")
 
 
@@ -201,7 +201,7 @@ op_sys <- Sys.info()[1]
     fwd_trimmed <- file.path(path_trimmed, fwd_actual)
     rev_trimmed <- file.path(path_trimmed, rev_actual)
 
-  
+  }
 
   messageColour("Function finished: 'trim_primers' \n\n", "message")
 
