@@ -260,7 +260,8 @@ Step 3 will take the annotated taxa data.frame from Step 2, and use the
 abundances of families contained to predict an IQI for each sample. The
 most up-to-date Random Forest model for IQI prediction will be
 downloaded prior to this step on the first use. If a sample has fewer
-reads than the number required, the IQI can not be predicted.
+reads than the number required, the IQI can not be predicted. Details 
+of this will be found in teh dataCleaningDetails.txt file 
 
 ``` r
 myPreds <- eDNA2IQI::step3.0_predict_iqi(myTaxa)
