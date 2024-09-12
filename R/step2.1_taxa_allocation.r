@@ -15,6 +15,12 @@ step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
   set.seed(123)
 
   # Use reference database to allocate taxa#
+  if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz"))) {
+    # If the file does not exist, stop execution with an error message
+    stop()
+  }
+}
+  
   reference <- file.path(find.package("eDNA2IQI"),
                          "extdata/referenceDatabase_full.fa.gz")
 

@@ -39,13 +39,12 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   if ((sum(!file.exists(fwd_trimmed)) + sum(!file.exists(rev_trimmed))) != 0) {
 
   #### Load the cutadapt tool if required ####
-  if (!file.exists(file.path(find.package("eDNA2IQI"),
-                             "extdata/cutadapt_v1.exe"))) {
-    url <- "https://thredds.sams.ac.uk/thredds/fileServer/cutadapt_executable/cutadapt_v1.exe"
-    filePath <- file.path(find.package("eDNA2IQI"), "extdata/cutadapt_v1.exe")
-    messageColour("Updating cutadapt tool \n\n", "warnMessage")
-    utils::download.file(url, filePath, quiet = TRUE, mode = "wb")
+  downloadExternal
+    if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata", "cutadapt_v1.exe"))) {
+    # If the file does not exist, stop execution with an error message
+    stop()
   }
+}
   cutadapt_exe <- file.path(find.package("eDNA2IQI"), "extdata/cutadapt_v1.exe")
 
 
