@@ -50,7 +50,7 @@ Now define the folder where the input data is stored
 
 ```r
 #option 1
-folder <- "paste0(getwd(),"/input")"
+folder <- paste0(getwd(),"/input")
 
 #option 2 
 folder <- "full/path/to/your/inputfolder"
