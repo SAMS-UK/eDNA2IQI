@@ -19,7 +19,7 @@ Oban UK (sams.ac.uk) for more information.
 ## Installation
 
 eDNA2IQI requires several packages to be installed via BiocManager,
-follow the ? below to install.
+follow the code below to install.
 
 ``` r
 
