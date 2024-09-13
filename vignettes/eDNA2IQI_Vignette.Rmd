@@ -124,7 +124,7 @@ locally after being downloaded on the first use.
 
 ```r
 #run step 2
-myTaxa <- eDNA2IQI::step2.0_annotate_ASVs(folder, parameterOptions, myASVs)
+myTaxa <- eDNA2IQI::step2.0_annotate_ASVs(folder, parameteroptions, myASVs)
 ```
 
 More files will populate the "outputData" directory at this stage. 
