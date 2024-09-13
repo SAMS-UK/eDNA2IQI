@@ -1,3 +1,8 @@
+# eDNA2IQI 2.4.3
+added vignettes, license.md added to Rbuildignore.
+example data added into inst/extdata (TEMPORARY)
+
+
 # eDNA2IQI 2.4.2
 external download bug fixed. note mode = "wb"
 Renv snapshot Updated
