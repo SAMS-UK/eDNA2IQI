@@ -19,7 +19,10 @@ Please refer to the README for installation instructions and details.
 
 **Ensure to execute eDNA2IQI within a fresh R or R studio session after
 manual installation**
-
+If eDNA2IQI does not appear in your packages, make sure to deactivate renv before installation through devtools
+```r
+renv::deactivate()
+```
 
 ### Step 1: Load Data
 
