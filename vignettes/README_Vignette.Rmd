@@ -1,5 +1,12 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+---
+title: "README"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{README}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
 
 # eDNA2IQI
 
