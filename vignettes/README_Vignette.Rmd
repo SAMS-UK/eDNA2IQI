@@ -55,7 +55,7 @@ Alternatively you can install manually from source:
 ``` r
 install.packages("devtools")
 library("devtools")
-install()
+install(build_vignettes = TRUE)
 ```
 
 Check this worked by running:
