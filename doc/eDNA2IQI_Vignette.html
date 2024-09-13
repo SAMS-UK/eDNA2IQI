@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Using eDNA2IQI</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Using eDNA2IQI</h1>
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The <code>eDNA2IQI</code> package allows users to predict IQI
+(Invertebrate Quality Index) values from raw 16S rRNA sequence reads.
+The full pipeline manages, trims, denoises, and allocates taxa to
+sequence reads. IQI prediction is then performed using a Random Forest
+algorithm. More details can be found at <a href="https://www.sams.ac.uk/science/projects/bactmetbar/">BactMetBar</a>.</p>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<p>Please refer to the README for installation instructions and
+details.</p>
+</div>
+<div id="getting-started" class="section level2">
+<h2>Getting Started</h2>
+<p><strong>Ensure to execute eDNA2IQI within a fresh R or R studio
+session after manual installation</strong></p>
+<div id="step-1-load-data" class="section level3">
+<h3>Step 1: Load Data</h3>
+<p>To start the IQI prediction pipeline, first load your raw 16S rRNA
+sequence data.</p>
+<p>If you do not have any sequence data yet, there are some files in the
+extdata folder in the installation folder. Execute the code below to
+create a folder called <code>&quot;input&quot;</code> in your working directory
+and copy the files to it.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co"># Define the directory for the input files</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;input&quot;</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co"># List files in `inst/extdata`</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>test_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata/example_data/input&quot;</span>,<span class="at">package =</span> <span class="st">&quot;eDNA2IQI&quot;</span>), <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co"># Copy files</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="fu">file.copy</span>(test_files, <span class="st">&quot;input&quot;</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span></code></pre></div>
+<p>Now define the folder where the input data is stored</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#option 1</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>folder <span class="ot">&lt;-</span> <span class="st">&quot;paste0(getwd(),&quot;</span><span class="sc">/</span>input<span class="st">&quot;)&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#option 2 </span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>folder <span class="ot">&lt;-</span> <span class="st">&quot;full/path/to/your/inputfolder&quot;</span></span></code></pre></div>
+<p>Step 1 takes the folder you have previously designated, and a list of
+the parameteroptions. The default for these parameters should not be
+edited or amended, as this would violate the IQI prediction. However, to
+speed things up a little, the quality check can be turned off by
+changing the value of the <code>“qualitycheck”</code> parameter in
+<code>parameteroptions</code> to <code>“FALSE”</code>.This disables the
+generation of the quality plots, without affecting IQI prediction.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Optional</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">data</span>(“parameteroptions”)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>parameteroptions[<span class="dv">3</span>,<span class="dv">3</span>] <span class="ot">&lt;-</span> “FALSE”</span></code></pre></div>
+<p>You are ready to execute Step 1, this process can take several hours,
+depending on the number of samples. If you are in doubt that the
+pipeline is progressing, the intermediate directories can be checked via
+a file explorer for ongoing population. Note however that during certain
+steps such as error learning, no intermediate files will be created.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co">#Run step 1</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>myASVs <span class="ot">&lt;-</span> eDNA2IQI<span class="sc">::</span><span class="fu">step1.0_readFastq</span>(folder, parameteroptions)</span></code></pre></div>
+<p>This step will take your raw FASTQ files, and turn them into a
+data.frame called “myASVs”, containing Amplicon Sequence Variants (ASVs)
+and their abundance in each sample, through a process referred to as
+denoising.At this stage, several files, including quality reports and
+processed ASVs, will be saved to the <code>outputData</code> folder,
+located within the specified <code>input</code> folder. These files
+are:</p>
+<ul>
+<li><p>An image file of read quality per sample, and averaged over all
+samples for perusal and investigation to follow up on any issues in IQI
+generation (if “qualitycheck” = TRUE)<br />
+(qualityScores.png, qualityScores_averaged.png)</p></li>
+<li><p>Individual batch files as .rda and .csv files, and a
+collated_asv_batches.rda file containing all samples, The collated file
+can be imported for Step 2<br />
+(ASV_reads_batch_1.csv, ASV_reads_batch_1.rda,
+collated_asv_batches.rda).</p></li>
+<li><p>A text file that contains all parameters used for the denoising,
+and statistics of how many reads were lost at each stage for
+investigation upon IQI generation issues<br />
+(dataCleaningDetails.txt).</p></li>
+<li><p>A directory containing the intermediary files
+(“C:/Users/AdW/FinFishFarmA/input/outputData/intermediate”). If the
+process were to be interrupted during the denoising, the Step 1 function
+will scan these folders and resume the pipeline where it left
+off.</p></li>
+</ul>
+</div>
+<div id="step-2-annotate-asvs" class="section level3">
+<h3>Step 2: Annotate ASVs</h3>
+<p>Step 2 annotates the ASVs generated in Step 1 to “Family” level,
+creating a data.frame of bacterial families, and their abundance in each
+sample. The input for this step is the “myASVs” object from Step 1. ASVs
+will be annotated against the SILVA 138.1 database which will be stored
+locally after being downloaded on the first use.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">#run step 2</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>myTaxa <span class="ot">&lt;-</span> eDNA2IQI<span class="sc">::</span><span class="fu">step2.0_annotate_ASVs</span>(folder, parameterOptions, myASVs)</span></code></pre></div>
+<p>More files will populate the “outputData” directory at this stage.
+These will be:</p>
+<ul>
+<li><p>An image file of a taxa barplot of the top 20 families that raw
+reads were allocated to<br />
+(raw_read_taxaplot.png)</p></li>
+<li><p>A .csv and .rda of taxa allocated reads, the .rda can be imported
+for Step 3<br />
+(taxaAllocatedReads_Family.csv, taxaAllocatedReads_Family.rda)</p></li>
+</ul>
+</div>
+<div id="step-3-predict-iqi" class="section level3">
+<h3>Step 3: Predict IQI</h3>
+<p>Step 3 will take the annotated taxa data.frame from Step 2, and use
+the abundances of families contained to predict an IQI for each sample.
+The most up-to-date Random Forest model for IQI prediction will be
+downloaded prior to this step on the first use. If a sample has fewer
+reads than the number required, the IQI can not be predicted. Details of
+this will be found in the dataCleaningDetails.txt file.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">#Run step 3</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>myPreds <span class="ot">&lt;-</span> eDNA2IQI<span class="sc">::</span><span class="fu">step3.0_predict_iqi</span>(myTaxa)</span></code></pre></div>
+<p>More files will populate the “outputData” directory at this stage.
+These will be:</p>
+<ul>
+<li><p>An image file of a taxa barplot of the top 20 families that the
+rarefied reads used for IQI prediction were allocated to<br />
+(rarefied_read_taxaplot.png).</p></li>
+<li><p>A .csv of the rarefied taxa allocated reads used for IQI
+prediction<br />
+(rarefied_taxa_allocated_reads_family.csv).</p></li>
+<li><p>A .csv of predicted_IQIs, and the abundance of bacterial families
+in each sample that were important for model prediction<br />
+(predicted_IQIs.csv).</p></li>
+</ul>
+</div>
+</div>
+<div id="full-edna2iqi-pipeline" class="section level2">
+<h2>Full eDNA2IQI Pipeline</h2>
+<p>The full pipeline can be executed as a single step using the
+following wrapper function:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">#Run full pipeline</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>results <span class="ot">&lt;-</span> eDNA2IQI<span class="sc">::</span><span class="fu">edna2iqi</span>(folder)</span></code></pre></div>
+<p>This will output the data created in steps 1, 2 and 3 into the global
+environment as “results” in addition to saving data files and output as
+in the above steps. The results can be navigated as:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Access results from each step</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>step1_results <span class="ot">&lt;-</span> results<span class="sc">$</span>myASVs</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>step2_results <span class="ot">&lt;-</span> results<span class="sc">$</span>myTaxa</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>step3_results <span class="ot">&lt;-</span> results<span class="sc">$</span>myPreds</span></code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

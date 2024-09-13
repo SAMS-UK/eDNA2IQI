@@ -1,0 +1,183 @@
+
+---
+title: "Using eDNA2IQI"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using eDNA2IQI}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+The `eDNA2IQI` package allows users to predict IQI (Invertebrate Quality Index) values from raw 16S rRNA sequence reads. The full pipeline manages, trims, denoises, and allocates taxa to sequence reads. IQI prediction is then performed using a Random Forest algorithm. More details can be found at [BactMetBar](https://www.sams.ac.uk/science/projects/bactmetbar/).
+
+## Installation
+Please refer to the README for installation instructions and details.
+
+## Getting Started
+
+**Ensure to execute eDNA2IQI within a fresh R or R studio session after
+manual installation**
+
+
+### Step 1: Load Data
+
+To start the IQI prediction pipeline, first load your raw 16S rRNA sequence data.
+
+If you do not have any sequence data yet, there are some files in the extdata folder in the 
+installation folder. Execute the code below to create a folder called `"input"` in your working directory
+and copy the files to it.
+
+``` r
+
+# Define the directory for the input files
+dir.create("input", showWarnings = FALSE)
+
+# List files in `inst/extdata`
+test_files <- list.files(system.file("extdata/example_data/input",package = "eDNA2IQI"), full.names = TRUE)
+
+# Copy files
+file.copy(test_files, "input", overwrite = TRUE)
+
+
+```
+
+Now define the folder where the input data is stored
+
+```r
+#option 1
+folder <- "paste0(getwd(),"/input")"
+
+#option 2 
+folder <- "full/path/to/your/inputfolder"
+```
+Step 1 takes the folder you have previously designated, and a list of
+the parameteroptions. The default for these parameters should not be
+edited or amended, as this would violate the IQI prediction. 
+However, to speed things up a little, the quality check can be turned 
+off by changing the value of the `“qualitycheck”` parameter in 
+`parameteroptions` to `“FALSE”`.This disables the generation of the 
+quality plots, without affecting IQI prediction.
+
+``` r
+# Optional
+data(“parameteroptions”)
+parameteroptions[3,3] <- “FALSE”
+```
+You are ready to execute Step 1, this process can take several hours,
+depending on the number of samples. If you are in doubt that the 
+pipeline is progressing, the intermediate directories can be checked 
+via a file explorer for ongoing population. Note however that during 
+certain steps such as error learning, no intermediate files
+will be created.
+
+```r
+#Run step 1
+myASVs <- eDNA2IQI::step1.0_readFastq(folder, parameteroptions)
+
+```
+
+This step will take your raw FASTQ files, and turn them into a
+data.frame called “myASVs”, containing Amplicon Sequence Variants (ASVs)
+and their abundance in each sample, through a process referred to as
+denoising.At this stage, several files, including quality reports and 
+processed ASVs, will be saved to the `outputData` folder,
+located within the specified `input` folder. These files are: 
+
+- An image file of read quality per sample, and averaged over all
+  samples for perusal and investigation to follow up on
+  any issues in IQI generation (if “qualitycheck” = TRUE)  
+  (qualityScores.png, qualityScores_averaged.png)
+
+- Individual batch files as .rda and .csv files, and a
+  collated_asv_batches.rda file containing all samples,
+  The collated file can be imported for Step 2  
+  (ASV_reads_batch_1.csv, ASV_reads_batch_1.rda, collated_asv_batches.rda).
+
+- A text file that contains all parameters used for the
+  denoising, and statistics of how many reads were lost at each stage
+  for investigation upon IQI generation issues  
+  (dataCleaningDetails.txt).
+
+- A directory containing the intermediary files
+  (“C:/Users/AdW/FinFishFarmA/input/outputData/intermediate”). If the
+  process were to be interrupted during the denoising, the Step 1
+  function will scan these folders and resume the pipeline where it
+  left off.
+
+
+### Step 2: Annotate ASVs
+
+
+Step 2 annotates the ASVs generated in Step 1 to “Family” level,
+creating a data.frame of bacterial families, and their abundance in each
+sample. The input for this step is the “myASVs” object from Step 1. ASVs
+will be annotated against the SILVA 138.1 database which will be stored
+locally after being downloaded on the first use.
+
+```r
+#run step 2
+myTaxa <- eDNA2IQI::step2.0_annotate_ASVs(folder, parameterOptions, myASVs)
+```
+
+More files will populate the "outputData" directory at this stage. 
+These will be:
+
+- An image file of a taxa barplot of the top 20 families that
+  raw reads were allocated to  
+  (raw_read_taxaplot.png)
+
+- A .csv and .rda of taxa allocated reads,
+  the .rda can be imported for Step 3  
+  (taxaAllocatedReads_Family.csv, taxaAllocatedReads_Family.rda)
+
+
+### Step 3: Predict IQI
+
+Step 3 will take the annotated taxa data.frame from Step 2, and use the
+abundances of families contained to predict an IQI for each sample. The
+most up-to-date Random Forest model for IQI prediction will be
+downloaded prior to this step on the first use. If a sample has fewer
+reads than the number required, the IQI can not be predicted. Details 
+of this will be found in the dataCleaningDetails.txt file.
+
+```r
+#Run step 3
+myPreds <- eDNA2IQI::step3.0_predict_iqi(myTaxa)
+```
+
+More files will populate the "outputData" directory at this stage. 
+These will be:
+
+- An image file of a taxa barplot of the top 20 families that
+  the rarefied reads used for IQI prediction were allocated to  
+  (rarefied_read_taxaplot.png).
+
+- A .csv of the rarefied taxa allocated reads used for IQI prediction  
+  (rarefied_taxa_allocated_reads_family.csv).
+
+- A .csv of predicted_IQIs, and the abundance of bacterial families
+  in each sample that were important for model prediction  
+  (predicted_IQIs.csv).
+
+## Full eDNA2IQI Pipeline
+
+The full pipeline can be executed as a single step using the following wrapper function:
+
+```r
+#Run full pipeline
+results <- eDNA2IQI::edna2iqi(folder)
+```
+
+This will output the data created in steps 1, 2 and 3 into the global 
+environment as "results" in addition to saving data files and output as in the 
+above steps.
+The results can be navigated as: 
+
+```r
+# Access results from each step
+step1_results <- results$myASVs
+step2_results <- results$myTaxa
+step3_results <- results$myPreds
+```
