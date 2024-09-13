@@ -55,6 +55,8 @@ Alternatively you can install manually from source:
 ``` r
 install.packages("devtools")
 library("devtools")
+#optional, execute to install globally
+renv::deactivate()
 install(build_vignettes = TRUE)
 ```
 
