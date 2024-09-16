@@ -68,8 +68,8 @@ quality plots, without affecting IQI prediction.
 
 ``` r
 # Optional
-data(“parameteroptions”)
-parameteroptions[3,3] <- “FALSE”
+data("parameteroptions")
+parameteroptions[3,3] <- "FALSE"
 ```
 You are ready to execute Step 1, this process can take several hours,
 depending on the number of samples. If you are in doubt that the 
@@ -85,7 +85,7 @@ myASVs <- eDNA2IQI::step1.0_readFastq(folder, parameteroptions)
 ```
 
 This step will take your raw FASTQ files, and turn them into a
-data.frame called “myASVs”, containing Amplicon Sequence Variants (ASVs)
+data.frame called "myASVs", containing Amplicon Sequence Variants (ASVs)
 and their abundance in each sample, through a process referred to as
 denoising.At this stage, several files, including quality reports and 
 processed ASVs, will be saved to the `outputData` folder,
@@ -93,7 +93,7 @@ located within the specified `input` folder. These files are:
 
 - An image file of read quality per sample, and averaged over all
   samples for perusal and investigation to follow up on
-  any issues in IQI generation (if “qualitycheck” = TRUE)  
+  any issues in IQI generation (if "qualitycheck" = TRUE)  
   (qualityScores.png, qualityScores_averaged.png)
 
 - Individual batch files as .rda and .csv files, and a
@@ -107,7 +107,7 @@ located within the specified `input` folder. These files are:
   (dataCleaningDetails.txt).
 
 - A directory containing the intermediary files
-  (“C:/Users/AdW/FinFishFarmA/input/outputData/intermediate”). If the
+  ("C:/Users/AdW/FinFishFarmA/input/outputData/intermediate"). If the
   process were to be interrupted during the denoising, the Step 1
   function will scan these folders and resume the pipeline where it
   left off.
@@ -116,9 +116,9 @@ located within the specified `input` folder. These files are:
 ### Step 2: Annotate ASVs
 
 
-Step 2 annotates the ASVs generated in Step 1 to “Family” level,
+Step 2 annotates the ASVs generated in Step 1 to "Family" level,
 creating a data.frame of bacterial families, and their abundance in each
-sample. The input for this step is the “myASVs” object from Step 1. ASVs
+sample. The input for this step is the "myASVs" object from Step 1. ASVs
 will be annotated against the SILVA 138.1 database which will be stored
 locally after being downloaded on the first use.
 
