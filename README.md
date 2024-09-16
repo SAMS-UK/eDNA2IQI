@@ -39,7 +39,7 @@ devtools::install_github("SAMS-UK/eDNA2IQI")
 
 Alternatively you can install manually from source:
 
-- Download the zipped package of the full “SAMS-UK/eDNA2IQI”
+- Download the zipped package of the full "SAMS-UK/eDNA2IQI"
   repository.
 - Unzip the folder
 - Open the eDNA2IQI.Rproj
@@ -79,12 +79,12 @@ value is outputted.
 
 The first step is to ensure the input data is of the correct format. For
 this example, we will be denoising a samples from a survey on
-“FinFishFarmA”, working from the folder path:
+"FinFishFarmA", working from the folder path:
 
-“C:/Users/AdW/IQI_generation/FinFishFarmA/”
+"C:/Users/AdW/IQI_generation/FinFishFarmA/"
 
-Create a directory within the working directory called “input”. This is
-where your raw “.fastq.gz” files should be located.
+Create a directory within the working directory called "input". This is
+where your raw ".fastq.gz" files should be located.
 
 These files should:
 
@@ -123,7 +123,7 @@ library(eDNA2IQI)
 Create a value for the filepath of the input directory
 
 ``` r
-folder <- “C:/Users/AdW/IQI_generation/FinFishFarmA/input/”
+folder <- "C:/Users/AdW/IQI_generation/FinFishFarmA/input/"
 ```
 
 ## Running for the first time?
