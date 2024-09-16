@@ -278,16 +278,20 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
     cat(as.character(Sys.time()))
     cat("\nHigh loss of reads when removing chimeras, data of low quality.")
     cat("\nThe following samples lost >70% of reads.\nTreat IQI ")
-    cat("predictions with caution\nTW_needs debugging.\n")
+    cat("predictions with caution\n\n")
 
-    for (y in names[(rowSums(ASV_table_no_chim) / rowSums(ASV_table_raw)) < 0.3]){
+    tdf <- as.data.frame(rowSums(ASV_table_no_chim) / rowSums(ASV_table_raw))
+    tdf[is.na(tdf)] <- 0
+    tdf[,1]
+    high_chimeras <- rownames(tdf)[tdf[[1]] < 0.3]
+
+    for (y in high_chimeras) {
 
       cat(y, "\n")
     }
     cat("\n\n")
     sink()
   }
-
 
 
 
@@ -311,7 +315,7 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
                    Treat IQI predictions with caution.", "warning")
     sink(dataCleanfile, append = TRUE)
     cat(as.character(Sys.time()))
-    cat("\nTW_High loss of reads during denoising, data of low quality.\n")
+    cat("\nHigh loss of reads during denoising, data of low quality.\n")
     cat("The following samples lost >70% of reads.\nTreat IQI predictions with caution.\n")
 
 
@@ -327,7 +331,7 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
   }
 
   # DATA FLAG: flag if <10000 reads in merged samples
-  if (length(names[rowSums(ASV_table_no_chim) < 10000]) > 0) {
+  if (length(names[rowSums(ASV_table_no_chim) < 8000]) > 0) {
     messageColour("Low merged read count for following samples.\n", "warning")
     messageColour("Confidence in prediction may be low.
                Consider investigation of raw read count and denoising statistics. \n",
