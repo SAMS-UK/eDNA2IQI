@@ -64,7 +64,8 @@ edited or amended, as this would violate the IQI prediction.
 However, to speed things up a little, the quality check can be turned 
 off by changing the value of the `“qualitycheck”` parameter in 
 `parameteroptions` to `“FALSE”`.This disables the generation of the 
-quality plots, without affecting IQI prediction.
+quality plots, without affecting IQI prediction. It is recommended that
+they are run for any new data. 
 
 ``` r
 # Optional
