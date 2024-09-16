@@ -15,6 +15,8 @@
 step1.0_readFastq=function(folder, parameteroptions) {
   message("Function: step1.0_readFastq")
 
+####get wd to return to at end	
+	return_to <- getwd()
 ####Check Folder name and add / at the end if its not there
 
 if (substr(folder, nchar(folder), nchar(folder)) != "/") {
@@ -159,6 +161,9 @@ CollateASVBatches=function(folder){
   #Save final ASV reads dataframe, called 'compiled_asv_reads.rda'.
   save(Combined_ASV_batches, file = file.path(folder,"outputData","collated_asv_batches.rda"))
 
+  #return to original wd
+  setwd(return_to)
+	
   message("Function:CollateASVBatches complete")
   return(Combined_ASV_batches)
 }
