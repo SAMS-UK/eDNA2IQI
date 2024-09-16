@@ -150,7 +150,7 @@ of this will be found in the dataCleaningDetails.txt file.
 
 ```r
 #Run step 3
-myPreds <- eDNA2IQI::step3.0_predict_iqi(myTaxa)
+myPreds <- eDNA2IQI::step3.0_predict_iqi(folder, myTaxa)
 ```
 
 More files will populate the "outputData" directory at this stage. 
