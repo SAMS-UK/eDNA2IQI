@@ -15,7 +15,7 @@
 step1.0_readFastq=function(folder, parameteroptions) {
   message("Function: step1.0_readFastq")
 
-####get wd to return to at end	
+####get wd to return to at end
 	return_to <- getwd()
 ####Check Folder name and add / at the end if its not there
 
@@ -58,7 +58,7 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
 #### 4.Print parameters to file ####
   dataCleanfile <- file.path(folder, "outputData/dataCleaningDetails.txt")
   sink(dataCleanfile, append = TRUE)
-  cat(as.character(Sys.time()))
+  cat("Step 1 Start Date/Time:",as.character(Sys.time()))
   cat("\n\n")
   cat("eDNA2IQI Package Version:", as.character(utils::packageVersion("eDNA2IQI")))
   cat("\n\n")
@@ -163,7 +163,15 @@ CollateASVBatches=function(folder){
 
   #return to original wd
   setwd(return_to)
-	
-  message("Function:CollateASVBatches complete")
+
+
+  sink(dataCleanfile, append = TRUE)
+  cat("\n\n")
+  cat("Step 1 End Date/Time:",as.character(Sys.time()))
+  cat("\n\n")
+  sink()
+
+
+  message("Function: CollateASVBatches complete")
   return(Combined_ASV_batches)
 }
