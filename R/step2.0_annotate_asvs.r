@@ -13,24 +13,25 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
 {
   message("Function: Step2.0_annotate_ASV")
   message("rda used in taxa_allocation call")
-  
+  step2_start_time <- as.character(Sys.time())
+  message("Step 2 Start Date/Time:",step2_start_time)
   #instate parameteroptions
   if (missing(parameteroptions)) {
     utils::data("parameteroptions", envir = environment())
   }
-  
+
   ####Check Folder name and add / at the end if its not there
-  
+
   if (substr(folder, nchar(folder), nchar(folder)) != "/") {
     folder <- paste0(folder, "/")
   }
   ####1.Get reference database if missing####
   #Check for correct reference database, download if missing
-  
+
   if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz"))) {
-    
+
     downloadExternal()
-   
+
   }
    if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz"))) {
       # If the file does not exist, stop execution with an error message
@@ -38,30 +39,31 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
     }
   #continue
   taxalevel=extractParameters(parameteroptions,"global","taxalevel")
-  
+
   message("Calling Step2.1_taxa_allocation")
   S16_reads=step2.1_taxa_allocation(folder, collated_asv_batches, taxalevel)#class(S16_reads)
-  
-  
-  
+
+
+
   S16_readsB=S16_reads
   S16_readsB$SampleID=rownames(S16_readsB)
   A=grep("SampleID",colnames(S16_readsB))#move SampleID to first column
   S16_readsB=S16_readsB[,c(A,1:(A-1))]
-  
+
   # Save dataframe
   message(paste("Writing annotated data here:",folder))
   utils::write.csv(S16_readsB, file = file.path(folder,
                                                 "/outputData/taxaAllocatedReads_", taxalevel, ".csv", fsep = ""),row.names = FALSE)
-  
+
   save(S16_reads, file = file.path(folder,"outputData/taxaAllocatedReads_", taxalevel, ".rda", fsep = ""))
-  
-  
+
+
   messageColour("Function finished: 'taxa_allocation' \n Taxa allocated reads written to file \n\n", "message")
-  
+
   ### Generate raw read taxa plots
   drawBarplot(S16_readsB, folder)
-  
+  message("Step 2 Start Date/Time:",step2_start_time)
+  message("Step 2 End Date/Time:",as.character(Sys.time()))
   return(S16_reads)
 }
 
