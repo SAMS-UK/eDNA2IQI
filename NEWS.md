@@ -1,3 +1,7 @@
+# eDNA2IQI 2.4.4
+Metadata in .csv output from prediction. 
+more useful data in console at each step
+
 # eDNA2IQI 2.4.3
 added vignettes, license.md added to Rbuildignore.
 example data added into inst/extdata (TEMPORARY)
