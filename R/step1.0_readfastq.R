@@ -136,12 +136,12 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
       ####
 
 
-  CollateASVBatches=CollateASVBatches(folder)
+  CollateASVBatches=CollateASVBatches(folder, return_to, dataCleanfile)
   message("End of function: Step1.0_readFastq")
   return(CollateASVBatches)
 }
 
-CollateASVBatches=function(folder){
+CollateASVBatches=function(folder,return_to, dataCleanfile){
   message("Function: CollateASVBatches, for input to Step2.0")
 
   path=paste(folder,"outputData",sep="")
