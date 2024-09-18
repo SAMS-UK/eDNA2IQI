@@ -7,11 +7,14 @@
 #' @param rev_no_unspec A character vector. Contains the file location of
 #' reverse reads of the input samples where Ns were removed.
 #' @param parameteroptions A dataframe.
+#' @param auto_download Boolean to override console prompt to automatically
+#'   download external dependencies. This can be useful for automating or
+#'   testing this function.
 #'
 #' @return A list.
 #'
 step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
-                         parameteroptions) {
+                         parameteroptions, auto_download = FALSE) {
 
   messageColour("Function starting: 'trim_primers'
   Removing primer sequences from sequence reads \n\n", "message")
@@ -39,7 +42,7 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   if ((sum(!file.exists(fwd_trimmed)) + sum(!file.exists(rev_trimmed))) != 0) {
 
   #### Load the cutadapt tool if required ####
-  downloadExternal()
+  downloadExternal(auto_download = auto_download)
     if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata", "cutadapt_v1.exe"))) {
     # If the file does not exist, stop execution with an error message
     stop()

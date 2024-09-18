@@ -5,12 +5,16 @@
 \title{Wrapper function to perform all steps of Reading, denoising,
 allocating taxa and predicting IQI}
 \usage{
-edna2iqi(folder, parameteroptions)
+edna2iqi(folder, parameteroptions, auto_download = FALSE)
 }
 \arguments{
 \item{folder}{A string. Location of raw fastq data files.}
 
 \item{parameteroptions}{A dataframe. Values for all function parameters.}
+
+\item{auto_download}{Boolean to override console prompt to automatically
+download external dependencies. This can be useful for automating or
+testing this function.}
 }
 \value{
 dataframes containing denoised ASVs (myASVs),

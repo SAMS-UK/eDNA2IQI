@@ -4,7 +4,9 @@
 #'
 #' @param folder A string. Location of raw fastq data files.
 #' @param parameteroptions A dataframe. Values for all function parameters.
-#'
+#' @param auto_download Boolean to override console prompt to automatically
+#'   download external dependencies. This can be useful for automating or
+#'   testing this function.
 #' @export
 #' @return A data frame. Table of reads per taxa, sorted by sample.
 #'
@@ -12,7 +14,7 @@
 #' myASVs <- step1.0_readFastq(folder = "C:/full/file/path/to/fastq/", parameteroptions)
 #'
 
-step1.0_readFastq=function(folder, parameteroptions) {
+step1.0_readFastq=function(folder, parameteroptions, auto_download) {
   message("Function: step1.0_readFastq")
 
 ####get wd to return to at end
@@ -116,7 +118,7 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
       # Trim primer sequences from the files in intermediate folder
 
       ####Step1.3_trim_primers ####
-      trimmed <- step1.3_trim_primers(folder, fwd_no_unspec, rev_no_unspec, parameteroptions)
+      trimmed <- step1.3_trim_primers(folder, fwd_no_unspec, rev_no_unspec, parameteroptions, auto_download)
       fwd_trimmed <- trimmed[[1]]; rev_trimmed <- trimmed[[2]]
 
       #### Step1.4 Filter, adjust with error model, merge, chimera check ####
