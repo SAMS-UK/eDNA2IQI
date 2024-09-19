@@ -1,3 +1,6 @@
+# eDNA2IQI 2.4.5
+Test Checks added by TF, thank you!
+
 # eDNA2IQI 2.4.4
 Metadata in .csv output from prediction. 
 more useful data in console at each step
