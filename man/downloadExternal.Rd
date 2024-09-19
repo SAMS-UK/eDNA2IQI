@@ -6,7 +6,12 @@
 reference database from the SAMS THREDDS server, or
 from source.}
 \usage{
-downloadExternal()
+downloadExternal(auto_download = FALSE)
+}
+\arguments{
+\item{auto_download}{Boolean to override console prompt to automatically
+download external dependencies. This can be useful for automating or
+testing this function.}
 }
 \description{
 Download the cutadapt.exe file and SILVA 138.1 taxa

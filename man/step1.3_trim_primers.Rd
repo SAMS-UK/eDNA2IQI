@@ -5,7 +5,13 @@
 \title{Step1.3_trim_primers
 Remove the primer sequences from the sequence reads}
 \usage{
-step1.3_trim_primers(folder, fwd_no_unspec, rev_no_unspec, parameteroptions)
+step1.3_trim_primers(
+  folder,
+  fwd_no_unspec,
+  rev_no_unspec,
+  parameteroptions,
+  auto_download = FALSE
+)
 }
 \arguments{
 \item{folder}{A string. Location of raw data files.}
@@ -17,6 +23,10 @@ forward reads of the input samples where Ns were removed.}
 reverse reads of the input samples where Ns were removed.}
 
 \item{parameteroptions}{A dataframe.}
+
+\item{auto_download}{Boolean to override console prompt to automatically
+download external dependencies. This can be useful for automating or
+testing this function.}
 }
 \value{
 A list.

@@ -3,18 +3,20 @@
 #' @param folder A string. Location of raw fastq files
 #' @param parameteroptions A dataframe,
 #' @param collated_asv_batches result from Step1..., dataframe
+#' @param auto_download Boolean to override console prompt to automatically
+#'   download external dependencies. This can be useful for automating or
+#'   testing this function.
 #'
 #' @return A dataframe, written to file, combing ASVs across multiple batches
 #' @export
 #'
 #' @section Example usage: myTAXA <- step2.0_annotate_ASVs(folder,parameteroptions,myASVs)
 
-step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
+step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches, auto_download = FALSE)
 {
   message("Function: Step2.0_annotate_ASV")
   message("rda used in taxa_allocation call")
-  step2_start_time <- as.character(Sys.time())
-  message("Step 2 Start Date/Time:",step2_start_time)
+
   #instate parameteroptions
   if (missing(parameteroptions)) {
     utils::data("parameteroptions", envir = environment())
@@ -29,8 +31,8 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
   #Check for correct reference database, download if missing
 
   if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz"))) {
-
-    downloadExternal()
+    browser()
+    downloadExternal(auto_download = auto_download)
 
   }
    if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz"))) {
@@ -62,8 +64,6 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches)
 
   ### Generate raw read taxa plots
   drawBarplot(S16_readsB, folder)
-  message("Step 2 Start Date/Time:",step2_start_time)
-  message("Step 2 End Date/Time:",as.character(Sys.time()))
+
   return(S16_reads)
 }
-

@@ -6,12 +6,16 @@
 specified. Save dataframe of S16 reads (as .rda), save dataframe of taxa
 allocated reads (as .csv).}
 \usage{
-step1.0_readFastq(folder, parameteroptions)
+step1.0_readFastq(folder, parameteroptions, auto_download)
 }
 \arguments{
 \item{folder}{A string. Location of raw fastq data files.}
 
 \item{parameteroptions}{A dataframe. Values for all function parameters.}
+
+\item{auto_download}{Boolean to override console prompt to automatically
+download external dependencies. This can be useful for automating or
+testing this function.}
 }
 \value{
 A data frame. Table of reads per taxa, sorted by sample.

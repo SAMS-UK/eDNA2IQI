@@ -4,7 +4,12 @@
 \alias{step2.0_annotate_ASVs}
 \title{Title Step2.0_annotate_ASVs}
 \usage{
-step2.0_annotate_ASVs(folder, parameteroptions, collated_asv_batches)
+step2.0_annotate_ASVs(
+  folder,
+  parameteroptions,
+  collated_asv_batches,
+  auto_download = FALSE
+)
 }
 \arguments{
 \item{folder}{A string. Location of raw fastq files}
@@ -12,6 +17,10 @@ step2.0_annotate_ASVs(folder, parameteroptions, collated_asv_batches)
 \item{parameteroptions}{A dataframe,}
 
 \item{collated_asv_batches}{result from Step1..., dataframe}
+
+\item{auto_download}{Boolean to override console prompt to automatically
+download external dependencies. This can be useful for automating or
+testing this function.}
 }
 \value{
 A dataframe, written to file, combing ASVs across multiple batches

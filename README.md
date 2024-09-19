@@ -1,6 +1,10 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+ <!-- badges: start -->
+  [![R-CMD-check](https://github.com/Adwyness/edna2iqi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Adwyness/edna2iqi/actions/workflows/R-CMD-check.yaml)
+  <!-- badges: end -->
+
 # eDNA2IQI
 
 eDNA2IQI allows users to predict IQI values from raw 16S rRNA sequence

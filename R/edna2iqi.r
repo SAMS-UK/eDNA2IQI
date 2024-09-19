@@ -4,6 +4,9 @@
 #'
 #' @param folder A string. Location of raw fastq data files.
 #' @param parameteroptions A dataframe. Values for all function parameters.
+#' @param auto_download Boolean to override console prompt to automatically
+#'   download external dependencies. This can be useful for automating or
+#'   testing this function.
 #'
 #' @export
 #' @return dataframes containing denoised ASVs (myASVs),
@@ -14,7 +17,7 @@
 #' edna2iqi(folder = "C:/full/file/path/to/fastq/", parameteroptions = parameteroptions)
 #'
 
-edna2iqi=function(folder, parameteroptions) {
+edna2iqi=function(folder, parameteroptions, auto_download = FALSE) {
 
 ####Check Folder name and add / at the end if its not there
 
@@ -39,8 +42,9 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
   } else
 
   {
-  myASVs <- step1.0_readFastq(folder, parameteroptions)
+  myASVs <- step1.0_readFastq(folder, parameteroptions, auto_download = auto_download)
   }
+
 
   if (file.exists(file.path(paste(folder, "outputData/taxaAllocatedReads_Family.rda", sep="")))) {
     #this will error if additional samples to the same batch are copied into the test folder, without resetting
@@ -48,7 +52,8 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
     #if samples are added, then the whole batch would need to be redone.
 
     messageColour("Data already taxa allocated, delete 'taxaAllocatedReads_*' files to repeat, \n\n", "warnMessage")
-
+    load(file.path(paste(folder, "outputData/collated_asv_batches.rda", sep="")))
+    myASVs <- Combined_ASV_batches
 
   } else
 
