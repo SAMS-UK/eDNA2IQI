@@ -148,7 +148,7 @@ are not present in the testing data: \n\n", "warning")
   final_data <- rbind(rare_data,excluded_samples)
 
   final_data$Denoised_Reads <- readcounts_df$Denoised_Reads[match(rownames(final_data), rownames(readcounts_df))]
-  final_data$eDNA2IQI_Version <- package.version("eDNA2IQI")
+  final_data$eDNA2IQI_Version <- packageVersion("eDNA2IQI")
   final_data$Minimum_read_requirement <- rarefaction_rate
   #move reads and version to first col
   final_data <- final_data[, c("eDNA2IQI_Version", "Denoised_Reads", "Minimum_read_requirement", setdiff(names(final_data), c("eDNA2IQI_Version", "Denoised_Reads", "Minimum_read_requirement")))]
