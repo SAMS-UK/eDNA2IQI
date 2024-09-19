@@ -168,7 +168,7 @@ CollateASVBatches=function(folder,return_to, dataCleanfile){
 
 
   sink(dataCleanfile, append = TRUE)
-  cat("\n\n")
+  cat("\n")
   cat("Step 1 End Date/Time:",as.character(Sys.time()))
   cat("\n\n")
   sink()

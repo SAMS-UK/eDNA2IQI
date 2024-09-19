@@ -67,4 +67,3 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches, aut
 
   return(S16_reads)
 }
-
