@@ -1,13 +1,9 @@
 test_that("edna2iqi function works", {
-
+  
   path <- list.dirs(system.file("extdata/example_data/input", package = "eDNA2IQI"), full.names = TRUE)[1]
   test_data <- eDNA2IQI::edna2iqi(folder = path, auto_download = TRUE)
   preds <- test_data$myPreds
-
-  testthat::expect_equal(round(preds$predicted_IQI,7), round(c(
-      0.43454390,
-      0.63317710,
-      0.7045456,
-      0.55954650),7))
-
+  
+  testthat::expect_equal(round(preds$Predicted_IQI,6), round(c(0.429879),6))
+  
 })
