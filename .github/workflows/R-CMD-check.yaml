@@ -49,7 +49,7 @@ jobs:
       - name: Install wine
         if: runner.os == 'Linux'
         run: |
-          dpkg --add-architecture i386
+          sudo dpkg --add-architecture i386
           UBUNTU_CODENAME=$(lsb_release -cs)
           sudo mkdir -pm755 /etc/apt/keyrings
           sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
