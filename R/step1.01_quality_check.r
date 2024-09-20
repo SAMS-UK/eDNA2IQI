@@ -18,8 +18,9 @@ step1.01_quality_check <- function(folder) {
   fls <- dir(folder, pattern = "*fastq*", full.names = TRUE)
 
   # Generate quality checks report
-  qaSummary <- ShortRead::qa(fls, type = "fastq")
-  perCycle <- qaSummary[["perCycle"]]
+  # Warnings supressed due to node serialisation
+  qaSummary <- suppressWarnings(ShortRead::qa(fls, type = "fastq"))
+  perCycle <- suppressWarnings(qaSummary[["perCycle"]])
 
   # Average quality scores
   allSamples <- perCycle

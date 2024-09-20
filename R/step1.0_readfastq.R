@@ -14,7 +14,7 @@
 #' myASVs <- step1.0_readFastq(folder = "C:/full/file/path/to/fastq/", parameteroptions)
 #'
 
-step1.0_readFastq=function(folder, parameteroptions, auto_download) {
+step1.0_readFastq=function(folder, parameteroptions, auto_download = FALSE) {
   message("Function: step1.0_readFastq")
 
 ####get wd to return to at end

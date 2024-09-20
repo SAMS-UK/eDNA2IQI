@@ -37,6 +37,11 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
   read_totals <- rowSums(S16_reads)
   readcounts_df <- data.frame("Denoised_Reads" = read_totals, row.names = rownames(S16_reads))
 
+  #create frame as NULL, so it doesnt break when empty
+  excluded_samples <- NULL
+
+if (!rlang::is_empty(too_low)) {
+
   # Store samples with low reads in a separate data frame
   excluded_samples <- data.frame(SampleID = names(too_low),
                                  Predicted_IQI = NA,
@@ -44,7 +49,6 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
   row.names(excluded_samples) <- excluded_samples$SampleID
   excluded_samples$SampleID <- NULL
 
-    if (!rlang::is_empty(too_low)) {
     messageColour("\nRead count under ", "warning")
     messageColour(rarefaction_rate, "warning")
     messageColour(" for the following samples. IQI was not calculated.\n", "warning")
@@ -72,23 +76,21 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
 	  utils::write.csv(rare_data, file = file.path(folder,
                "/outputData/rarefied_taxa_allocated_reads_", taxalevel, ".csv", fsep = ""),row.names = TRUE)
 
-
-
   # Clean sample names
   rownames(rare_data)=sub("_R1.*", "", rownames(rare_data),ignore.case = TRUE)
 
-
-  if(ncol(rare_data)<2){message("\nOnly one or fewer taxa match RF taxa, breaking");return(NULL)}
+  if(ncol(rare_data)<2){
+	message("\nOnly one or fewer taxa match RF taxa, breaking")
+	return(NULL)
+  }
 
   rare_data <- rare_data[,c( colnames(rare_data) %in% RF_final_reduced$coefnames)]
 
   # Check if taxa used for RF predictions are present in any sample, if not add
   # them as zero values
-
   if (FALSE %in% (RF_final_reduced$coefnames %in% colnames(rare_data))) {
     name <- RF_final_reduced$coefnames[!(RF_final_reduced$coefnames
                                          %in% colnames(rare_data))]
-
 
     messageColour("\n\nThe following taxa were used to train the randomForest but
 are not present in the testing data: \n\n", "warning")
@@ -103,9 +105,7 @@ are not present in the testing data: \n\n", "warning")
   }
 
 # Check if taxa used for RF predictions are present in individual samples
-
-  name <- RF_final_reduced$coefnames[!(RF_final_reduced$coefnames
-                                         %in% colnames(rare_data))]
+  name <- RF_final_reduced$coefnames[!(RF_final_reduced$coefnames %in% colnames(rare_data))]
   for (i in seq_along(rownames(rare_data))) {
     missingS <- colnames(rare_data)[(rare_data[i, ] == 0) &
                                       (!(colnames(rare_data) %in% name))]
@@ -119,18 +119,18 @@ are not present in the testing data: \n\n", "warning")
       }
       messageColour("Treat IQI predictions with caution. \n\n", "warning")
     }
-
+}
 
   # Make predictions with the trained random forest
   rare_data$Predicted_IQI <- stats::predict(RF_final_reduced, rare_data)
 
   rare_data=rare_data[, c("Predicted_IQI", setdiff(names(rare_data), "Predicted_IQI"))]
 
-
   #  Make sure excluded_samples has all columns in rare_data
   all_columns <- names(rare_data)
 
   # Add missing columns to excluded_samples with NA values
+  if (!is.null(excluded_samples)) {
   for (col in all_columns) {
     if (!col %in% names(excluded_samples)) {
       excluded_samples[[col]] <- NA
@@ -142,10 +142,16 @@ are not present in the testing data: \n\n", "warning")
 
   #clean names
   rownames(excluded_samples)=sub("_R1.*", "", rownames(excluded_samples),ignore.case = TRUE)
+  }
   rownames(readcounts_df)=sub("_R1.*", "", rownames(readcounts_df),ignore.case = TRUE)
 
    # Combine the data frames
-  final_data <- rbind(rare_data,excluded_samples)
+
+   if (!is.null(excluded_samples)) {
+   final_data <- rbind(rare_data,excluded_samples)
+   } else {
+   final_data <- rare_data
+   }
 
   final_data$Denoised_Reads <- readcounts_df$Denoised_Reads[match(rownames(final_data), rownames(readcounts_df))]
   final_data$eDNA2IQI_Version <- packageVersion("eDNA2IQI")
@@ -174,6 +180,4 @@ drawBarplot(S16_readsB, folder)
 message("Step 3 Start Date/Time:",step3_start_time)
 message("Step 3 End Date/Time:",as.character(Sys.time()))
 return(rare_data)
- }
 }
-
