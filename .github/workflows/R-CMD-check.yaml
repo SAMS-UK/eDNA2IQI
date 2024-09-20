@@ -49,14 +49,15 @@ jobs:
       - name: Install wine
         if: runner.os == 'Linux'
         run: |
+          dpkg --add-architecture i386
           UBUNTU_CODENAME=$(lsb_release -cs)
-
           sudo mkdir -pm755 /etc/apt/keyrings
           sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
-          sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources
+          sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/$UBUNTU_CODENAME/winehq-$UBUNTU_CODENAME.sources
           
           sudo apt update
-          sudo apt install --install-recommends winehq-stable
+          sudo apt-get install -y software-properties-common
+          sudo apt-get install --install-recommends -y winehq-stable
         shell: bash
 
       - uses: r-lib/actions/check-r-package@v2
