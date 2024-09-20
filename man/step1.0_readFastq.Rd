@@ -6,7 +6,7 @@
 specified. Save dataframe of S16 reads (as .rda), save dataframe of taxa
 allocated reads (as .csv).}
 \usage{
-step1.0_readFastq(folder, parameteroptions, auto_download)
+step1.0_readFastq(folder, parameteroptions, auto_download = FALSE)
 }
 \arguments{
 \item{folder}{A string. Location of raw fastq data files.}
@@ -29,4 +29,3 @@ allocated reads (as .csv).
 
 myASVs <- step1.0_readFastq(folder = "C:/full/file/path/to/fastq/", parameteroptions)
 }
-
