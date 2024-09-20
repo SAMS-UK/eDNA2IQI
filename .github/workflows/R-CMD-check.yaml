@@ -46,6 +46,12 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
+      - name: Install wine
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt install --install-recommends winehq-stable
+        shell: bash
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
