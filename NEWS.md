@@ -1,3 +1,6 @@
+# eDNA2IQI 2.4.6
+Test Checks bugs fixed, issue with empty DF in step 3 fixed 
+
 # eDNA2IQI 2.4.5
 Test Checks added by TF, thank you!
 
