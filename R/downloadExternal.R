@@ -17,7 +17,8 @@ downloadExternal <- function(auto_download = FALSE) {
   # File paths
   filePathDB <- file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz")
   filePathCutadapt <- file.path(find.package("eDNA2IQI"), "extdata", "cutadapt_v1.exe")
-
+  filePathModel <- file.path(find.package("eDNA2IQI"), "extdata", "RFModel_rarefy_5000_taxalevel_family_BMB_Run1_4b.rda")
+  
   # Download reference database
   if (!file.exists(filePathDB)) {
     if(auto_download == FALSE) {
@@ -172,6 +173,41 @@ downloadExternal <- function(auto_download = FALSE) {
   }
 
 
-  # Optionally, insert code here to download trained models if needed
+  # Download RF_model from Thredds
+  if (!file.exists(filePathModel)) {
+    if(auto_download == FALSE) {
+    # Prompt user for permission to download
+    user_input <- readline(prompt = "The Random Forest model that needs to be stored locally is missing. Do you want to attempt to download it? (y/n): ")
+    } else {
+      user_input <- "y"
+}
+    if (tolower(user_input) == "y") {
 
+      tryCatch({
+        # Attempt to download from SAMS Thredds server
+        url <- "https://thredds.sams.ac.uk/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run1_4b.rda"
+        options(timeout = 300)
+        messageColour("Updating Random Forest Model file from SAMS Thredds server \n\n", "warnMessage")
+        utils::download.file(url, filePathModel, quiet = TRUE, mode = "wb")
+
+        # Check if file was successfully downloaded
+        if (file.exists(filePathModel)) {
+          message("Random Forest Model downlaod from SAMS Thredds server download successful")
+        }
+
+      }, error = function(e) {
+        # Handle error if SAMS Thredds download fails
+        message("\nSAMS Thredds server download unsuccessful \n\n", conditionMessage(e))
+        message("\n\n Try again soon, or contact SAMS or SEPA for assistance")
+		
+		
+}else {
+      message(messageColour(paste(
+        "The Random Forest Models need to be downloaded to predict IQIs. \n",
+        "Proceed with automatic download, or manual download from: \n",
+        "https://thredds.sams.ac.uk/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run1_4b.rda, \n",
+        "and save file as `RFModel_rarefy_5000_taxalevel_family_BMB_Run1_4b.rda` \n",
+        "in the /extdata/ directory in the eDNA2IQI R library files \n"
+      ), "message"))
+    }
 }
