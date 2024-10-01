@@ -31,7 +31,6 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches, aut
   #Check for correct reference database, download if missing
 
   if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz"))) {
-    browser()
     downloadExternal(auto_download = auto_download)
 
   }
