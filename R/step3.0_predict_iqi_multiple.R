@@ -153,7 +153,7 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
   
   if (!is.null(excluded_samples)) {
     
-    final_data <- bind_rows(collated_predictions, excluded_samples)
+    final_data <- dplyr::bind_rows(collated_predictions, excluded_samples)
   } else {
     final_data <- collated_predictions
   }
