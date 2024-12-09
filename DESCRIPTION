@@ -16,14 +16,14 @@ RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 Imports: 
     caret,
-    crayon,
+	crayon,
     dada2,
     dplyr,
     fs,
     ggplot2,
     grDevices,
     magrittr,
-    randomForest,
+	randomForest,
     RColorBrewer,
     rlang,
     ShortRead,
