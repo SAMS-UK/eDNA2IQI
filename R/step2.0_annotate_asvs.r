@@ -23,14 +23,20 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches, aut
   }
 
   ####Check Folder name and add / at the end if its not there
-
+ 
+  
   if (substr(folder, nchar(folder), nchar(folder)) != "/") {
     folder <- paste0(folder, "/")
   }
+  
+   #create output folder
+   outputfolder=paste(folder,"outputData",sep="")
+  if (!dir.exists(file.path(outputfolder))) {dir.create(file.path(outputfolder)) }
   ####1.Get reference database if missing####
   #Check for correct reference database, download if missing
 
   if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz"))) {
+    browser()
     downloadExternal(auto_download = auto_download)
 
   }

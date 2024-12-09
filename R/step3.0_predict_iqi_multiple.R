@@ -6,19 +6,20 @@
 #' should be used to predict the IQI values.
 #'
 #' @importFrom utils glob2rx
-#'
+#' @importFrom randomForest randomForest
+
 #' @return A data frame. As inputted, with added 'predicted_IQI' column
 #' @export
 #' @section Example usage: myPREDs <- step3.0_predict_iqi(folder = "C:/full/file/path/to/fastq/S16_reads", S16_reads = myTAXA)
 #'
-teststep3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs) {
+step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = FALSE) {
   
   messageColour("Function starting: 'predict_iqi_multiple'
   Predicting IQI using optimized random forest models  \n\n", "message")
   step3_start_time <- as.character(Sys.time())
   message("Step 3 Start Date/Time:",step3_start_time)
   
-  
+
    ####Get model if missing####
   #Check for correct reference database, download if missing
 
@@ -35,6 +36,9 @@ teststep3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs) {
   if (substr(folder, nchar(folder), nchar(folder)) != "/") {
     folder <- paste0(folder, "/")
   }
+    #create output folder
+   outputfolder=paste(folder,"outputData",sep="")
+  if (!dir.exists(file.path(outputfolder))) {dir.create(file.path(outputfolder)) }
   
   #rownames(AnnotatedASVs)=AnnotatedASVs$SampleID
   #AnnotatedASVs$SampleID=NULL
@@ -115,6 +119,7 @@ teststep3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs) {
   #i=1
   for (i in 1:length(LOB)){
     RF_final_reduced=LOB[[i]][[1]]
+	#only keeps columns in rare_data that are used in the random forest
     rare_data2=rare_data[,c(colnames(rare_data) %in%RF_final_reduced$xNames)]
     # Check if taxa used for RF predictions are present in any sample
     name2=setdiff(RF_final_reduced$xNames,colnames(rare_data2))

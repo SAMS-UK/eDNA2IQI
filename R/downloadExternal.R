@@ -115,7 +115,7 @@ downloadExternal <- function(auto_download = FALSE) {
 
         # Check if file was successfully downloaded
         if (file.exists(filePathCutadapt)) {
-          message("Cutadapt .exe downlaod from SAMS Thredds server download successful")
+          message("Cutadapt .exe download from SAMS Thredds server download successful")
         }
 
       }, error = function(e) {
