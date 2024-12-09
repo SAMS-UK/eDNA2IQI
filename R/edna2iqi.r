@@ -66,7 +66,7 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
 
   load(file.path(paste(folder, "outputData/taxaAllocatedReads_Family.rda", sep="")))
   myTaxa <- S16_reads
-  myPreds <- step3.0_predict_iqi(folder, myTaxa)
+  myPreds <- step3.0_predict_iqi_multiple(folder, myTaxa)
 
   message("edna2iqi finished")
 

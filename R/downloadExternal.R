@@ -49,7 +49,7 @@ downloadExternal <- function(auto_download = FALSE) {
 
         # Nested tryCatch for downloading from Zenodo if the first attempt fails
         tryCatch({
-          url <- "https://zenodo.org/records/4587955/files/silva_nr99_v138.1_train_set.fa.gz?download=1"
+          url <- "https://zenodo.org/records/4587955/files/silva_nr99_v138.1_train_set.fa.gz"
           options(timeout = 300)
           messageColour("Updating taxa reference database from Zenodo server \n\n", "warnMessage")
           utils::download.file(url, filePathDB, quiet = TRUE)
@@ -174,15 +174,17 @@ downloadExternal <- function(auto_download = FALSE) {
 
 
   # Download RF_model from Thredds
-  if (!file.exists(filePathModel)) {
-    if(auto_download == FALSE) {
-    # Prompt user for permission to download
-    user_input <- readline(prompt = "The Random Forest model that needs to be stored locally is missing. Do you want to attempt to download it? (y/n): ")
+  
+  
+ if (!file.exists(filePathModel)) {
+    if (auto_download == FALSE) {
+      # Prompt user for permission to download
+      user_input <- readline(prompt = "The Random Forest model that needs to be stored locally is missing. Do you want to attempt to download it? (y/n): ")
     } else {
       user_input <- "y"
-}
-    if (tolower(user_input) == "y") {
+    }
 
+    if (tolower(user_input) == "y") {
       tryCatch({
         # Attempt to download from SAMS Thredds server
         url <- "https://thredds.sams.ac.uk/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run1_4b.rda"
@@ -192,22 +194,27 @@ downloadExternal <- function(auto_download = FALSE) {
 
         # Check if file was successfully downloaded
         if (file.exists(filePathModel)) {
-          message("Random Forest Model downlaod from SAMS Thredds server download successful")
+          message("Random Forest Model download from SAMS Thredds server successful")
         }
 
       }, error = function(e) {
         # Handle error if SAMS Thredds download fails
         message("\nSAMS Thredds server download unsuccessful \n\n", conditionMessage(e))
         message("\n\n Try again soon, or contact SAMS or SEPA for assistance")
-		
-		
-}else {
+      })
+
+    } else {
       message(messageColour(paste(
         "The Random Forest Models need to be downloaded to predict IQIs. \n",
         "Proceed with automatic download, or manual download from: \n",
         "https://thredds.sams.ac.uk/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run1_4b.rda, \n",
         "and save file as `RFModel_rarefy_5000_taxalevel_family_BMB_Run1_4b.rda` \n",
         "in the /extdata/ directory in the eDNA2IQI R library files \n"
-      ), "message"))
+       ), "message"))
     }
+  }
+  else {
+    message("\nRF model file already downloaded")
+  }
+  
 }

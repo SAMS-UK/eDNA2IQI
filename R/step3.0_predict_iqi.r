@@ -6,6 +6,7 @@
 #' should be used to predict the IQI values.
 #'
 #' @importFrom utils glob2rx
+#'@importFrom utils packageVersion
 #'
 #' @return A data frame. As inputted, with added 'predicted_IQI' column
 #' @export
@@ -122,7 +123,7 @@ are not present in the testing data: \n\n", "warning")
 }
 
   # Make predictions with the trained random forest
-  rare_data$Predicted_IQI <- stats::predict(RF_final_reduced, rare_data)
+  rare_data$Predicted_IQI <- caret::predict.train(RF_final_reduced, rare_data)
 
   rare_data=rare_data[, c("Predicted_IQI", setdiff(names(rare_data), "Predicted_IQI"))]
 
