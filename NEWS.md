@@ -1,3 +1,7 @@
+# eDNA2IQI 2.4.7
+prediction from multiple models stable
+
+
 # eDNA2IQI 2.4.6
 Test Checks bugs fixed, issue with empty DF in step 3 fixed 
 
