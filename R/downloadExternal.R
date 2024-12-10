@@ -187,7 +187,7 @@ downloadExternal <- function(auto_download = FALSE) {
     if (tolower(user_input) == "y") {
       tryCatch({
         # Attempt to download from SAMS Thredds server
-        url <- "https://thredds.sams.ac.uk/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run1_4b.rda"
+        url <- "https://thredds.sams.ac.uk/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run1_5_multiple.rda"
         options(timeout = 300)
         messageColour("Updating Random Forest Model file from SAMS Thredds server \n\n", "warnMessage")
         utils::download.file(url, filePathModel, quiet = TRUE, mode = "wb")
@@ -207,7 +207,7 @@ downloadExternal <- function(auto_download = FALSE) {
       message(messageColour(paste(
         "The Random Forest Models need to be downloaded to predict IQIs. \n",
         "Proceed with automatic download, or manual download from: \n",
-        "https://thredds.sams.ac.uk/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run1_4b.rda, \n",
+        "https://thredds.sams.ac.uk/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run1_5_multiple.rda, \n",
         "and save file as `RFModel_rarefy_5000_taxalevel_family_BMB_Run1_4b.rda` \n",
         "in the /extdata/ directory in the eDNA2IQI R library files \n"
        ), "message"))
