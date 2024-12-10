@@ -45,7 +45,7 @@ downloadExternal <- function(auto_download = FALSE) {
       }, error = function(e) {
         # Handle error if SAMS Thredds download fails
         message("\nSAMS Thredds server download unsuccessful \n\n", conditionMessage(e))
-        message("\n\n Attempting download from Zenodo, may be unstable in the future")
+        message("\n\n Attempting download from Zenodo repository. External links may change or become unavailable in the future, contact support to alert them if this occurs.")
 
         # Nested tryCatch for downloading from Zenodo if the first attempt fails
         tryCatch({
@@ -121,7 +121,7 @@ downloadExternal <- function(auto_download = FALSE) {
       }, error = function(e) {
         # Handle error if SAMS Thredds download fails
         message("\nSAMS Thredds server download unsuccessful \n\n", conditionMessage(e))
-        message("\n\n Attempting download from Github, may be unstable in the future")
+        message("\n\n Attempting download from the Cutadapt Github. External links may change or become unavailable in the future, contact support to alert them if this occurs.")
 
         # Nested tryCatch for downloading from Github if the first attempt fails
         tryCatch({
