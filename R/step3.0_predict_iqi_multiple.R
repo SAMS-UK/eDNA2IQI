@@ -10,7 +10,7 @@
 
 #' @return A data frame. As inputted, with added 'predicted_IQI' column
 #' @export
-#' @section Example usage: myPREDs <- step3.0_predict_iqi(folder = "C:/full/file/path/to/fastq/S16_reads", S16_reads = myTAXA)
+#' @section Example usage: myPREDs <- step3.0_predict_iqi(folder = "C:/full/file/path/to/fastqs/", S16_reads = myTAXA)
 #'
 step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = FALSE) {
   
