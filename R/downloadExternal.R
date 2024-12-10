@@ -17,7 +17,7 @@ downloadExternal <- function(auto_download = FALSE) {
   # File paths
   filePathDB <- file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz")
   filePathCutadapt <- file.path(find.package("eDNA2IQI"), "extdata", "cutadapt_v1.exe")
-  filePathModel <- file.path(find.package("eDNA2IQI"), "extdata", "RFModel_rarefy_5000_taxalevel_family_BMB_Run1_4b.rda")
+  filePathModel <- file.path(find.package("eDNA2IQI"), "extdata", "RFModel_rarefy_5000_taxalevel_family_BMB_Run1_5_multiple.rda")
   
   # Download reference database
   if (!file.exists(filePathDB)) {
