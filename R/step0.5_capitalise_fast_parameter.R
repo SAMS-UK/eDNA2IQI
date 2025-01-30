@@ -1,7 +1,7 @@
 #' step0.5_capitaliseR1_R2
 #'
-#' Reads in the input data, capitalises any "r1" and "r2" in the file metadata componenets of
-#' an Illumina Miseq output filename
+#' Reads in raw sequence data, capitalises any "r1" and "r2" in the file metadata components of
+#' an Illumina Miseq output filename.
 #' This addresses software and filesharing bugs that lose case sensitivity, resulting in the
 #' conversion of filenames to lower case.
 #' The read orientation, indicated by R1 or R2 is essential for the bioinformatic process, and making it the
@@ -11,7 +11,6 @@
 #'
 #' @return NULL, code changes the capitalisation on the input files
 #'
-#'
 #' @section Example usage: step0.5_capitaliseR1_R2(folder)
 step0.5_capitaliseR1_R2 <- function(folder) {
 
@@ -20,7 +19,7 @@ step0.5_capitaliseR1_R2 <- function(folder) {
 
   # List all files in the directory
   files <- list.files(directory_path, full.names = TRUE)
-
+  # fwd 
   # Iterate over each file and rename if needed
   for (file in files) {
     # Extract the file name without path
@@ -36,7 +35,7 @@ step0.5_capitaliseR1_R2 <- function(folder) {
       cat("Renamed:", file, "to", new_file_path, "\n")
     }
   }
-
+  # rev
   # Iterate over each file and rename if needed
   for (file in files) {
     # Extract the file name without path
@@ -53,39 +52,4 @@ step0.5_capitaliseR1_R2 <- function(folder) {
     }
   }
 
-}
-
-#' fastparameteroptions
-#' Function author: TomW
-#'
-#' updates parameteroptions to 'fast' options, for debugging
-#'
-#' @param parameterOptions
-#' parameterOptions is loaded as part of the package
-#'
-#' @return dataframe, with fast parameter options for code testing
-
-fastparameteroptions <- function(parameterOptions){
-#create debugging parameters
-#turn off quality check if it is working
-parameterOptions[3,3] = "FALSE"
-
-# change to current optimal truncation
-parameterOptions[24,3] = "c(272,186)"
-
-#speed up error learning
-parameterOptions[27,3] = "1.00E+03"
-
-#single thread DADA2
-#optional
-#parameterOptions[49,3] = "1"
-
-#make everything verbose
-parameterOptions[26,3] = "TRUE"
-parameterOptions[34,3] = "TRUE"
-parameterOptions[35,3] = "TRUE"
-parameterOptions[43,3] = "TRUE"
-parameterOptions[48,3] = "TRUE"
-parameterOptions[50,3] = "TRUE"
-return(parameterOptions)
 }
