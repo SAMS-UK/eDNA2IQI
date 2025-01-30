@@ -86,14 +86,6 @@ palette2 <- RColorBrewer::brewer.pal(n = 10, "Paired")
 custom_palette <- c(palette1, palette2)
 
 
-
-#reordered_data$Taxon <- as.character(reordered_data$Taxon)
-
-#reordered_data$Taxon = sapply(reordered_data$Taxon, ShortenNames6)
-
-#reordered_data$Taxon <- as.factor(reordered_data$Taxon)
-
-
 #ggplot barplot
 taxaplot <- ggplot2::ggplot(reordered_data, ggplot2::aes(x = SampleID, y = Total_Abundance, fill = Taxon)) +
  ggplot2::geom_bar(stat = "identity", width = 0.95) +
@@ -118,7 +110,6 @@ taxaplot <- ggplot2::ggplot(reordered_data, ggplot2::aes(x = SampleID, y = Total
 
 
 #if loop to save in correct place
-
 if (median(rowSums(S16_readsB[,-1], na.rm = TRUE)) == 5000) {
 ggplot2::ggsave(filename = file.path(folder,"/outputData/rarefied_read_taxaplot.png"), plot = taxaplot, height = 8, width = 15, units = "in")
 } else{
