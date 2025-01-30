@@ -1,4 +1,4 @@
-#' Download the cutadapt.exe file and SILVA 138.1 taxa
+#' Download the random forest models,  cutadapt.exe file and SILVA 138.1 taxa
 #' reference database from the SAMS THREDDS server, or
 #' from source.
 #' @param auto_download Boolean to override console prompt to automatically
@@ -74,7 +74,7 @@ downloadExternal <- function(auto_download = FALSE) {
           message("\n")
         })
       })
-
+    #message on denied download
     } else {
       message(messageColour(paste(
         "Reference database needs to be downloaded to continue with taxa allocation. \n",
@@ -150,7 +150,7 @@ downloadExternal <- function(auto_download = FALSE) {
           message("\n")
         })
       })
-
+    #message on denied download
     } else {
       message(messageColour(paste(
         "Cutadapt.exe needs to be downloaded to continue with data denoising. \n",
@@ -173,9 +173,7 @@ downloadExternal <- function(auto_download = FALSE) {
   }
 
 
-  # Download RF_model from Thredds
-  
-  
+  # Download RF_model from SAMS THREDDs server
  if (!file.exists(filePathModel)) {
     if (auto_download == FALSE) {
       # Prompt user for permission to download
@@ -202,7 +200,7 @@ downloadExternal <- function(auto_download = FALSE) {
         message("\nSAMS Thredds server download unsuccessful \n\n", conditionMessage(e))
         message("\n\n Try again soon, or contact SAMS or SEPA for assistance")
       })
-
+    #message on denied download
     } else {
       message(messageColour(paste(
         "The Random Forest Models need to be downloaded to predict IQIs. \n",
