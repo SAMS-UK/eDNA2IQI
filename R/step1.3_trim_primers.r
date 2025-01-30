@@ -19,29 +19,29 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   messageColour("Function starting: 'trim_primers'
   Removing primer sequences from sequence reads \n\n", "message")
 
-  #### Set file to store details of cleaning and filtering####
-
+  #Set file to store details of cleaning and filtering
   dataCleanfile <- paste(folder, "outputData/dataCleaningDetails.txt",sep="")
   sink(dataCleanfile, append = TRUE)
   cat(as.character(Sys.time()))
   cat("\n\nFunction 1.3: trim_primers \n\n")
   sink()
 
-  #### Change folder of no_Ns to trimmed ####
-  #
+  #Change folder of no_Ns to trimmed
   path_trimmed <- paste(folder, "outputData/intermediate/", "trimmed",sep="")
 
   if (!dir.exists(path_trimmed)) {
     dir.create(path_trimmed)
   }
-
-  fwd_trimmed <- sub("no_Ns", "trimmed", fwd_no_unspec)#create filename for trimmed forward
-  rev_trimmed <- sub("no_Ns", "trimmed", rev_no_unspec)#and reverse
+  
+  #create filename for trimmed forward
+  fwd_trimmed <- sub("no_Ns", "trimmed", fwd_no_unspec)
+  #and reverse
+  rev_trimmed <- sub("no_Ns", "trimmed", rev_no_unspec)
 
   # Skip step and if files already present
   if ((sum(!file.exists(fwd_trimmed)) + sum(!file.exists(rev_trimmed))) != 0) {
 
-  #### Load the cutadapt tool if required ####
+  #Load the cutadapt tool if required
   downloadExternal(auto_download = auto_download)
     if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata", "cutadapt_v1.exe"))) {
     # If the file does not exist, stop execution with an error message
@@ -51,30 +51,31 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   cutadapt_exe <- file.path(find.package("eDNA2IQI"), "extdata/cutadapt_v1.exe")
 
 
-  #### Specify primer sequences  ####
+  #Specify primer sequences
   p=extractParameters(parameteroptions,"global","primers")
 
   primers <- c(sub(",.*", "", p), sub(".*,", "", p))
   fwd_primer <- primers[1]
   rev_primer <- primers[2]
 
-  #### Specify reverse complement primer sequences, call dada2 ####
+  #Specify reverse complement primer sequences, call dada2
   fwd_primer_rc <- dada2::rc(fwd_primer)
   rev_primer_rc <- dada2::rc(rev_primer)
 
-  #### Add flags to primers for cutadapt ####
+  #Add flags to primers for cutadapt
   fwd_flags <- paste("-g", fwd_primer, "-a", rev_primer_rc)
   rev_flags <- paste("-G", rev_primer, "-A", fwd_primer_rc)
 
-  #
   #fwd_trimmed is the complete path
   #fwd_trimmed_wo_folder is the path minus the folder
-  (fwd_trimmed_wo_folder <- sub(folder, "", fwd_trimmed))#output trimmed file name and location
-  (rev_trimmed_wo_folder <- sub(folder, "", rev_trimmed))#
-  (fwd_no_unspec_wo_folder <- sub(folder, "", fwd_no_unspec))#input files for cutadapt, following trimming.
-  (rev_no_unspec_wo_folder <- sub(folder, "", rev_no_unspec))#
+    #output trimmed file name and location
+  (fwd_trimmed_wo_folder <- sub(folder, "", fwd_trimmed))
+  (rev_trimmed_wo_folder <- sub(folder, "", rev_trimmed))
+    #input files for cutadapt, following trimming.
+  (fwd_no_unspec_wo_folder <- sub(folder, "", fwd_no_unspec))
+  (rev_no_unspec_wo_folder <- sub(folder, "", rev_no_unspec))
 
-  #checks if 1st character forward slash, if TRUE removes
+  #checks if 1st character a "/", if TRUE, removes it
   if (substr(fwd_trimmed_wo_folder[1], 1, 1) == "/") {
     fwd_trimmed_wo_folder <- sub("/", "", fwd_trimmed_wo_folder)
     rev_trimmed_wo_folder <- sub("/", "", rev_trimmed_wo_folder)
@@ -83,19 +84,19 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   }
 
   setwd(folder)
-  #### Set variables
-  ####
+  #Set variables
     n=extractParameters(parameteroptions,"cutadapt","-n","Char2Vect")
     m=extractParameters(parameteroptions,"cutadapt","-m","Char2Vect")
     j=extractParameters(parameteroptions,"cutadapt","-j","Char2Vect")
 
-       #### Cut the primer sequences off the sequences ####
+  #Remove primer sequences off the sequences using cutadapt.exe
+  #method changes with operating system 
 
+    #detect operating system
 op_sys <- Sys.info()[1]
 
-
   for (i in seq_along(fwd_no_unspec)) {
-
+    #linux and mac
     if (op_sys =="Linux" || op_sys =="Darwin") {
     system2("wine", args = c(cutadapt_exe, fwd_flags, rev_flags, "--discard-untrimmed",
                                    "-n", n, "-m", m, "-j", j, "-o",
@@ -103,6 +104,7 @@ op_sys <- Sys.info()[1]
                       fwd_no_unspec_wo_folder[i], rev_no_unspec_wo_folder[i]
                                    ))
     }
+    #windows
     else if (op_sys =="Windows") {
     system2(cutadapt_exe, args = c(fwd_flags, rev_flags, "--discard-untrimmed",
                                             "-n", n, "-m", m, "-j", j, "-o",
