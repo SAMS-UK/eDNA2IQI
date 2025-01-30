@@ -12,10 +12,10 @@
 #'
 #' @section Example usage: extractParameters(parameteroptions,"cutadapt","-m", "Char2Vect")
 extractParameters <- function(parameteroptions,FunctionName,ParameterName, ...){
-  #message("Extracting parameter start")
   p=parameteroptions
   A=unlist(list(...))
   p1=p$Value[which(p$Function==FunctionName & p$Parameter==ParameterName)]
-  if("Char2Vect"%in%A){p1=eval(parse(text=p1))}#returns numbers, NA, NULL and TRUE/FALSE (if specified)
-  #message("Extracting parameter end")
+  #return numbers, NA, NULL and TRUE/FALSE (if specified)
+  if("Char2Vect"%in%A){p1=eval(parse(text=p1))}
+  
   return(p1)}
