@@ -11,9 +11,8 @@
 #' @export
 #' @return A data frame.
 
-#called by:
-#raw_files are sample_IDs[[1]], these are batches of fastq on the same sequencing run, must be denoised collectively
 
+#raw_files are sample_IDs[[1]], these are batches of fastq on the same sequencing run, must be denoised per batch
 step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trimmed,
                                    parameteroptions) {
 
@@ -21,7 +20,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   message("Generating ASVs from filtered files (in 'intermediate/filtered'")
 
   messageColour("Function starting: 'filter_quality_chimera'. Removing low quality sequences \n\n", "message")
-  #### 0.5 Write output and create files ####
+  # Write output and create files
   # Set file to store details of cleaning and filtering
 
   dataCleanfile <- file.path(folder, "outputData/dataCleaningDetails.txt")
@@ -33,8 +32,6 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   # Change folder of trimmed to filtered
   path_filtered <- file.path(folder, "outputData/intermediate", "filtered")
 
-
-
   if (!dir.exists(path_filtered)) {
     dir.create(path_filtered)
   }
@@ -43,11 +40,9 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   fwd_filtered <- sub("trimmed", "filtered", fwd_trimmed)#ok, replaces trimmed for filtered in string.
   rev_filtered <- sub("trimmed", "filtered", rev_trimmed)
 
-  #### 1.Get dada2 filter parameters ####
+  #### 1.Get dada2 filter parameters
   message("1.Fetching dada2 filter parameters from parameterOptions")
   # Get parameter options
-
-
     maxn=extractParameters(parameteroptions,"filterAndTrim","maxN","Char2Vect")
     E1_E2=extractParameters(parameteroptions,"filterAndTrim","maxEE","Char2Vect")
     row_tL <- extractParameters(parameteroptions,"filterAndTrim","truncLen","Char2Vect")
@@ -70,11 +65,11 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
     v=extractParameters(parameteroptions,"filterAndTrim","verbose","Char2Vect")
 
 
-  #### 2.Run dada2 filterAndTrim ####
+  #2.Run dada2 filterAndTrim
   message("2.Running dada2 filterAndTrim")
   #fwd_trimmed file exists,
   #fwd_filtered path exists, but not files
-  ####data2 creates fwd_filtered files.
+  #data2 creates fwd_filtered files.
   dada2::filterAndTrim(fwd_trimmed, fwd_filtered, rev_trimmed, rev_filtered,
                        maxN=maxn, maxEE=E1_E2, truncLen=row_tL,
                        rm.phix=rp, truncQ=tQ, compress=c, minLen=minL,
@@ -84,8 +79,8 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
                        rm.lowcomplex = rmlow, trimLeft = tleft,
                        trimRight = tright, verbose = v)
 
-   # Calculate dada2 error rates
-  #### 3.Learn-error parameters ####
+  
+  #3.Learn-error parameters,calculating dada2 error rates
   message("3.Fetching learn-error parameters from parameterOptions")
   (nB=extractParameters(parameteroptions,"learnErrors","nbases","Char2Vect"))
   (rnd=extractParameters(parameteroptions,"learnErrors","randomise","Char2Vect"))
@@ -109,7 +104,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
                                                                "_R2_001.fastq.gz"))
 
 
-  #### 4.Run error model, object created ####
+  #4.Run error model, object created
   message("4.Producing error model, model object will be created")
   message("Forward error:")
   message("Not memory intensive, but may take some time")
@@ -125,18 +120,16 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
                                   MAX_CONSIST = mc, OMEGA_C = oc,
                                   qualityType = qtype)
 
-  #### 5.Get dada2 inference parameters ####
+  #5.Get dada2 inference parameters
   message("5.Fetching dada2 inference parameters from parameterOptions")
   # Get parameter options
-
   (eEF=extractParameters(parameteroptions,"dada","errorEstimationFunction"))
   (multi=extractParameters(parameteroptions,"dada","multithread","Char2Vect"))
   (v=extractParameters(parameteroptions,"dada","verbose","Char2Vect"))
   (selfC=extractParameters(parameteroptions,"dada","selfConsist","Char2Vect"))
   (pool=extractParameters(parameteroptions,"dada","pool","Char2Vect"))
 
-
-  #### 6.Run error model on the filtered reads, in the filtered directory ####
+  #6.Run error model on the filtered reads, in the filtered directory
   message("6.Running error model on the filtered reads in the filtered directory. \n A memory leak may occur here, check non-paged pool when running samples n>36")
   message("Forward error being processed")
 
@@ -146,7 +139,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   dada2_rev <- dada2::dada(rev_filtered, err = error_rev, multithread = multi,
                            verbose = v, selfConsist = selfC, pool = pool)
 
-  #### 7.Write detail of cleaning #####
+  #7.Write detail of cleaning
   message("7.Write details of denoising to .txt file")
   dataCleanfile <- file.path(folder, "outputData/dataCleaningDetails.txt")
   fw_in_L <- c()
@@ -155,16 +148,17 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   cat(as.character(Sys.time()))
 
 
-  #determine the difference in reads between trimmed and filtered.
-  #and report
+  #determine the difference in reads between trimmed and filtered and report
   for (x in seq_along(fwd_filtered)) {
     fw_in_L[x] <- length(ShortRead::id(ShortRead::readFastq(fwd_trimmed[x])))
     fw_out_L[x] <- length(ShortRead::id(ShortRead::readFastq(fwd_filtered[x])))
 
-  cat("\nFiles ", sub(".*/trimmed/", "", sub(".fastq.gz", "", fwd_trimmed[x])),#clean-up file name
+    #clean-up file name
+  cat("\nFiles ", sub(".*/trimmed/", "", sub(".fastq.gz", "", fwd_trimmed[x])),
         " & ", sub(".*/trimmed/", "", sub(".fastq.gz", "", rev_trimmed[x])),
         " - ", fw_in_L[x], " reads quality filtered to ", fw_out_L[x],
-        " reads (", round(100 * (fw_out_L[x] / fw_in_L[x]), 1), "%)",#output % reads passing filtration
+        #output % reads passing filtration
+        " reads (", round(100 * (fw_out_L[x] / fw_in_L[x]), 1), "%)",
         sep = "")
   }
   cat("\n\n")
@@ -186,7 +180,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
     sink()
   }
 
-  #### 8.Merge forward and backward reads ####
+  #8.Merge forward and backward reads
   message("8.Merge forward and reverse reads")
   # Get parameter options
   (MinO=extractParameters(parameteroptions,"mergePairs","minOverlap","Char2Vect"))
@@ -197,7 +191,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   (jC=extractParameters(parameteroptions,"mergePairs","justConcatenate","Char2Vect"))
   (tO=extractParameters(parameteroptions,"mergePairs","trimOverhang","Char2Vect"))
 
-  #######merging reads
+  #merge reads
   message("Merging reads")
   merged_reads <- dada2::mergePairs(dada2_fwd, fwd_filtered, dada2_rev,
                                     rev_filtered, verbose = v,
@@ -206,10 +200,10 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
                                     justConcatenate = jC, trimOverhang = tO)
 
   # Construct ASV reads table and remove chimera reads
-
   message("Constructing sequence table ")
   ASV_table_raw <- dada2::makeSequenceTable(merged_reads)
-  #####write output to dataCleanfile ####
+  
+  #write output to dataCleanfile
   fw_all <- c()
   fw_unique <- c()
   sink(dataCleanfile, append = TRUE)
@@ -244,7 +238,7 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
   }
 
 
-  #### 9.Remove chimeras and print cleaning details ####
+  #9.Remove chimeras and print cleaning details
   message("9.Removing chimeric reads, and printing denoising details")
   # Get parameter options
   (mth=extractParameters(parameteroptions,"removeBimeraDenovo","method"))
@@ -257,7 +251,7 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
                                                  multithread = TRUE,
                                                  verbose = v)
 
-  #####write output to dataCleanfile ####
+  #write output to dataCleanfile
 
   fw_all2 <- length(colnames(ASV_table_raw))
   fw_no_chim <- length(colnames(ASV_table_no_chim))
@@ -294,22 +288,20 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
   }
 
 
-
   C=list.files(paste(folder,"outputData/intermediate/filtered/",sep=""))
-
 
 
   Retained_samples=rownames(ASV_table_no_chim)
   fwd_input2=file.path(folder,Retained_samples)
   fwd_input3=gsub("//", "/", fwd_input2)#shortcut, in case of folder/ or folder specified.
-
-  fw_in_L <- c()#empty variable.  Vector of total counts for samples.
+  
+  #empty variable.  Vector of total counts for samples.
+  fw_in_L <- c()
   for (x in seq_along(fwd_input3)) {
     fw_in_L[x] <- length(ShortRead::id(ShortRead::readFastq(fwd_input3[x])))#gives the total read count for all the samples
   }
+  
   # DATA FLAG: flag if data loss >70%
-
-
   if (length(names[(rowSums(ASV_table_no_chim) / fw_in_L) < 0.3]) > 0) {
     messageColour("High loss of reads during denoising, data of low quality.
                    Treat IQI predictions with caution.", "warning")
@@ -317,14 +309,13 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
     cat(as.character(Sys.time()))
     cat("\nHigh loss of reads during denoising, data of low quality.\n")
     cat("The following samples lost >70% of reads.\nTreat IQI predictions with caution.\n")
-
-
-    A=as.data.frame(ASV_table_no_chim)#ASV_table_no_chim is a matrix_array.
+    
+    #ASV_table_no_chim is a matrix_array.
+    A=as.data.frame(ASV_table_no_chim)
     (B=(rowSums(A)/fw_in_L)<0.3)
     C=names(B)
     for (y in C)
          {cat(y, "\n")}
-
 
     cat("\n\n")
     sink()
@@ -368,10 +359,11 @@ cat("Consider investigation of raw read count and denoising statistics.\n")
     cat("Treat IQI predictions with caution.\n\n\n")
     sink()
   }
-  #####
+
   messageColour("Function 1.4 finished: 'filter_quality_chimera' \n\n", "message")
-  return(ASV_table_no_chim)#class is tibble or data.frame
+  #class is tibble or data.frame
   #this is a 'batch' of files, from the same sequencing run.
+  return(ASV_table_no_chim)
 }
 
 
