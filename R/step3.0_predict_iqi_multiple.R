@@ -7,6 +7,8 @@
 #'
 #' @importFrom utils glob2rx
 #' @importFrom randomForest randomForest
+#' importFrom("stats", "sd")
+#' importFrom("utils", "packageVersion")
 
 #' @return A data frame. As inputted, with added 'predicted_IQI' column
 #' @export
