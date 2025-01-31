@@ -65,7 +65,7 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
   myTaxa <- S16_reads
   myPreds <- step3.0_predict_iqi_multiple(folder, myTaxa)
 
-  message("edna2iqi finished")
+  message("Full eDNA2IQI pipeline finished")
 #4. output----
   return(list(myASVs = myASVs, myTaxa = myTaxa, myPreds = myPreds))
 }
