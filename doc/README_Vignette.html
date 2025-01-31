@@ -350,7 +350,7 @@ Marine Science, Oban UK (sams.ac.uk) for more information.</p>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
 <p>eDNA2IQI requires several packages to be installed via BiocManager,
-follow the ? below to install.</p>
+follow the code below to install.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
@@ -364,7 +364,7 @@ follow the ? below to install.</p>
 <span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>}</span></code></pre></div>
 <p>Then you can install eDNA2IQI directly from GitHub with:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">library</span>(“devtools”)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">library</span>(devtools)</span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;SAMS-UK/eDNA2IQI&quot;</span>)</span></code></pre></div>
 <p>Alternatively you can install manually from source:</p>
 <ul>
@@ -376,11 +376,13 @@ repository.</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;devtools&quot;</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">install</span>()</span></code></pre></div>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#optional, execute to install globally</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">deactivate</span>()</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">install</span>(<span class="at">build_vignettes =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>Check this worked by running:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">&quot;eDNA2IQI&quot;</span>)</span></code></pre></div>
 <p>Successful installation indicated by correct version number:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>[<span class="dv">1</span>] ‘<span class="dv">2</span>.<span class="fl">4.2</span>’</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>[<span class="dv">1</span>] ‘<span class="dv">2</span>.<span class="fl">4.7</span>’</span></code></pre></div>
 <p><strong>Ensure to execute eDNA2IQI within a fresh R or R studio
 session after manual installation</strong></p>
 </div>
@@ -461,10 +463,10 @@ OS:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">file.path</span>(<span class="fu">find.package</span>(<span class="st">&quot;eDNA2IQI&quot;</span>))</span></code></pre></div>
 <p>and navigate into the /extdata/ directory containing the
 cutadapt_v1.exe file</p>
-<p>then in the shell</p>
+<p>then in shell</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">chmod</span> 777 cutadapt_v1.exe</span></code></pre></div>
 <p>This will allow eDNA2IQI to execute the file from within R.</p>
-<p>For a full walkthrough of the eDNA2IQI pipeline, check out the
+<p>For a full walkthrough of the eDNA2IQI pipeline, go to the eDNA2IQI()
 vignette</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">vignette</span>(<span class="st">&quot;eDNA2IQI_Vignette.Rmd&quot;</span>, <span class="at">package =</span> <span class="st">&quot;eDNA2IQI&quot;</span>)</span></code></pre></div>
 </div>

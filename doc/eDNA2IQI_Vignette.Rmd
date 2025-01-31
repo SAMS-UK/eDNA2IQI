@@ -19,12 +19,18 @@ Please refer to the README for installation instructions and details.
 
 **Ensure to execute eDNA2IQI within a fresh R or R studio session after
 manual installation**
-
+If eDNA2IQI does not appear in your packages, make sure to deactivate renv before installation through devtools
+```r
+renv::deactivate()
+```
 
 ### Step 1: Load Data
 
-To start the IQI prediction pipeline, first load your raw 16S rRNA sequence data.
-
+To start the IQI prediction pipeline, 
+```r
+library(eDNA2IQI)
+```
+Then load your raw 16S rRNA sequence data.
 If you do not have any sequence data yet, there are some files in the extdata folder in the 
 installation folder. Execute the code below to create a folder called `"input"` in your working directory
 and copy the files to it.
@@ -47,7 +53,7 @@ Now define the folder where the input data is stored
 
 ```r
 #option 1
-folder <- "paste0(getwd(),"/input")"
+folder <- paste0(getwd(),"/input")
 
 #option 2 
 folder <- "full/path/to/your/inputfolder"
@@ -58,12 +64,13 @@ edited or amended, as this would violate the IQI prediction.
 However, to speed things up a little, the quality check can be turned 
 off by changing the value of the `“qualitycheck”` parameter in 
 `parameteroptions` to `“FALSE”`.This disables the generation of the 
-quality plots, without affecting IQI prediction.
+quality plots, without affecting IQI prediction. It is recommended that
+they are run for any new data. 
 
 ``` r
 # Optional
-data(“parameteroptions”)
-parameteroptions[3,3] <- “FALSE”
+data("parameteroptions")
+parameteroptions[3,3] <- "FALSE"
 ```
 You are ready to execute Step 1, this process can take several hours,
 depending on the number of samples. If you are in doubt that the 
@@ -79,7 +86,7 @@ myASVs <- eDNA2IQI::step1.0_readFastq(folder, parameteroptions)
 ```
 
 This step will take your raw FASTQ files, and turn them into a
-data.frame called “myASVs”, containing Amplicon Sequence Variants (ASVs)
+data.frame called "myASVs", containing Amplicon Sequence Variants (ASVs)
 and their abundance in each sample, through a process referred to as
 denoising.At this stage, several files, including quality reports and 
 processed ASVs, will be saved to the `outputData` folder,
@@ -87,7 +94,7 @@ located within the specified `input` folder. These files are:
 
 - An image file of read quality per sample, and averaged over all
   samples for perusal and investigation to follow up on
-  any issues in IQI generation (if “qualitycheck” = TRUE)  
+  any issues in IQI generation (if "qualitycheck" = TRUE)  
   (qualityScores.png, qualityScores_averaged.png)
 
 - Individual batch files as .rda and .csv files, and a
@@ -101,24 +108,25 @@ located within the specified `input` folder. These files are:
   (dataCleaningDetails.txt).
 
 - A directory containing the intermediary files
-  (“C:/Users/AdW/FinFishFarmA/input/outputData/intermediate”). If the
+  ("C:/Users/AdW/FinFishFarmA/input/outputData/intermediate"). If the
   process were to be interrupted during the denoising, the Step 1
   function will scan these folders and resume the pipeline where it
   left off.
 
+You may be prompted for the download of the taxa reference database, the cutadapt executable, and the random forest models. An attempt will be made to download these from the SAMS THREDDS server, and then an attempt from source. 
 
 ### Step 2: Annotate ASVs
 
 
-Step 2 annotates the ASVs generated in Step 1 to “Family” level,
+Step 2 annotates the ASVs generated in Step 1 to "Family" level,
 creating a data.frame of bacterial families, and their abundance in each
-sample. The input for this step is the “myASVs” object from Step 1. ASVs
+sample. The input for this step is the "myASVs" object from Step 1. ASVs
 will be annotated against the SILVA 138.1 database which will be stored
 locally after being downloaded on the first use.
 
 ```r
 #run step 2
-myTaxa <- eDNA2IQI::step2.0_annotate_ASVs(folder, parameterOptions, myASVs)
+myTaxa <- eDNA2IQI::step2.0_annotate_ASVs(folder, parameteroptions, myASVs)
 ```
 
 More files will populate the "outputData" directory at this stage. 
@@ -144,7 +152,7 @@ of this will be found in the dataCleaningDetails.txt file.
 
 ```r
 #Run step 3
-myPreds <- eDNA2IQI::step3.0_predict_iqi(myTaxa)
+myPreds <- eDNA2IQI::step3.0_predict_iqi_multiple(folder, myTaxa)
 ```
 
 More files will populate the "outputData" directory at this stage. 
@@ -154,12 +162,13 @@ These will be:
   the rarefied reads used for IQI prediction were allocated to  
   (rarefied_read_taxaplot.png).
 
-- A .csv of the rarefied taxa allocated reads used for IQI prediction  
+- A .csv of the taxa used for IQI prediction, and frequency of which     they were used 
+  (RF_taxa.csv).
+  
+- A .csv of the rarefied taxa allocated reads used for IQI prediction
   (rarefied_taxa_allocated_reads_family.csv).
 
-- A .csv of predicted_IQIs, and the abundance of bacterial families
-  in each sample that were important for model prediction  
-  (predicted_IQIs.csv).
+- A .csv of the mean predicted IQI, range and SD, and the predicted IQI   for each individual random forest with otehr accompanying metadata     (predicted_IQIs.csv).
 
 ## Full eDNA2IQI Pipeline
 

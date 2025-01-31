@@ -19,7 +19,7 @@ Oban UK (sams.ac.uk) for more information.
 ## Installation
 
 eDNA2IQI requires several packages to be installed via BiocManager,
-follow the ? below to install.
+follow the code below to install.
 
 ``` r
 
@@ -40,7 +40,7 @@ Then you can install eDNA2IQI directly from GitHub with:
 
 ``` r
 install.packages("devtools")
-library(“devtools”)
+library(devtools)
 devtools::install_github("SAMS-UK/eDNA2IQI")
 ```
 
@@ -55,7 +55,9 @@ Alternatively you can install manually from source:
 ``` r
 install.packages("devtools")
 library("devtools")
-install()
+#optional, execute to install globally
+renv::deactivate()
+install(build_vignettes = TRUE)
 ```
 
 Check this worked by running:
@@ -67,7 +69,7 @@ packageVersion("eDNA2IQI")
 Successful installation indicated by correct version number:
 
 ``` r
-[1] ‘2.4.2’
+[1] ‘2.4.7’
 ```
 
 **Ensure to execute eDNA2IQI within a fresh R or R studio session after
@@ -173,13 +175,13 @@ file.path(find.package("eDNA2IQI"))
 ```
 and navigate into the /extdata/ directory containing the cutadapt_v1.exe file
 
-then in the shell
+then in shell
 ``` bash
 chmod 777 cutadapt_v1.exe
 ```
 This will allow eDNA2IQI to execute the file from within R.
 
-For a full walkthrough of the eDNA2IQI pipeline, check out the vignette 
+For a full walkthrough of the eDNA2IQI pipeline, go to the eDNA2IQI() vignette 
 ```r
 vignette("eDNA2IQI_Vignette.Rmd", package = "eDNA2IQI")
 ```

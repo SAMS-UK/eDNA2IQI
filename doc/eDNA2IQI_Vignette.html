@@ -355,48 +355,53 @@ details.</p>
 <div id="getting-started" class="section level2">
 <h2>Getting Started</h2>
 <p><strong>Ensure to execute eDNA2IQI within a fresh R or R studio
-session after manual installation</strong></p>
+session after manual installation</strong> If eDNA2IQI does not appear
+in your packages, make sure to deactivate renv before installation
+through devtools</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">deactivate</span>()</span></code></pre></div>
 <div id="step-1-load-data" class="section level3">
 <h3>Step 1: Load Data</h3>
-<p>To start the IQI prediction pipeline, first load your raw 16S rRNA
-sequence data.</p>
-<p>If you do not have any sequence data yet, there are some files in the
-extdata folder in the installation folder. Execute the code below to
-create a folder called <code>&quot;input&quot;</code> in your working directory
-and copy the files to it.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co"># Define the directory for the input files</span></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;input&quot;</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co"># List files in `inst/extdata`</span></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>test_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata/example_data/input&quot;</span>,<span class="at">package =</span> <span class="st">&quot;eDNA2IQI&quot;</span>), <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co"># Copy files</span></span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="fu">file.copy</span>(test_files, <span class="st">&quot;input&quot;</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span></code></pre></div>
+<p>To start the IQI prediction pipeline,</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(eDNA2IQI)</span></code></pre></div>
+<p>Then load your raw 16S rRNA sequence data. If you do not have any
+sequence data yet, there are some files in the extdata folder in the
+installation folder. Execute the code below to create a folder called
+<code>&quot;input&quot;</code> in your working directory and copy the files to
+it.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co"># Define the directory for the input files</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;input&quot;</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co"># List files in `inst/extdata`</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>test_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata/example_data/input&quot;</span>,<span class="at">package =</span> <span class="st">&quot;eDNA2IQI&quot;</span>), <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co"># Copy files</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">file.copy</span>(test_files, <span class="st">&quot;input&quot;</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a></span></code></pre></div>
 <p>Now define the folder where the input data is stored</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#option 1</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>folder <span class="ot">&lt;-</span> <span class="st">&quot;paste0(getwd(),&quot;</span><span class="sc">/</span>input<span class="st">&quot;)&quot;</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#option 2 </span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>folder <span class="ot">&lt;-</span> <span class="st">&quot;full/path/to/your/inputfolder&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co">#option 1</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>folder <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">getwd</span>(),<span class="st">&quot;/input&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#option 2 </span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>folder <span class="ot">&lt;-</span> <span class="st">&quot;full/path/to/your/inputfolder&quot;</span></span></code></pre></div>
 <p>Step 1 takes the folder you have previously designated, and a list of
 the parameteroptions. The default for these parameters should not be
 edited or amended, as this would violate the IQI prediction. However, to
 speed things up a little, the quality check can be turned off by
 changing the value of the <code>“qualitycheck”</code> parameter in
 <code>parameteroptions</code> to <code>“FALSE”</code>.This disables the
-generation of the quality plots, without affecting IQI prediction.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Optional</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">data</span>(“parameteroptions”)</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>parameteroptions[<span class="dv">3</span>,<span class="dv">3</span>] <span class="ot">&lt;-</span> “FALSE”</span></code></pre></div>
+generation of the quality plots, without affecting IQI prediction. It is
+recommended that they are run for any new data.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Optional</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;parameteroptions&quot;</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>parameteroptions[<span class="dv">3</span>,<span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="st">&quot;FALSE&quot;</span></span></code></pre></div>
 <p>You are ready to execute Step 1, this process can take several hours,
 depending on the number of samples. If you are in doubt that the
 pipeline is progressing, the intermediate directories can be checked via
 a file explorer for ongoing population. Note however that during certain
 steps such as error learning, no intermediate files will be created.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co">#Run step 1</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>myASVs <span class="ot">&lt;-</span> eDNA2IQI<span class="sc">::</span><span class="fu">step1.0_readFastq</span>(folder, parameteroptions)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">#Run step 1</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>myASVs <span class="ot">&lt;-</span> eDNA2IQI<span class="sc">::</span><span class="fu">step1.0_readFastq</span>(folder, parameteroptions)</span></code></pre></div>
 <p>This step will take your raw FASTQ files, and turn them into a
 data.frame called “myASVs”, containing Amplicon Sequence Variants (ASVs)
 and their abundance in each sample, through a process referred to as
@@ -424,6 +429,10 @@ process were to be interrupted during the denoising, the Step 1 function
 will scan these folders and resume the pipeline where it left
 off.</p></li>
 </ul>
+<p>You may be prompted for the download of the taxa reference database,
+the cutadapt executable, and the random forest models. An attempt will
+be made to download these from the SAMS THREDDS server, and then an
+attempt from source.</p>
 </div>
 <div id="step-2-annotate-asvs" class="section level3">
 <h3>Step 2: Annotate ASVs</h3>
@@ -432,8 +441,8 @@ creating a data.frame of bacterial families, and their abundance in each
 sample. The input for this step is the “myASVs” object from Step 1. ASVs
 will be annotated against the SILVA 138.1 database which will be stored
 locally after being downloaded on the first use.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">#run step 2</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>myTaxa <span class="ot">&lt;-</span> eDNA2IQI<span class="sc">::</span><span class="fu">step2.0_annotate_ASVs</span>(folder, parameterOptions, myASVs)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">#run step 2</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>myTaxa <span class="ot">&lt;-</span> eDNA2IQI<span class="sc">::</span><span class="fu">step2.0_annotate_ASVs</span>(folder, parameteroptions, myASVs)</span></code></pre></div>
 <p>More files will populate the “outputData” directory at this stage.
 These will be:</p>
 <ul>
@@ -453,19 +462,20 @@ The most up-to-date Random Forest model for IQI prediction will be
 downloaded prior to this step on the first use. If a sample has fewer
 reads than the number required, the IQI can not be predicted. Details of
 this will be found in the dataCleaningDetails.txt file.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">#Run step 3</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>myPreds <span class="ot">&lt;-</span> eDNA2IQI<span class="sc">::</span><span class="fu">step3.0_predict_iqi</span>(myTaxa)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">#Run step 3</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>myPreds <span class="ot">&lt;-</span> eDNA2IQI<span class="sc">::</span><span class="fu">step3.0_predict_iqi_multiple</span>(folder, myTaxa)</span></code></pre></div>
 <p>More files will populate the “outputData” directory at this stage.
 These will be:</p>
 <ul>
 <li><p>An image file of a taxa barplot of the top 20 families that the
 rarefied reads used for IQI prediction were allocated to<br />
 (rarefied_read_taxaplot.png).</p></li>
+<li><p>A .csv of the taxa used for IQI prediction, and frequency of
+which they were used (RF_taxa.csv).</p></li>
 <li><p>A .csv of the rarefied taxa allocated reads used for IQI
-prediction<br />
-(rarefied_taxa_allocated_reads_family.csv).</p></li>
-<li><p>A .csv of predicted_IQIs, and the abundance of bacterial families
-in each sample that were important for model prediction<br />
+prediction (rarefied_taxa_allocated_reads_family.csv).</p></li>
+<li><p>A .csv of the mean predicted IQI, range and SD, and the predicted
+IQI for each individual random forest with otehr accompanying metadata
 (predicted_IQIs.csv).</p></li>
 </ul>
 </div>
@@ -474,15 +484,15 @@ in each sample that were important for model prediction<br />
 <h2>Full eDNA2IQI Pipeline</h2>
 <p>The full pipeline can be executed as a single step using the
 following wrapper function:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">#Run full pipeline</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>results <span class="ot">&lt;-</span> eDNA2IQI<span class="sc">::</span><span class="fu">edna2iqi</span>(folder)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co">#Run full pipeline</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>results <span class="ot">&lt;-</span> eDNA2IQI<span class="sc">::</span><span class="fu">edna2iqi</span>(folder)</span></code></pre></div>
 <p>This will output the data created in steps 1, 2 and 3 into the global
 environment as “results” in addition to saving data files and output as
 in the above steps. The results can be navigated as:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Access results from each step</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>step1_results <span class="ot">&lt;-</span> results<span class="sc">$</span>myASVs</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>step2_results <span class="ot">&lt;-</span> results<span class="sc">$</span>myTaxa</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>step3_results <span class="ot">&lt;-</span> results<span class="sc">$</span>myPreds</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Access results from each step</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>step1_results <span class="ot">&lt;-</span> results<span class="sc">$</span>myASVs</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>step2_results <span class="ot">&lt;-</span> results<span class="sc">$</span>myTaxa</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>step3_results <span class="ot">&lt;-</span> results<span class="sc">$</span>myPreds</span></code></pre></div>
 </div>
 </div>
 
