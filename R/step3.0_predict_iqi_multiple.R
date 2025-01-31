@@ -188,6 +188,4 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
   utils::write.csv(AllTaxa, file = file.path(folder,
                                                 "/outputData/AllTaxa.csv", fsep = ""),row.names = TRUE)
 
-  return(list(Predicted_IQI=collated_predictions))
-		       messageColour("Function finished: 'step3.0_predict_iqi_multiple' \n\n", "message")
 }
