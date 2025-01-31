@@ -187,5 +187,5 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
   #write file
   utils::write.csv(AllTaxa, file = file.path(folder,
                                                 "/outputData/RF_Taxa.csv", fsep = ""),row.names = TRUE)
-
+return(final_data)
 }
