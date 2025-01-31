@@ -2,8 +2,8 @@
 % Please edit documentation in R/edna2iqi.r
 \name{edna2iqi}
 \alias{edna2iqi}
-\title{Wrapper function to perform all steps of Reading, denoising,
-allocating taxa and predicting IQI}
+\title{Wrapper function to perform all steps of reading and denoising raw reads,
+allocating taxa and predicting IQI from multiple random forests}
 \usage{
 edna2iqi(folder, parameteroptions, auto_download = FALSE)
 }
@@ -22,8 +22,8 @@ allocated taxa (myTaxa) and
 predicted IQI values (myPreds)
 }
 \description{
-Wrapper function to perform all steps of Reading, denoising,
-allocating taxa and predicting IQI
+Wrapper function to perform all steps of reading and denoising raw reads,
+allocating taxa and predicting IQI from multiple random forests
 }
 \section{Example usage}{
 

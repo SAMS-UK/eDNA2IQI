@@ -2,7 +2,7 @@
 % Please edit documentation in R/downloadExternal.R
 \name{downloadExternal}
 \alias{downloadExternal}
-\title{Download the cutadapt.exe file and SILVA 138.1 taxa
+\title{Download the random forest models,  cutadapt.exe file and SILVA 138.1 taxa
 reference database from the SAMS THREDDS server, or
 from source.}
 \usage{
@@ -14,7 +14,7 @@ download external dependencies. This can be useful for automating or
 testing this function.}
 }
 \description{
-Download the cutadapt.exe file and SILVA 138.1 taxa
+Download the random forest models,  cutadapt.exe file and SILVA 138.1 taxa
 reference database from the SAMS THREDDS server, or
 from source.
 }

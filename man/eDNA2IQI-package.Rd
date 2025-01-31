@@ -4,18 +4,18 @@
 \name{eDNA2IQI-package}
 \alias{eDNA2IQI}
 \alias{eDNA2IQI-package}
-\title{eDNA2IQI: Predict IQI from eDNA}
+\title{eDNA2IQI: eDNA2IQI: A package to predict the Infaunal Quality Index (IQI) in benthic sediments from eDNA}
 \description{
-Tidy and clean bacterial DNA sequence reads. Allocate taxa names to unique sequences, using a curated SILVA v138.1 database as a reference. Predict IQI using a trained random forest algorithm.
+The package denoises demultiplexed Illumina miseq fastq files from 16S amplicon sequencing, and allocates taxa to amplicon sequence variants using the SILVA 138.1 database. IQI prediction is then performed against 30 random forest algorithms trained on an extensive dataset. Model training and package description can be found here: ***URL TO eDNA2IQI PAPER***.
 }
 \author{
 \strong{Maintainer}: Adam Wyness \email{adam.wyness@sams.ac.uk} (\href{https://orcid.org/0000-0003-1202-6358}{ORCID})
 
 Authors:
 \itemize{
+  \item Tom Wilding \email{tom.wilding@sams.ac.uk} (\href{https://orcid.org/0000-0002-4946-4020}{ORCID})
   \item Stevie Brain (\href{https://orcid.org/0000-0001-8272-6996}{ORCID})
   \item Esmee Roosenmaallen (\href{https://orcid.org/0000-0003-0519-3721}{ORCID})
-  \item Tom Wilding \email{tom.wilding@sams.ac.uk}
 }
 
 }

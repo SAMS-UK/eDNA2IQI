@@ -9,6 +9,9 @@ step1.01_quality_check(folder)
 \arguments{
 \item{folder}{A string. Location of raw data files.}
 }
+\value{
+NULL output saved directly to folder.
+}
 \description{
 Check quality of raw data, output graphs
 }

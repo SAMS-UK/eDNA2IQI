@@ -29,3 +29,4 @@ allocated reads (as .csv).
 
 myASVs <- step1.0_readFastq(folder = "C:/full/file/path/to/fastq/", parameteroptions)
 }
+
