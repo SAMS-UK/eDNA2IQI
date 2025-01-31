@@ -113,6 +113,7 @@ located within the specified `input` folder. These files are:
   function will scan these folders and resume the pipeline where it
   left off.
 
+You may be prompted for the download of the taxa reference database, the cutadapt executable, and the random forest models. An attempt will be made to download these from the SAMS THREDDS server, and then an attempt from source. 
 
 ### Step 2: Annotate ASVs
 
@@ -151,7 +152,7 @@ of this will be found in the dataCleaningDetails.txt file.
 
 ```r
 #Run step 3
-myPreds <- eDNA2IQI::step3.0_predict_iqi(folder, myTaxa)
+myPreds <- eDNA2IQI::step3.0_predict_iqi_multiple(folder, myTaxa)
 ```
 
 More files will populate the "outputData" directory at this stage. 
@@ -161,12 +162,13 @@ These will be:
   the rarefied reads used for IQI prediction were allocated to  
   (rarefied_read_taxaplot.png).
 
-- A .csv of the rarefied taxa allocated reads used for IQI prediction  
+- A .csv of the taxa used for IQI prediction, and frequency of which     they were used 
+  (RF_taxa.csv).
+  
+- A .csv of the rarefied taxa allocated reads used for IQI prediction
   (rarefied_taxa_allocated_reads_family.csv).
 
-- A .csv of predicted_IQIs, and the abundance of bacterial families
-  in each sample that were important for model prediction  
-  (predicted_IQIs.csv).
+- A .csv of the mean predicted IQI, range and SD, and the predicted IQI   for each individual random forest with otehr accompanying metadata     (predicted_IQIs.csv).
 
 ## Full eDNA2IQI Pipeline
 
