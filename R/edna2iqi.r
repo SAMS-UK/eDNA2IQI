@@ -31,7 +31,7 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
     utils::data("parameteroptions", envir = environment())
   }
 
-  message("Wrapper function: edna2iqi")
+  message("Function started: edna2iqi full pipeline")
 #1. check if step 1 completed, otherwise perform----
   if (file.exists(file.path(paste(folder, "outputData/collated_asv_batches.rda", sep="")))) {
 
