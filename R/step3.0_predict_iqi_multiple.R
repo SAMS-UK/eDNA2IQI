@@ -14,7 +14,7 @@
 #'
 step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = FALSE) {
 
-  messageColour("Function starting: 'predict_iqi_multiple'
+  messageColour("Function starting: 'step3.0_predict_iqi_multiple'
   Predicting IQI using optimized random forest models  \n\n", "message")
   step3_start_time <- as.character(Sys.time())
   message("Step 3 Start Date/Time:",step3_start_time)
@@ -189,4 +189,5 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
                                                 "/outputData/AllTaxa.csv", fsep = ""),row.names = TRUE)
 
   return(list(Predicted_IQI=collated_predictions))
+		       messageColour("Function finished: 'step3.0_predict_iqi_multiple' \n\n", "message")
 }
