@@ -34,17 +34,17 @@ downloadExternal <- function(auto_download = FALSE) {
         # Attempt to download from SAMS Thredds server
         url <- "https://thredds.sams.ac.uk/thredds/fileServer/Full_database/referenceDatabase_full.fa.gz"
         options(timeout = 300)
-        messageColour("Updating taxa reference database from SAMS Thredds server \n\n", "warnMessage")
+        messageColour("Updating taxa reference database from SAMS THREDDS server \n\n", "warnMessage")
         utils::download.file(url, filePathDB, quiet = TRUE)
 
         # Check if file was successfully downloaded
         if (file.exists(filePathDB)) {
-          message("Download of the reference taxa database from the SAMS Thredds server successful")
+          message("Download of the reference taxa database from the SAMS THREDDS server successful")
         }
 
       }, error = function(e) {
         # Handle error if SAMS Thredds download fails
-        message("\nSAMS Thredds server download unsuccessful \n\n", conditionMessage(e))
+        message("\nSAMS THREDDS server download unsuccessful \n\n", conditionMessage(e))
         message("\n\n Attempting download from Zenodo repository. External links may change or become unavailable in the future, contact support to alert them if this occurs.")
 
         # Nested tryCatch for downloading from Zenodo if the first attempt fails
@@ -110,7 +110,7 @@ downloadExternal <- function(auto_download = FALSE) {
         # Attempt to download from SAMS Thredds server
         url <- "https://thredds.sams.ac.uk/thredds/fileServer/cutadapt_executable/cutadapt_v1.exe"
         options(timeout = 300)
-        messageColour("Updating Cutadapt .exe file from SAMS Thredds server \n\n", "warnMessage")
+        messageColour("Updating Cutadapt .exe file from SAMS THREDDS server \n\n", "warnMessage")
         utils::download.file(url, filePathCutadapt, quiet = TRUE, mode = "wb")
 
         # Check if file was successfully downloaded
@@ -120,7 +120,7 @@ downloadExternal <- function(auto_download = FALSE) {
 
       }, error = function(e) {
         # Handle error if SAMS Thredds download fails
-        message("\nSAMS Thredds server download unsuccessful \n\n", conditionMessage(e))
+        message("\nSAMS THREDDS server download unsuccessful \n\n", conditionMessage(e))
         message("\n\n Attempting download from the Cutadapt Github. External links may change or become unavailable in the future, contact support to alert them if this occurs.")
 
         # Nested tryCatch for downloading from Github if the first attempt fails
@@ -187,7 +187,7 @@ downloadExternal <- function(auto_download = FALSE) {
         # Attempt to download from SAMS Thredds server
         url <- "https://thredds.sams.ac.uk/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run1_5_multiple.rda"
         options(timeout = 300)
-        messageColour("Updating Random Forest Model file from SAMS Thredds server \n\n", "warnMessage")
+        messageColour("Updating Random Forest Model file from SAMS THREDDS server \n\n", "warnMessage")
         utils::download.file(url, filePathModel, quiet = TRUE, mode = "wb")
 
         # Check if file was successfully downloaded
@@ -197,7 +197,7 @@ downloadExternal <- function(auto_download = FALSE) {
 
       }, error = function(e) {
         # Handle error if SAMS Thredds download fails
-        message("\nSAMS Thredds server download unsuccessful \n\n", conditionMessage(e))
+        message("\nSAMS THREDDS server download unsuccessful \n\n", conditionMessage(e))
         message("\n\n Try again soon, or contact SAMS or SEPA for assistance")
       })
     #message on denied download
