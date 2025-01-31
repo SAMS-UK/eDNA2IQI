@@ -16,7 +16,7 @@
 step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
                          parameteroptions, auto_download = FALSE) {
 
-  messageColour("Function starting: 'trim_primers'
+  messageColour("Function starting: 'step1.3_trim_primers'
   Removing primer sequences from sequence reads \n\n", "message")
 
   #1. Set file and filenames----
@@ -210,7 +210,7 @@ op_sys <- Sys.info()[1]
 
   }
 
-  messageColour("Function finished: 'trim_primers' \n\n", "message")
+  messageColour("Function finished: 'step1.3_trim_primers' \n\n", "message")
 
   return(list(fwd_trimmed, rev_trimmed))
 }
