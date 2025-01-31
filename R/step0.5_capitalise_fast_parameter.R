@@ -19,7 +19,7 @@ step0.5_capitaliseR1_R2 <- function(folder) {
 
   # List all files in the directory
   files <- list.files(directory_path, full.names = TRUE)
-  # fwd 
+  # 1. fwd reads ----
   # Iterate over each file and rename if needed
   for (file in files) {
     # Extract the file name without path
@@ -35,7 +35,7 @@ step0.5_capitaliseR1_R2 <- function(folder) {
       cat("Renamed:", file, "to", new_file_path, "\n")
     }
   }
-  # rev
+  # 2. rev reads----
   # Iterate over each file and rename if needed
   for (file in files) {
     # Extract the file name without path

@@ -17,20 +17,22 @@
 step1.0_readFastq=function(folder, parameteroptions, auto_download = FALSE) {
   message("Function: step1.0_readFastq")
 
-#Get current wd to return to at end of function. functions require wd change.
-	
+#0.1 Prepare----
+  #Get current wd to return to at end of function. functions require wd change
+
 	return_to <- getwd()
 #Check Folder name and add / at the end if its not there
 if (substr(folder, nchar(folder), nchar(folder)) != "/") {
   folder <- paste0(folder, "/")
 }
 
-# capitalise filename read orientation
+# 0.2 run step0.5----
+	#capitalise filename read orientation
 
   step0.5_capitaliseR1_R2(folder)
   message("File name syntax checked, and corrected where necessary")
 
-#1.Load parameteroptions dataframe if missing from function call
+#1.Load parameteroptions dataframe if missing from function call----
 
   if (missing(parameteroptions)) {
     utils::data("parameteroptions", envir = environment())#
@@ -39,7 +41,7 @@ if (substr(folder, nchar(folder), nchar(folder)) != "/") {
 # Get taxalevel
   taxalevel=extractParameters(parameteroptions,"global","taxalevel")
 
-#2.Check taxa level and generate folders
+#2.Check taxa level and generate folders----
 
 taxas <- c("Family", "Genus", "Species", "Order", "Class", "Phylum", "Kingdom")
   if (!taxalevel %in% taxas) {
@@ -50,13 +52,13 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
     stop()
   }
 
-# 3.Generate data folder to store results and intermediate folder to store
+# 3.Generate data folder to store results and intermediate folder to store----
   # intermediate step files
   outputfolder=paste(folder,"outputData",sep="")
   if (!dir.exists(file.path(outputfolder))) {dir.create(file.path(outputfolder)) }
   intermediatefolder=paste(outputfolder,"/intermediate",sep="")
   if (!dir.exists(intermediatefolder)) {dir.create(intermediatefolder)}
-# 4.Print parameters to file for provenance
+# 4.Print parameters to file for provenance----
   dataCleanfile <- file.path(folder, "outputData/dataCleaningDetails.txt")
   sink(dataCleanfile, append = TRUE)
   cat("Step 1 Start Date/Time:",as.character(Sys.time()))
@@ -69,7 +71,8 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
   cat("\n\n")
   sink()
 
-#5.Check raw data quality if set TRUE (default)
+#5.Check raw data quality if set TRUE (default)----
+  ##run step1.01----
   doCheck=extractParameters(parameteroptions,"global","qualityCheck","Char2Vect")
   message("Quality checking raw data, Set qualityCheck [3,3] in parameteroptions to 'FALSE' to disable")
   #outputs quality score graphics to folder (no return)
@@ -77,15 +80,16 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
   }
 
 
-#6.extract data frame of unique instrument_run identifier, sort in batches
+#6.extract data frame of unique instrument_run identifier, sort in batches----
   #batches are separate members of list.
+  ##run step1.1----
   sample_IDs=step1.1_extract_identifier(folder)
 
-	
-#7.MAIN LOOP Denoise each batch separately, outputs CSV file per batch
+
+#7.MAIN LOOP Denoise each batch separately, outputs CSV file per batch----
   #note that this passes batches of files, not individual files.
 	set.seed(123)
-	
+
     for (i in seq_along(sample_IDs))
     {
     (batch_name <- paste("ASV_reads_batch_", i, ".csv", sep = ""))
@@ -99,22 +103,25 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
 # Check if batch.csv already created, and skip if TRUE
     if (file.exists(file.path(paste(folder, "outputData/", batch_name, sep="")))) {
     #this will error if additional samples to the same batch are copied into the test folder, without resetting
-	    
+
      messageColour("Data already denoised, delete 'intermediate' folder to repeat, \n\n", "warnMessage")
 
-        } else 
+        } else
         #run main function to load raw files, remove Ns, trim primers, run dada2, merge, and save files into 'intermediate' folder
         {
-      
-      #Step1.2 remove unspecified bases (Ns)
+
+      ##run Step1.2----
+      #remove unspecified bases (Ns)
       no_unspec <- step1.2_remove_unspecified(folder, sample_IDs[[i]])
       fwd_no_unspec <- no_unspec[[1]]; rev_no_unspec <- no_unspec[[2]]
 
-      ####Step1.3 Trim primer sequences from the files in intermediate folder
+      ##run Step1.3----
+      #Trim primer sequences from the files in intermediate folder
       trimmed <- step1.3_trim_primers(folder, fwd_no_unspec, rev_no_unspec, parameteroptions, auto_download)
       fwd_trimmed <- trimmed[[1]]; rev_trimmed <- trimmed[[2]]
 
-      #Step1.4 Filter, adjust with error model, merge, remove chimeras. looping through sample_IDs batch-by-batch
+      ###run Step1.4----
+      #Filter, adjust with error model, merge, remove chimeras. looping through sample_IDs batch-by-batch
       ASV_reads_batch=step1.4_filter_quality_chimera(folder, sample_IDs[[i]],
                                              fwd_trimmed, rev_trimmed,
                                              parameteroptions)
@@ -129,10 +136,11 @@ Choose from: \nKingdom, \nPhylum, \nClass, \nOrder, \nFamily, Genus, \nSpecies \
       save(ASV_reads_batch,      file=file.path(folder, "outputData", batch_name2))
         }
       }
-      } 
+      }
 #end of loop
-     
-#merge ASVs of batches of samples that had to be denoised separately.
+
+#8. run collateASVBatches----
+  #merge ASVs of batches of samples that had to be denoised separately.
   CollateASVBatches=CollateASVBatches(folder, return_to, dataCleanfile)
   message("End of function: Step1.0_readFastq")
   return(CollateASVBatches)
@@ -147,15 +155,16 @@ CollateASVBatches=function(folder,return_to, dataCleanfile){
   A1=get(load(files_to_combine))
   Combined_ASV_batches=dplyr::bind_rows(A1,Combined_ASV_batches)
   }
-  
-  #for user sense-check, sample names retained as column1.	
+
+  #for user sense-check, sample names retained as column1.
   Combined_ASV_batches[is.na(Combined_ASV_batches)]=0
-  
+
   rownames(Combined_ASV_batches) <- Combined_ASV_batches$rowname
-	
+
   #keep all columns numerical.
   Combined_ASV_batches$rowname <- NULL
 
+  #9. output----
   #Save final ASV reads dataframe, called 'collated_asv_batches.rda'.
   save(Combined_ASV_batches, file = file.path(folder,"outputData","collated_asv_batches.rda"))
 

@@ -14,22 +14,21 @@ step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
   # set seed
   set.seed(123)
 
-  # Use reference database to allocate taxa#
+  # 1. download taxa database----
+  #Use reference database to allocate taxa
   reference <- file.path(find.package("eDNA2IQI"),
                          "extdata/referenceDatabase_full.fa.gz")
-
+  #2. assignTaxonomy----
   taxa <- as.data.frame(dada2::assignTaxonomy(as.matrix(collated_asv_batches), reference,
                                              multithread = TRUE))
-
+  #3. repair taxa names and remove unwanted taxa----
   # Remove categories that are not part of the taxon
-  #tomw edit, 16 June 2024
   ReplaceInsertae=function(x){ifelse(grepl("incertae|unknown",x,ignore.case = TRUE),NA,x)}
   taxa[] <- lapply(taxa, function(x) ReplaceInsertae(x))
   taxa[] <- lapply(taxa, function(x) stringr::str_replace_all(x, ";", ""))
   taxa[] <- lapply(taxa, function(x) stringr::str_replace_all(x, " ", ""))
   taxa[] <- lapply(taxa, function(x) stringr::str_replace_all(x, "\\.", ""))
   taxa[] <- lapply(taxa, function(x) stringr::str_replace_all(x, "-", ""))
-  #tomw edit end.
 
   # removes leading and tailing white_spaces
   taxa[] <- lapply(taxa, trimws, which = "both")
@@ -52,7 +51,7 @@ step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
   })
 
 
-  # Merge ASV reads and bacteria, set taxa level specificity as column names,
+  # 4. Merge ASV reads and bacteria, set taxa level specificity as column names----
   # remove other taxa
   taxa_combined <- rbind(collated_asv_batches, t(taxa))
   colnames(taxa_combined) <- taxa_combined[taxalevel, ]

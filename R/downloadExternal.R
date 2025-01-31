@@ -18,8 +18,8 @@ downloadExternal <- function(auto_download = FALSE) {
   filePathDB <- file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz")
   filePathCutadapt <- file.path(find.package("eDNA2IQI"), "extdata", "cutadapt_v1.exe")
   filePathModel <- file.path(find.package("eDNA2IQI"), "extdata", "RFModel_rarefy_5000_taxalevel_family_BMB_Run1_5_multiple.rda")
-  
-  # Download reference database
+
+  # 1. Download reference database----
   if (!file.exists(filePathDB)) {
     if(auto_download == FALSE) {
     # Prompt user for permission to download
@@ -96,7 +96,7 @@ downloadExternal <- function(auto_download = FALSE) {
     message("\nReference taxa database already downloaded")
   }
 
-  # Download Cutadapt
+  # 2. Download Cutadapt----
   if (!file.exists(filePathCutadapt)) {
     if(auto_download == FALSE) {
     # Prompt user for permission to download
@@ -173,7 +173,7 @@ downloadExternal <- function(auto_download = FALSE) {
   }
 
 
-  # Download RF_model from SAMS THREDDs server
+  #3. Download RF_model from SAMS THREDDs server----
  if (!file.exists(filePathModel)) {
     if (auto_download == FALSE) {
       # Prompt user for permission to download
@@ -214,5 +214,5 @@ downloadExternal <- function(auto_download = FALSE) {
   else {
     message("\nRF model file already downloaded")
   }
-  
+
 }

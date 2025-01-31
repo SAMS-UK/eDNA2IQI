@@ -21,7 +21,9 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
 
   messageColour("Function starting: 'filter_quality_chimera'. Removing low quality sequences \n\n", "message")
   # Write output and create files
-  # Set file to store details of cleaning and filtering
+
+  # Set file and filenames----
+  #to store details of cleaning and filtering
 
   dataCleanfile <- file.path(folder, "outputData/dataCleaningDetails.txt")
   sink(dataCleanfile, append = TRUE)
@@ -40,7 +42,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   fwd_filtered <- sub("trimmed", "filtered", fwd_trimmed)#ok, replaces trimmed for filtered in string.
   rev_filtered <- sub("trimmed", "filtered", rev_trimmed)
 
-  #### 1.Get dada2 filter parameters
+  #1.Get dada2 filter parameters----
   message("1.Fetching dada2 filter parameters from parameterOptions")
   # Get parameter options
     maxn=extractParameters(parameteroptions,"filterAndTrim","maxN","Char2Vect")
@@ -65,7 +67,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
     v=extractParameters(parameteroptions,"filterAndTrim","verbose","Char2Vect")
 
 
-  #2.Run dada2 filterAndTrim
+  #2.Run dada2 filterAndTrim----
   message("2.Running dada2 filterAndTrim")
   #fwd_trimmed file exists,
   #fwd_filtered path exists, but not files
@@ -79,8 +81,8 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
                        rm.lowcomplex = rmlow, trimLeft = tleft,
                        trimRight = tright, verbose = v)
 
-  
-  #3.Learn-error parameters,calculating dada2 error rates
+
+  #3.Learn-error parameters,calculating dada2 error rates----
   message("3.Fetching learn-error parameters from parameterOptions")
   (nB=extractParameters(parameteroptions,"learnErrors","nbases","Char2Vect"))
   (rnd=extractParameters(parameteroptions,"learnErrors","randomise","Char2Vect"))
@@ -104,7 +106,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
                                                                "_R2_001.fastq.gz"))
 
 
-  #4.Run error model, object created
+  #4.Run error model, object created----
   message("4.Producing error model, model object will be created")
   message("Forward error:")
   message("Not memory intensive, but may take some time")
@@ -120,7 +122,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
                                   MAX_CONSIST = mc, OMEGA_C = oc,
                                   qualityType = qtype)
 
-  #5.Get dada2 inference parameters
+  #5.Get dada2 inference parameters----
   message("5.Fetching dada2 inference parameters from parameterOptions")
   # Get parameter options
   (eEF=extractParameters(parameteroptions,"dada","errorEstimationFunction"))
@@ -129,7 +131,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   (selfC=extractParameters(parameteroptions,"dada","selfConsist","Char2Vect"))
   (pool=extractParameters(parameteroptions,"dada","pool","Char2Vect"))
 
-  #6.Run error model on the filtered reads, in the filtered directory
+  #6.Run error model on the filtered reads, in the filtered directory----
   message("6.Running error model on the filtered reads in the filtered directory. \n A memory leak may occur here, check non-paged pool when running samples n>36")
   message("Forward error being processed")
 
@@ -139,7 +141,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   dada2_rev <- dada2::dada(rev_filtered, err = error_rev, multithread = multi,
                            verbose = v, selfConsist = selfC, pool = pool)
 
-  #7.Write detail of cleaning
+  #7.Write detail of cleaning----
   message("7.Write details of denoising to .txt file")
   dataCleanfile <- file.path(folder, "outputData/dataCleaningDetails.txt")
   fw_in_L <- c()
@@ -180,7 +182,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
     sink()
   }
 
-  #8.Merge forward and backward reads
+  #8.Merge forward and backward reads----
   message("8.Merge forward and reverse reads")
   # Get parameter options
   (MinO=extractParameters(parameteroptions,"mergePairs","minOverlap","Char2Vect"))
@@ -202,7 +204,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
   # Construct ASV reads table and remove chimera reads
   message("Constructing sequence table ")
   ASV_table_raw <- dada2::makeSequenceTable(merged_reads)
-  
+
   #write output to dataCleanfile
   fw_all <- c()
   fw_unique <- c()
@@ -238,7 +240,7 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
   }
 
 
-  #9.Remove chimeras and print cleaning details
+  #9.Remove chimeras and print cleaning details----
   message("9.Removing chimeric reads, and printing denoising details")
   # Get parameter options
   (mth=extractParameters(parameteroptions,"removeBimeraDenovo","method"))
@@ -294,13 +296,13 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
   Retained_samples=rownames(ASV_table_no_chim)
   fwd_input2=file.path(folder,Retained_samples)
   fwd_input3=gsub("//", "/", fwd_input2)#shortcut, in case of folder/ or folder specified.
-  
+
   #empty variable.  Vector of total counts for samples.
   fw_in_L <- c()
   for (x in seq_along(fwd_input3)) {
     fw_in_L[x] <- length(ShortRead::id(ShortRead::readFastq(fwd_input3[x])))#gives the total read count for all the samples
   }
-  
+
   # DATA FLAG: flag if data loss >70%
   if (length(names[(rowSums(ASV_table_no_chim) / fw_in_L) < 0.3]) > 0) {
     messageColour("High loss of reads during denoising, data of low quality.
@@ -309,7 +311,7 @@ cat("\nFiles ", sub(".*/filtered/", "", sub(".fastq.gz", "", fwd_filtered[x])),
     cat(as.character(Sys.time()))
     cat("\nHigh loss of reads during denoising, data of low quality.\n")
     cat("The following samples lost >70% of reads.\nTreat IQI predictions with caution.\n")
-    
+
     #ASV_table_no_chim is a matrix_array.
     A=as.data.frame(ASV_table_no_chim)
     (B=(rowSums(A)/fw_in_L)<0.3)

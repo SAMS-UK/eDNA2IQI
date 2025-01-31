@@ -6,18 +6,19 @@
 #' @return A list.
 
 step1.2_remove_unspecified <- function(folder, raw_files) {
-  
+
   messageColour("Function starting: 'remove_unspecified'
            Removing unspecified bases from sequence reads \n\n", "message")
 
-  # Set file to store denoising details
+  #1. Set file and filenames----
+  #to store denoising details
   dataCleanfile <- paste(folder, "outputData/dataCleaningDetails.txt",sep="")
   sink(dataCleanfile, append = TRUE)
   cat(as.character(Sys.time()))
   cat("\n\nFunction 1.2: remove_unspecified \n\n")
   sink()
 
-  
+
   # Set file name of raw data in input folder
   AA=unlist(raw_files)
 
@@ -36,7 +37,8 @@ step1.2_remove_unspecified <- function(folder, raw_files) {
   if ((sum(!file.exists(fwd_no_unspec)) +
        sum(!file.exists(rev_no_unspec))) != 0) {
 
-  # Remove Ns from the sequences and save as .gz files in intermediate folder
+  #2. Remove Ns----
+    #from the sequences and save as .gz files in intermediate folder
   dada2::filterAndTrim(fwd_input, fwd_no_unspec, rev_input, rev_no_unspec,
                        maxN = 0, multithread = FALSE, verbose = FALSE)
 
@@ -116,7 +118,7 @@ following samples, data of low quality. Treat IQI predictions with caution.",
     sink()
   }
 
-  #Check all files created
+  ##Check all files are created----
   fwd_actual <- stringr::str_subset(dir(path_no_unspec), "_R1_001.fastq.gz")
   rev_actual <- stringr::str_subset(dir(path_no_unspec), "_R2_001.fastq.gz")
   #use grep and then ignore.case.

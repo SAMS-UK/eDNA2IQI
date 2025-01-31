@@ -11,6 +11,7 @@
 
 drawBarplot <- function(S16_readsB, folder) {
 
+  #shortenName6 function----
   #reduce names
   ShortenNames6 <- function(T) {
     # Remove everything from the first occurrence of "_XUnidentified" onwards
@@ -36,7 +37,7 @@ drawBarplot <- function(S16_readsB, folder) {
 
 
 
-#shorten sample name
+#1. shorten sample name----
 	S16_readsB <- S16_readsB %>%
 	dplyr::mutate(SampleID = stringr::str_remove(SampleID, "_S.*"))
 
@@ -47,7 +48,8 @@ drawBarplot <- function(S16_readsB, folder) {
 
 	ST$Taxon <- sapply(ST$Taxon, ShortenNames6)
 
-	#get total abundance
+
+	#2. calculate top 20 abundant----
 	total_abundance <- ST %>%
 		dplyr::group_by(Taxon) %>%
 		dplyr::summarise(Total_Abundance = sum(reads), .groups = 'drop') %>%
@@ -86,7 +88,7 @@ palette2 <- RColorBrewer::brewer.pal(n = 10, "Paired")
 custom_palette <- c(palette1, palette2)
 
 
-#ggplot barplot
+#3. ggplot barplot----
 taxaplot <- ggplot2::ggplot(reordered_data, ggplot2::aes(x = SampleID, y = Total_Abundance, fill = Taxon)) +
  ggplot2::geom_bar(stat = "identity", width = 0.95) +
   ggplot2::scale_fill_manual(values = custom_palette) +

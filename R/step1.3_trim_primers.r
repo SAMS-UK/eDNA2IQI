@@ -19,7 +19,8 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   messageColour("Function starting: 'trim_primers'
   Removing primer sequences from sequence reads \n\n", "message")
 
-  #Set file to store details of cleaning and filtering
+  #1. Set file and filenames----
+  #to store details of cleaning and filtering
   dataCleanfile <- paste(folder, "outputData/dataCleaningDetails.txt",sep="")
   sink(dataCleanfile, append = TRUE)
   cat(as.character(Sys.time()))
@@ -32,7 +33,7 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   if (!dir.exists(path_trimmed)) {
     dir.create(path_trimmed)
   }
-  
+
   #create filename for trimmed forward
   fwd_trimmed <- sub("no_Ns", "trimmed", fwd_no_unspec)
   #and reverse
@@ -41,7 +42,7 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   # Skip step and if files already present
   if ((sum(!file.exists(fwd_trimmed)) + sum(!file.exists(rev_trimmed))) != 0) {
 
-  #Load the cutadapt tool if required
+  #2. Load cutadapt tool if required----
   downloadExternal(auto_download = auto_download)
     if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata", "cutadapt_v1.exe"))) {
     # If the file does not exist, stop execution with an error message
@@ -51,7 +52,7 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
   cutadapt_exe <- file.path(find.package("eDNA2IQI"), "extdata/cutadapt_v1.exe")
 
 
-  #Specify primer sequences
+  #3. Specify primer sequences----
   p=extractParameters(parameteroptions,"global","primers")
 
   primers <- c(sub(",.*", "", p), sub(".*,", "", p))
@@ -90,8 +91,8 @@ step1.3_trim_primers <- function(folder, fwd_no_unspec, rev_no_unspec,
     j=extractParameters(parameteroptions,"cutadapt","-j","Char2Vect")
 
   #Remove primer sequences off the sequences using cutadapt.exe
-  #method changes with operating system 
-
+  #method changes with operating system
+#4. trim primers with cutadapt----
     #detect operating system
 op_sys <- Sys.info()[1]
 
@@ -147,7 +148,8 @@ op_sys <- Sys.info()[1]
     sink()
   }
 
-  # Write details of cleaning
+  #5. output details----
+  #Write details of cleaning
   fw_in_L <- c()
   fw_out_L <- c()
   sink(dataCleanfile, append = TRUE)
