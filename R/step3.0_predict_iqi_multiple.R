@@ -4,6 +4,8 @@
 #' @param folder A string. Location of raw fastq data files.
 #' @param AnnotatedASVs A data frame. Contains the bacterial taxa read counts which
 #' should be used to predict the IQI values.
+#' @param auto_download Logical. If `TRUE`, automatically downloads dependencies.
+#'
 #'
 #' @importFrom utils glob2rx
 #' @importFrom randomForest randomForest
