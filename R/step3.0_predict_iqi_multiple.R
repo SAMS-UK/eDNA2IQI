@@ -186,6 +186,6 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
   AllTaxa=as.data.frame(table(CP2))#tabulate key taxa as utilised in multiple RF models.
   #write file
   utils::write.csv(AllTaxa, file = file.path(folder,
-                                                "/outputData/AllTaxa.csv", fsep = ""),row.names = TRUE)
+                                                "/outputData/RF_Taxa.csv", fsep = ""),row.names = TRUE)
 
 }
