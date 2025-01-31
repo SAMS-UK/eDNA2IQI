@@ -12,6 +12,8 @@ step3.0_predict_iqi_multiple(folder, AnnotatedASVs, auto_download = FALSE)
 
 \item{AnnotatedASVs}{A data frame. Contains the bacterial taxa read counts which
 should be used to predict the IQI values.}
+
+\item{auto_download}{Logical. If \code{TRUE}, automatically downloads dependencies.}
 }
 \value{
 A data frame. As inputted, with added 'predicted_IQI' column
