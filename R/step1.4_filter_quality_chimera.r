@@ -17,7 +17,7 @@ step1.4_filter_quality_chimera=function(folder, raw_files, fwd_trimmed, rev_trim
                                    parameteroptions) {
 
   message("Function: Step1.4_filter_quality_chimera")
-  message("Generating ASVs from filtered files (in 'intermediate/filtered'")
+  message("Generating ASVs from filtered files, in 'intermediate/filtered'")
 
   messageColour("Function starting: 'filter_quality_chimera'. Removing low quality sequences \n\n", "message")
   # Write output and create files
