@@ -5,7 +5,6 @@
 #' @param collated_asv_batches A dataframe. Contains the S16 ASV reads, collated across batches.
 #' @param taxalevel A string. Specifies the taxonomic level used for analysis.
 #'
-#' @export
 #' @return A dataframe.
 #'
 step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
