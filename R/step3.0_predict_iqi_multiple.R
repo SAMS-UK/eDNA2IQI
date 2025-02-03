@@ -98,6 +98,8 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
     return(NULL)
   }
 
+  #set seed safely across parallel sessions for testthat			       
+  RNGkind("L'Ecuyer-CMRG")
   set.seed(123)
   rare_data <- suppressWarnings(as.data.frame(vegan::rrarefy(AnnotatedASVs, rarefaction_rate)))
   for_barplot <- rare_data
