@@ -11,6 +11,7 @@ step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
   message("Function: Step2.1_taxa_allocation")
 
   # set seed
+  RNGkind("L'Ecuyer-CMRG")
   set.seed(123)
 
   # 1. download taxa database----
