@@ -20,6 +20,8 @@
 edna2iqi=function(folder, parameteroptions, auto_download = FALSE) {
 
 #0 Prepare----
+  RNGkind("L'Ecuyer-CMRG")
+  set.seed(123)
 #Check Folder name and add / at the end if its not there (needed for some functions)
 
 if (substr(folder, nchar(folder), nchar(folder)) != "/") {
