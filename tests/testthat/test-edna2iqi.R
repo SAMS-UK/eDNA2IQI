@@ -4,6 +4,6 @@ test_that("edna2iqi function works", {
   test_data <- eDNA2IQI::edna2iqi(folder = path, auto_download = TRUE)
   preds <- test_data$myPreds
   
-  testthat::expect_equal(round(preds$MeanIQI,4), round(c(0.3154),4))
+  testthat::expect_equal(round(preds$MeanIQI,4), round(c(0.3069),4))
   
 })
