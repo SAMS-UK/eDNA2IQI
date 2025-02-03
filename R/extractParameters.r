@@ -7,7 +7,6 @@
 #' @param FunctionName which function in dada2 etc (e.g. trim etc)
 #' @param ParameterName the parameters within the function
 #' @param ... optional modifications, use "Char2Vect" to evaluate strings as R expressions
-#' @export
 #' @return a character, logical or numerical value
 #'
 #' @section Example usage: extractParameters(parameteroptions,"cutadapt","-m", "Char2Vect")
