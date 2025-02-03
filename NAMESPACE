@@ -2,11 +2,8 @@
 
 export(downloadExternal)
 export(edna2iqi)
-export(extractParameters)
 export(step1.0_readFastq)
-export(step1.4_filter_quality_chimera)
 export(step2.0_annotate_ASVs)
-export(step2.1_taxa_allocation)
 export(step3.0_predict_iqi_multiple)
 importFrom(magrittr,"%>%")
 importFrom(randomForest,randomForest)
