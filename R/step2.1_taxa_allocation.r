@@ -71,7 +71,7 @@ step2.1_taxa_allocation <- function(folder, collated_asv_batches, taxalevel) {
     dplyr::select(-dplyr::contains("mitochondria"))
 # Only keep Bacteria columns
   S16_reads <- taxa_combined[, grepl("Bacteria", names(taxa_combined))]
-  S16_reads <- S16_reads[, order(names(S16_reads))]
+  
 
                    
   return(S16_reads)
