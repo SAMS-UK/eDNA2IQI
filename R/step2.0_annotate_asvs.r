@@ -51,7 +51,6 @@ step2.0_annotate_ASVs=function(folder,parameteroptions,collated_asv_batches, aut
   S16_reads=step2.1_taxa_allocation(folder, collated_asv_batches, taxalevel)
 
   S16_readsB=S16_reads
-  S16_readsB <- S16_readsB[, order(names(S16_readsB))]
   S16_readsB$SampleID=rownames(S16_readsB)
   #move SampleID to first column
   A=grep("SampleID",colnames(S16_readsB))
