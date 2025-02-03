@@ -8,7 +8,6 @@
 #' reads of the input samples where primer sequences were removed.
 #' @param parameteroptions A dataframe.
 #'
-#' @export
 #' @return A data frame.
 
 
