@@ -206,7 +206,7 @@ downloadExternal <- function(auto_download = FALSE) {
         "The Random Forest Models need to be downloaded to predict IQIs. \n",
         "Proceed with automatic download, or manual download from: \n",
         "https://thredds.sams.ac.uk/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run1_5_multiple.rda, \n",
-        "and save file as `RFModel_rarefy_5000_taxalevel_family_BMB_Run1_4b.rda` \n",
+        "and save file as `RFModel_rarefy_5000_taxalevel_family_BMB_Run1_5_multiple.rda` \n",
         "in the /extdata/ directory in the eDNA2IQI R library files \n"
        ), "message"))
     }
