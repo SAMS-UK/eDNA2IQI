@@ -11,11 +11,16 @@
 #' @section Example usage: eDNA2IQI::downloadExternal()
 #'
 
+
+# Handle thredds 1st time user reg, and store token for subsequent downloads
+source("thredds_auth/thredds_download.R")
+
 downloadExternal <- function(auto_download = FALSE) {
 
 
   # File paths
   filePathDB <- file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz")
+  cfgpath <- file.path(find.package("eDNA2IQI"), "extdata", "thredds_creds.json") # needed to store credentials for thredds api after successful registration
   filePathCutadapt <- file.path(find.package("eDNA2IQI"), "extdata", "cutadapt_v1.exe")
   filePathModel <- file.path(find.package("eDNA2IQI"), "extdata", "RFModel_rarefy_5000_taxalevel_family_BMB_Run1_5_multiple.rda")
 
@@ -32,10 +37,10 @@ downloadExternal <- function(auto_download = FALSE) {
 
       tryCatch({
         # Attempt to download from SAMS Thredds server
-        url <- "https://thredds.sams.ac.uk/thredds/fileServer/Full_database/referenceDatabase_full.fa.gz"
+        threddsfile <- "/thredds/fileServer/Full_database/referenceDatabase_full.fa.gz"
         options(timeout = 300)
         messageColour("Updating taxa reference database from SAMS THREDDS server \n\n", "warnMessage")
-        utils::download.file(url, filePathDB, quiet = TRUE)
+        flask_download(threddsfile, filePathDB, cfgpath)
 
         # Check if file was successfully downloaded
         if (file.exists(filePathDB)) {
