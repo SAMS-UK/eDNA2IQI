@@ -36,7 +36,7 @@ Imports:
     vegan,
     vroom
 Depends:
-    R (>= 4.4.0)
+    R (>= 4.3.3)
 Suggests: 
     knitr,
     rmarkdown,
