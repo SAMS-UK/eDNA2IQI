@@ -119,7 +119,7 @@ flaskcli_save_cfg(list(
   application = application,
   nationality = nationality
 ), cfgpath)
-
+token
 }
 
 
