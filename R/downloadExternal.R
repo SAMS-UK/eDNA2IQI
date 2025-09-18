@@ -60,17 +60,17 @@ flaskcli_token <- function(fileq, cfgpath) {
   
   print(.register_url)
   # our request
-  req <- request(.register_url) |>
-    req_method("POST") |>
+  req <- httr2::request(.register_url) |>
+    httr2::req_method("POST") |>
     httr2::req_body_json(list(name = name, org = org, email = email, file = file))
   
 
   # send the post request
-  resp <- req_perform(req)
+  resp <- httr2::req_perform(req)
   
   
   if (resp_status(resp) >= 300) stop("Registration failed: ", resp_status_desc(resp))
-  token <- resp_body_json(resp)$token # flask app will send back token to save
+  token <- httr2::resp_body_json(resp)$token # flask app will send back token to save
   if (is.null(token) || !nzchar(token)) stop("No token returned by server.")
   
   # save the token to file, along with our neccessary vars
