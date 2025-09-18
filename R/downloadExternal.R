@@ -69,7 +69,7 @@ flaskcli_token <- function(fileq, cfgpath) {
   resp <- httr2::req_perform(req)
   
   
-  if (resp_status(resp) >= 300) stop("Registration failed: ", resp_status_desc(resp))
+  if (httr2::resp_status(resp) >= 300) stop("Registration failed: ", httr2::resp_status_desc(resp))
   token <- httr2::resp_body_json(resp)$token # flask app will send back token to save
   if (is.null(token) || !nzchar(token)) stop("No token returned by server.")
   
