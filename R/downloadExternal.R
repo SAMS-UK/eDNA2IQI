@@ -13,7 +13,161 @@
 
 
 # Handle thredds 1st time user reg, and store token for subsequent downloads
-source("thredds_auth/thredds_download.R")
+# Download with token; prefers libcurl headers; falls back to curl package
+
+.flask_base      <- "http://127.0.0.1:8447" # this will be https://thredds.sams.ac.uk eventually
+.register_url  <- paste0(.flask_base, "/api/register")  
+.api  <- paste0(.flask_base, "/api/download") # GET with Bearer token is fine
+
+
+# load token creds
+flaskcli_load_cfg <- function(cfgpath) {
+  p <- path.expand(cfgpath)
+  if (file.exists(p)) fromJSON(p, simplifyVector = TRUE) else NULL
+}
+
+# save token creds
+flaskcli_save_cfg <- function(cfg, cfgpath) {
+  pdir <- dirname(path.expand(cfgpath))
+  if (!dir.exists(pdir)) dir.create(pdir, recursive = TRUE, showWarnings = FALSE)
+  writeLines(toJSON(cfg, auto_unbox = TRUE, pretty = TRUE), path.expand(cfgpath))
+}
+
+
+
+# Get or create a token (prompts once)
+# and registration if no token present!
+flaskcli_token <- function(fileq, cfgpath) {
+  cfg <- flaskcli_load_cfg(cfgpath)
+  # Saved credentials is found so return token
+  if (!is.null(cfg) && !is.null(cfg$token) && nzchar(cfg$token)) return(cfg$token)
+  
+  # No saved credentials so prompt for registration
+  cat("First-time registration:\n")
+  file <- fileq
+  name  <- readline("YOUR_NAME: ")
+  org   <- readline("ORG: ")
+
+  repeat {
+    email <- readline("EMAIL: ")
+    res <- sanitizeEmail(email)
+    if (res$valid) {
+      email <- res$value  # take the sanitized version
+      break
+    }
+    cat("ehmmm — invalid email:", res$reason, "\n")
+  }
+  
+  print(.register_url)
+  # our request
+  req <- request(.register_url) |>
+    req_method("POST") |>
+    req_body_json(list(name = name, org = org, email = email, file = file))
+  
+
+  # send the post request
+  resp <- req_perform(req)
+  
+  
+  if (resp_status(resp) >= 300) stop("Registration failed: ", resp_status_desc(resp))
+  token <- resp_body_json(resp)$token # flask app will send back token to save
+  if (is.null(token) || !nzchar(token)) stop("No token returned by server.")
+  
+  # save the token to file, along with our neccessary vars
+  flaskcli_save_cfg(list(token = token, name = name, org = org, email = email),cfgpath)
+  token
+}
+
+
+# ensure users arent entering rubbish
+sanitizeEmail <- function(email) {
+  # handle NULL/NA/non-char
+  if (is.null(email) || length(email) == 0L || is.na(email)) {
+    return(list(valid = FALSE, value = NA_character_, reason = "missing"))
+  }
+  e <- as.character(email[[1]])
+  
+  # trim & strip wrappers
+  e <- trimws(e)
+  e <- sub("^<\\s*(.+?)\\s*>$", "\\1", e)                 # remove <> if present
+  e <- gsub("[\u00A0\u200B\u200C\u200D\uFEFF]", "", e)     # strip NBSP/zero-width
+  
+  # must contain exactly one "@"
+  parts <- strsplit(e, "@", fixed = TRUE)[[1]]
+  if (length(parts) != 2) {
+    return(list(valid = FALSE, value = e, reason = "must contain one @"))
+  }
+  
+  local  <- parts[1]
+  domain <- parts[2]
+  
+  # normalise dots & case
+  local  <- gsub("\\.+", ".", local)
+  domain <- tolower(gsub("\\.+", ".", domain))
+  
+  # no leading/trailing dots
+  local  <- gsub("^\\.|\\.$", "", local)
+  domain <- gsub("^\\.|\\.$", "", domain)
+  
+  # length limits (RFC-ish)
+  if (nchar(local) == 0L || nchar(local) > 64L) {
+    return(list(valid = FALSE, value = NA_character_, reason = "local-part length"))
+  }
+  if ((nchar(local) + 1 + nchar(domain)) > 254L) {
+    return(list(valid = FALSE, value = NA_character_, reason = "address too long"))
+  }
+  
+  # local-part allowed chars (dots already checked for edges/dupes)
+  if (!grepl("^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+$", local)) {
+    return(list(valid = FALSE, value = NA_character_, reason = "invalid local-part chars"))
+  }
+  
+  # domain must have at least one dot and valid labels
+  labels <- strsplit(domain, ".", fixed = TRUE)[[1]]
+  if (length(labels) < 2L) {
+    return(list(valid = FALSE, value = NA_character_, reason = "domain needs a dot"))
+  }
+  # label syntax & lengths
+  if (any(nchar(labels) < 1L | nchar(labels) > 63L)) {
+    return(list(valid = FALSE, value = NA_character_, reason = "domain label length"))
+  }
+  if (any(!grepl("^[A-Za-z0-9-]+$", labels))) {
+    return(list(valid = FALSE, value = NA_character_, reason = "invalid domain chars"))
+  }
+  if (any(grepl("^-|-$", labels))) {
+    return(list(valid = FALSE, value = NA_character_, reason = "domain label starts/ends with -"))
+  }
+  # TLD: letters only, min 2
+  tld <- labels[length(labels)]
+  if (!grepl("^[A-Za-z]{2,63}$", tld)) {
+    return(list(valid = FALSE, value = NA_character_, reason = "invalid TLD"))
+  }
+  
+  sanitized <- paste0(local, "@", paste(labels, collapse = "."))
+  list(valid = TRUE, value = sanitized, reason = NA_character_)
+}
+
+
+
+flask_download <- function(file, destpath,cfgpath) {
+  fileq <- utils::URLencode(file, reserved = TRUE)
+  token <- flaskcli_token(fileq, cfgpath)
+  url   <- paste0(.api, "?file=", fileq)
+  print(url)
+  
+  utils::download.file(
+    url      = url,
+    destfile = destpath,
+    method   = "libcurl",
+    mode     = "wb",
+    quiet    = FALSE,
+    headers  = c(Authorization = paste("ednasams25", token))
+  )
+}
+
+
+
+
 
 downloadExternal <- function(auto_download = FALSE) {
 

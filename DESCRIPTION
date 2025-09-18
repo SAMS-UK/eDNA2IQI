@@ -18,11 +18,14 @@ VignetteBuilder: knitr
 Imports: 
     caret,
     crayon,
+    curl,
     dada2,
     dplyr,
     fs,
     ggplot2,
     grDevices,
+    httr2,
+    jsonlite,
     magrittr,
     randomForest,
     RColorBrewer,
@@ -32,6 +35,7 @@ Imports:
     stringr,
     tibble,
     tidyr,
+    tools,
     utils,
     vegan,
     vroom
