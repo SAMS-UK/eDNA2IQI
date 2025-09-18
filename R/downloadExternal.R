@@ -62,7 +62,7 @@ flaskcli_token <- function(fileq, cfgpath) {
   # our request
   req <- request(.register_url) |>
     req_method("POST") |>
-    req_body_json(list(name = name, org = org, email = email, file = file))
+    httr2::req_body_json(list(name = name, org = org, email = email, file = file))
   
 
   # send the post request
