@@ -30,7 +30,7 @@ flaskcli_load_cfg <- function(cfgpath) {
 flaskcli_save_cfg <- function(cfg, cfgpath) {
   pdir <- dirname(path.expand(cfgpath))
   if (!dir.exists(pdir)) dir.create(pdir, recursive = TRUE, showWarnings = FALSE)
-  writeLines(toJSON(cfg, auto_unbox = TRUE, pretty = TRUE), path.expand(cfgpath))
+  writeLines(jsonlite::toJSON(cfg, auto_unbox = TRUE, pretty = TRUE), path.expand(cfgpath))
 }
 
 
