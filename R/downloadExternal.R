@@ -60,20 +60,24 @@ flaskcli_token <- function(fileq, cfgpath) {
   }
 }
 
-.ask_email <- function(prompt = "EMAIL: ") {
-  repeat {
-    email <- readline(prompt)
-    email <- trimws(email)
-    if (grepl("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", email)) return(email)
-    cat("Sorry, that doesn't look like a valid email.\n")
-  }
-}
 # ------------------
 
 cat("First-time registration:\n")
 file <- fileq
 name <- readline("YOUR NAME: ")
-email <- .ask_email("EMAIL: ")
+
+
+
+repeat {
+  email <- readline("EMAIL: ")
+  res <- sanitizeEmail(email)
+  if (res$valid) {
+    email <- res$value  # take the sanitized version
+    break
+  }
+  cat("ehmmm — invalid email:", res$reason, "\n")
+}
+
 
 # Menus
 sector_choices <- c("industry", "consultancy", "academic", "government/regulator")
