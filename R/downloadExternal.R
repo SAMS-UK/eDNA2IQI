@@ -42,40 +42,80 @@ flaskcli_token <- function(fileq, cfgpath) {
   # Saved credentials is found so return token
   if (!is.null(cfg) && !is.null(cfg$token) && nzchar(cfg$token)) return(cfg$token)
   
-  # No saved credentials so prompt for registration
-  cat("First-time registration:\n")
-  file <- fileq
-  name  <- readline("YOUR_NAME: ")
-  org   <- readline("ORG: ")
+  # No saved credentials so prompt for registration 
 
+  # ---- helpers ----
+.ask_menu <- function(title, choices, other_label = "Other") {
+  full <- c(choices, other_label)
   repeat {
-    email <- readline("EMAIL: ")
-    res <- sanitizeEmail(email)
-    if (res$valid) {
-      email <- res$value  # take the sanitized version
-      break
-    }
-    cat("ehmmm — invalid email:", res$reason, "\n")
+    cat("\n", title, "\n", sep = "")
+    sel <- utils::menu(full, title = NULL, graphics = FALSE)
+    if (sel == 0L) { cat("Please choose a number.\n"); next }
+    if (sel <= length(choices)) return(list(value = choices[sel], is_other = FALSE))
+    # "Other" chosen
+    txt <- readline(paste0(other_label, " (type your answer): "))
+    txt <- trimws(txt)
+    if (nzchar(txt)) return(list(value = txt, is_other = TRUE))
+    cat("Please enter a non-empty value.\n")
   }
-  
-  print(.register_url)
-  # our request
-  req <- httr2::request(.register_url) |>
-    httr2::req_method("POST") |>
-    httr2::req_body_json(list(name = name, org = org, email = email, file = file))
-  
+}
 
-  # send the post request
-  resp <- httr2::req_perform(req)
-  
-  
-  if (httr2::resp_status(resp) >= 300) stop("Registration failed: ", httr2::resp_status_desc(resp))
-  token <- httr2::resp_body_json(resp)$token # flask app will send back token to save
-  if (is.null(token) || !nzchar(token)) stop("No token returned by server.")
-  
-  # save the token to file, along with our neccessary vars
-  flaskcli_save_cfg(list(token = token, name = name, org = org, email = email),cfgpath)
-  token
+.ask_email <- function(prompt = "EMAIL: ") {
+  repeat {
+    email <- readline(prompt)
+    email <- trimws(email)
+    if (grepl("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", email)) return(email)
+    cat("Sorry, that doesn't look like a valid email.\n")
+  }
+}
+# ------------------
+
+cat("First-time registration:\n")
+file <- fileq
+name <- readline("YOUR NAME: ")
+email <- .ask_email("EMAIL: ")
+
+# Menus
+sector_choices <- c("industry", "consultancy", "academic", "government/regulator")
+env_choices    <- c("marine", "freshwater", "brackish", "terrestrial")
+app_choices    <- c("aquaculture", "mining")
+
+sector <- .ask_menu("Sector:", sector_choices)$value
+application_env <- .ask_menu("Application environment:", env_choices)$value
+application <- .ask_menu("Application:", app_choices)$value
+
+# Free-text (still asked explicitly)
+nationality <- readline("YOUR NATIONALITY: ")
+
+cat("\nSubmitting registration to: ", .register_url, "\n", sep = "")
+
+req <- httr2::request(.register_url) |>
+  httr2::req_method("POST") |>
+  httr2::req_body_json(list(
+    name = name,
+    email = email,
+    sector = sector,
+    application_env = application_env,
+    application = application,
+    nationality = nationality,
+    file = file
+  ))
+
+resp <- httr2::req_perform(req)
+httr2::resp_check_status(resp)
+token <- httr2::resp_body_json(resp)$token
+if (!nzchar(token)) stop("No token returned by server.", call. = FALSE)
+
+flaskcli_save_cfg(list(
+  token = token,
+  name = name,
+  email = email,
+  sector = sector,
+  application_env = application_env,
+  application = application,
+  nationality = nationality
+), cfgpath)
+
 }
 
 
