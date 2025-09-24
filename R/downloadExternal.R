@@ -89,7 +89,7 @@ application_env <- .ask_menu("Application environment:", env_choices)$value
 application <- .ask_menu("Application:", app_choices)$value
 
 # Free-text (still asked explicitly)
-nationality <- readline("YOUR NATIONALITY: ")
+institute<- readline("YOUR INSTITUTE : ")
 
 cat("\nSubmitting registration to: ", .register_url, "\n", sep = "")
 
@@ -101,7 +101,7 @@ req <- httr2::request(.register_url) |>
     sector = sector,
     application_env = application_env,
     application = application,
-    nationality = nationality,
+    institute= institute,
     file = file
   ))
 
