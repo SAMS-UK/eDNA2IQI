@@ -1,3 +1,6 @@
+# eDNA2IQI 2.5.0
+Random Forest Models updated to include all data from BactMetBar 1, and data provided by SEPA for the 2025 BactMetBar project extension.
+
 # eDNA2IQI 2.4.8
 Migrating to SAMS github. 
 minor changes in comments and comment organization. 
