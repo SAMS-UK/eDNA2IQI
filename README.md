@@ -37,7 +37,7 @@ Then you can install eDNA2IQI directly from GitHub with:
 
 ``` r
 install.packages("devtools")
-library(“devtools”)
+library(devtools)
 devtools::install_github("SAMS-UK/eDNA2IQI")
 ```
 
@@ -51,7 +51,7 @@ Alternatively you can install manually from source:
 
 ``` r
 install.packages("devtools")
-library("devtools")
+library(devtools)
 install()
 ```
 
