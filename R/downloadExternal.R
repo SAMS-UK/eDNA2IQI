@@ -17,7 +17,7 @@
 
 .flask_base      <- "https://thredds.sams.ac.uk" # 
 .register_url  <- paste0(.flask_base, "/api/register")  
-.api  <- paste0(.flask_base, "/api/download") # GET with Bearer token is fine
+.api  <- paste0(.flask_base, "/") # GET with Bearer token is fine
 
 
 # load token creds
@@ -196,7 +196,7 @@ sanitizeEmail <- function(email) {
 flask_download <- function(file, destpath,cfgpath) {
   fileq <- utils::URLencode(file, reserved = TRUE)
   token <- flaskcli_token(fileq, cfgpath)
-  url   <- paste0(.api, "?file=", fileq)
+  url   <- paste0(.api, fileq)
   print(url)
   
   utils::download.file(
