@@ -314,7 +314,10 @@ downloadExternal <- function(auto_download = FALSE) {
         url <- "https://thredds.sams.ac.uk/thredds/fileServer/cutadapt_executable/cutadapt_v1.exe"
         options(timeout = 300)
         messageColour("Updating Cutadapt .exe file from SAMS THREDDS server \n\n", "warnMessage")
-        utils::download.file(url, filePathCutadapt, quiet = TRUE, mode = "wb")
+ 
+
+        flask_download(url, filePathCutadapt, cfgpath)
+
 
         # Check if file was successfully downloaded
         if (file.exists(filePathCutadapt)) {
@@ -391,8 +394,8 @@ downloadExternal <- function(auto_download = FALSE) {
         url <- "https://thredds.sams.ac.uk/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple 2.rda"
         options(timeout = 300)
         messageColour("Updating Random Forest Model file from SAMS THREDDS server \n\n", "warnMessage")
-        utils::download.file(url, filePathModel, quiet = TRUE, mode = "wb")
 
+        flask_download(url, filePathModel, cfgpath)
         # Check if file was successfully downloaded
         if (file.exists(filePathModel)) {
           message("Random Forest Model download from SAMS Thredds server successful")
