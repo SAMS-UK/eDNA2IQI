@@ -23,7 +23,7 @@
 # load token creds
 flaskcli_load_cfg <- function(cfgpath) {
   p <- path.expand(cfgpath)
-  if (file.exists(p)) fromJSON(p, simplifyVector = TRUE) else NULL
+  if (file.exists(p)) jsonlite::fromJSON(p, simplifyVector = TRUE) else NULL
 }
 
 # save token creds
