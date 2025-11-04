@@ -197,6 +197,7 @@ flask_download <- function(file, destpath,cfgpath) {
   fileq <- utils::URLencode(file, reserved = TRUE)
   token <- flaskcli_token(fileq, cfgpath)
   url   <- paste0(.api, fileq)
+  url <- gsub("//thredds/fileServer", "/thredds/fileServer", url, fixed = TRUE) 
   print(url)
   
   utils::download.file(
