@@ -391,7 +391,7 @@ downloadExternal <- function(auto_download = FALSE) {
     if (tolower(user_input) == "y") {
       tryCatch({
         # Attempt to download from SAMS Thredds server
-        url <- "/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple%202.rda",
+        url <- "/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple%202.rda"
         options(timeout = 300)
         messageColour("Updating Random Forest Model file from SAMS THREDDS server \n\n", "warnMessage")
 
