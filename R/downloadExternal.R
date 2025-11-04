@@ -221,7 +221,7 @@ downloadExternal <- function(auto_download = FALSE) {
   filePathDB <- file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz")
   cfgpath <- file.path(find.package("eDNA2IQI"), "extdata", "thredds_creds.json") # needed to store credentials for thredds api after successful registration
   filePathCutadapt <- file.path(find.package("eDNA2IQI"), "extdata", "cutadapt_v1.exe")
-  filePathModel <- file.path(find.package("eDNA2IQI"), "extdata", "RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple 2.rda")
+  filePathModel <- file.path(find.package("eDNA2IQI"), "extdata", "RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple_2.rda")
 
   # 1. Download reference database----
   if (!file.exists(filePathDB)) {
@@ -392,7 +392,7 @@ downloadExternal <- function(auto_download = FALSE) {
     if (tolower(user_input) == "y") {
       tryCatch({
         # Attempt to download from SAMS Thredds server
-        url <- "/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple%202.rda"
+        url <- "/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple_2.rda"
         options(timeout = 300)
         messageColour("Updating Random Forest Model file from SAMS THREDDS server \n\n", "warnMessage")
 
@@ -412,7 +412,7 @@ downloadExternal <- function(auto_download = FALSE) {
       message(messageColour(paste(
         "The Random Forest Models need to be downloaded to predict IQIs. \n",
         "Proceed with automatic download, or manual download from: \n",
-        "https://thredds.sams.ac.uk/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple 2.rda, \n",
+        "https://thredds.sams.ac.uk/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple_2.rda, \n",
         "and save file as `RFModel_rarefy_5000_taxalevel_family_BMB_Run1_5_multiple.rda` \n",
         "in the /extdata/ directory in the eDNA2IQI R library files \n"
        ), "message"))
