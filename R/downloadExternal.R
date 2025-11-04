@@ -311,7 +311,7 @@ downloadExternal <- function(auto_download = FALSE) {
 
       tryCatch({
         # Attempt to download from SAMS Thredds server
-        url <- "https://thredds.sams.ac.uk/thredds/fileServer/cutadapt_executable/cutadapt_v1.exe"
+        url <- "/thredds/fileServer/cutadapt_executable/cutadapt_v1.exe"
         options(timeout = 300)
         messageColour("Updating Cutadapt .exe file from SAMS THREDDS server \n\n", "warnMessage")
  
@@ -391,7 +391,7 @@ downloadExternal <- function(auto_download = FALSE) {
     if (tolower(user_input) == "y") {
       tryCatch({
         # Attempt to download from SAMS Thredds server
-        url <- "https://thredds.sams.ac.uk/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple 2.rda"
+        url <- "/thredds/fileServer/RF_Model/RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple 2.rda"
         options(timeout = 300)
         messageColour("Updating Random Forest Model file from SAMS THREDDS server \n\n", "warnMessage")
 
