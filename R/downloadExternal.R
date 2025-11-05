@@ -11,6 +11,101 @@
 #' @section Example usage: eDNA2IQI::downloadExternal()
 #'
 
+# eDNA2IQI external downloads
+# This code will prompt user to register to access data from for the SAMS THREDDS server. It tries alternative endpoints too.
+# Fields we ask:
+# - NAME/EMAIL
+# - SECTOR / APPLICATION / INSTITUTE
+
+
+print_consent_box <- function() {
+  cat(
+    "\n──────────────────────────────────────────────────────────────────\n",
+    "🔹  SAMS eDNA2IQI – One-time Registration\n",
+    "Before downloading model files or reference data from the SAMS THREDDS server,\n",
+    "we need a few details to issue you a secure access token.\n\n",
+    "This helps us:\n",
+    " • verify legitimate use (so the data server stays secure), and\n",
+    " • contact you *only* if there are major updates or issues with the datasets.\n\n",
+    "Your information will **not** be shared outside the eDNA2IQI project team.\n",
+    "It will never be used for marketing or unrelated contact.\n\n",
+    "You will be asked for:\n",
+    " •  Name \n",
+    " •  Email \n",
+    " •  Sector \n",
+    " •  Application \n",
+    " •  Institute \n\n",
+    "Stored locally: A small JSON file with your token will be saved securely\n",
+    "in the eDNA2IQI package folder (readable only by you).\n",
+    "──────────────────────────────────────────────────────────────────\n",
+    sep = ""
+  )
+}
+
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# eDNA2IQI splash (ASCII + optional tiny animation)
+# Dependencies: none (uses ANSI escape codes if terminal supports them)
+# Call: edna2iqi_splash(animated = TRUE)
+# ──────────────────────────────────────────────────────────────────────────────
+edna2iqi_splash <- function(animated = TRUE, cycles = 2L) {
+  # ANSI helpers (falls back gracefully if not supported)
+  has_ansi <- identical(getOption("cli.num_colors", 8) > 1, TRUE) || Sys.info()[["sysname"]] != "Windows"
+  C <- function(x, code) if (has_ansi) paste0("\033[", code, "m", x, "\033[0m") else x
+  fg <- list(cyan="36", green="32", magenta="35", blue="34", yellow="33", gray="90", white="97")
+  
+  title1 <- C("  ███████╗", fg$cyan)
+  title2 <- C("  ██╔════╝", fg$cyan)
+  title3 <- C("  ███████╗", fg$cyan)
+  title4 <- C("  ╚════██║", fg$cyan)
+  title5 <- C("  ███████║", fg$cyan)
+  title6 <- C("  ╚══════╝", fg$cyan)
+  
+  band1 <- C("███████╗", fg$green)
+  band2 <- C("███████║", fg$green)
+  band3 <- C("╚════██║", fg$green)
+  band4 <- C("███████║", fg$green)
+  band5 <- C("╚══════╝", fg$green)
+  
+  name <- C("eDNA2IQI", fg$magenta)
+  tagline <- C("Environmental DNA → IQI prediction", fg$gray)
+  
+  art <- c(
+    paste0(" ", title1, "  ", band1, "   ", name),
+    paste0(" ", title2, "  ", band2, "   ", tagline),
+    paste0(" ", title3, "  ", band3),
+    paste0(" ", title4, "  ", band4),
+    paste0(" ", title5, "  ", band5),
+    paste0(" ", title6)
+  )
+  
+  border <- paste0(C("┌", fg$blue),
+                   C(strrep("─", max(nchar(art)) + 2), fg$blue),
+                   C("┐", fg$blue))
+  footer <- paste0(C("└", fg$blue),
+                   C(strrep("─", max(nchar(art)) + 2), fg$blue),
+                   C("┘", fg$blue))
+  
+  cat("\n", border, "\n", sep = "")
+  for (line in art) cat(C("│ ", fg$blue), line,
+                        strrep(" ", max(nchar(art)) - nchar(line) + 1),
+                        C("│", fg$blue), "\n", sep = "")
+  cat(footer, "\n", sep = "")
+  
+  if (!animated) {
+    cat(C("\n→ Preparing secure downloads…\n\n", fg$yellow))
+    return(invisible())
+  }
+  
+  cat("\r", C("✓", fg$green), " Ready\n\n", sep = "")
+}
+
+
+
+ 
+
+
 
 # Handle thredds 1st time user reg, and store token for subsequent downloads
 # Download with token; prefers libcurl headers; falls back to curl package
@@ -215,8 +310,12 @@ flask_download <- function(file, destpath,cfgpath) {
 
 
 downloadExternal <- function(auto_download = FALSE) {
+  
+  edna2iqi_splash()
+  
+  print_consent_box()
 
-
+  
   # File paths
   filePathDB <- file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz")
   cfgpath <- file.path(find.package("eDNA2IQI"), "extdata", "thredds_creds.json") # needed to store credentials for thredds api after successful registration
