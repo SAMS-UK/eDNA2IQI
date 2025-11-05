@@ -27,11 +27,11 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
    #1. download models if absent----
   #Check for correct reference database, download if missing
 
-  if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata/", "RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple 2.rda"))) {
+  if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata/", "RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple_2.rda"))) {
     downloadExternal(auto_download = auto_download)
 
   }
-   if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata/", "RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple 2.rda"))) {
+   if (!file.exists(file.path(find.package("eDNA2IQI"), "extdata/", "RFModel_rarefy_5000_taxalevel_family_BMB_Run_ext_multiple_2.rda"))) {
       # If the file does not exist, stop execution with an error message
       stop()
     }
