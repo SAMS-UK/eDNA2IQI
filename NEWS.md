@@ -1,3 +1,8 @@
+# eDNA2IQI 3.0.0
+eDNA2IQI now includes and adjusted IQI prediction alongside the previous prediction.  
+This adjustment is correcting the predicted IQI values using the linear equation from the out-of-bag predicted IQI 
+to actual IQI for the training dataset.
+
 # eDNA2IQI 2.5.0
 Random Forest Models updated to include all data from BactMetBar 1, and data provided by SEPA for the 2025 BactMetBar project extension.
 
