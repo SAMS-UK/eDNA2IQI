@@ -98,7 +98,7 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
     return(NULL)
   }
 
-  #set seed safely across parallel sessions for testthat			       
+  #set seed safely across parallel sessions for testthat
   RNGkind("L'Ecuyer-CMRG")
   set.seed(123)
   rare_data <- suppressWarnings(as.data.frame(vegan::rrarefy(AnnotatedASVs, rarefaction_rate)))
@@ -166,6 +166,21 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
   final_data$Minimum_read_requirement <- rarefaction_rate
   #move reads and version to first col
   final_data <- final_data[, c("eDNA2IQI_Version", "Denoised_Reads", "Minimum_read_requirement", setdiff(names(final_data), c("eDNA2IQI_Version", "Denoised_Reads", "Minimum_read_requirement")))]
+
+
+  ##adjusted_IQI
+
+  #specify equation
+  slope <- 0.7440
+  intercept <- 0.1423
+
+
+  # Add columns to final_data
+  final_data$slope <- slope
+  final_data$intercept <- intercept
+  final_data$Adjusted_IQI <- SIG((final_data$MeanIQI - intercept) / slope)
+
+
 
 
   #write file
