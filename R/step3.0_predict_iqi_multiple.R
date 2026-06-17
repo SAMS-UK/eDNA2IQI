@@ -97,6 +97,73 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
     message("\nNo samples exceeded rarefaction limit. Exiting function.")
     return(NULL)
   }
+  # Test applicability
+  training_data_file <- list.files(
+    system.file(
+      "extdata/bmb_training_data",
+      package = "eDNA2IQI"),
+    full.names = TRUE)[1]
+  bmb_training <- readRDS(training_data_file)
+  nmds_test <- nmds_bray(
+    data = AnnotatedASVs,
+    training_data = bmb_training,
+    data_output_only = FALSE
+    )
+  # Plot
+  nmds_test$alpha <- 1
+  nmds_test$alpha[(nrow(AnnotatedASVs) + 1):nrow(nmds_test)] <- 0.3
+  nmds_test$label <- row.names(nmds_test)
+  nmds_test$label[nmds_test$outlier == FALSE] <- ""
+  nmds_test$label[(nrow(AnnotatedASVs) + 1):nrow(nmds_test)] <- ""
+  nmds_test$outlier[(nrow(AnnotatedASVs) + 1):nrow(nmds_test)] <-
+  "Model training
+data"
+
+  require(ggplot2)
+  ggplot(nmds_test, aes(x = NMDS1, y = NMDS2, label = label, colour = outlier)) +
+    geom_point(size = 2, alpha = nmds_test$alpha) +
+    geom_text(vjust = -0.5, hjust = 0.5, size = 2) +
+    labs(
+      title = "NMDS of Taxa Data for each sample",
+      x = "NMDS1",
+      y = "NMDS2") +
+    scale_color_manual(values = c("orange", "grey", "blue"))
+  # Save the plot
+  ggsave(file.path(folder, "/outputData/applicablity.png", fsep = ""))
+
+  nmds_test <- dplyr::select(nmds_test, -label, -alpha)
+  # Save nmds_test output for reference
+  write.csv(nmds_test,
+            file.path(folder, "/outputData/mds_test.csv", fsep = ""),
+            row.names = TRUE)
+  # Store non-applicable samples in a separate data frame
+  nmds_fails <- nmds_test[nmds_test$outlier == TRUE, ]
+  browser()
+  if(nrow(nmds_fails) > 0) {
+    nmds_fails <- data.frame(
+      SampleID = row.names(nmds_fails),
+      MeanIQI = NA,
+      stringsAsFactors = FALSE
+      )
+  row.names(nmds_fails) <- nmds_fails$SampleID
+  nmds_fails$SampleID <- NULL
+  } else {
+    nmds_fails <- NULL
+  }
+
+  # Remove samples that are not applicable
+  nmds_test <- nmds_test[nmds_test$outlier == FALSE, ]
+  # Stop if no samples pass applicability test
+  if(nrow(nmds_test) < 0) {
+    stop(
+      "No samples are applicable for use by the IQI prediction model - see nmds_test.csv output"
+    )
+    return(NULL)
+  }
+
+
+  # Include only samples that pass applicability test
+  AnnotatedASVs <- AnnotatedASVs[row.names(AnnotatedASVs) == row.names(nmds_test), ]
 
   #set seed safely across parallel sessions for testthat
   RNGkind("L'Ecuyer-CMRG")
@@ -154,12 +221,8 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
 
   #5.3 save output----
 
-  if (!is.null(excluded_samples)) {
+  final_data <- dplyr::bind_rows(collated_predictions, excluded_samples, nmds_fails)
 
-    final_data <- dplyr::bind_rows(collated_predictions, excluded_samples)
-  } else {
-    final_data <- collated_predictions
-  }
 
   final_data$Denoised_Reads <- readcounts_df$Denoised_Reads[match(rownames(final_data), rownames(readcounts_df))]
   final_data$eDNA2IQI_Version <- packageVersion("eDNA2IQI")
