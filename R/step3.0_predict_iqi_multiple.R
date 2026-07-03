@@ -131,6 +131,8 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
     data_output_only = FALSE
   )
   draw_nmds_plot(nmds_test, folder)
+  # Remove training samples
+  nmds_test <- nmds_test[nmds_test$type == "New data", ]
   # Save nmds_test output for reference
   utils::write.csv(nmds_test,
                    file.path(folder, "/outputData/mds_test.csv", fsep = ""),
@@ -139,18 +141,17 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
   nmds_fails <- nmds_test[nmds_test$outlier == TRUE, ]
   if (nrow(nmds_fails) > 0) {
     nmds_fails <- data.frame(
-      SampleID = row.names(nmds_fails),
-      MeanIQI = NA,
-      stringsAsFactors = FALSE
+      "SampleID" = sub("_R1.*", "", row.names(nmds_fails), ignore.case = TRUE),
+      "nmds_applicability_test" = "Fail",
+      "MeanIQI" = NA,
+      "stringsAsFactors" = FALSE
     )
-    row.names(nmds_fails) <- nmds_fails$SampleID
-    nmds_fails$SampleID <- NULL
   } else {
     nmds_fails <- NULL
   }
 
-  # Remove samples that are not applicable and training samples
-  nmds_test <- nmds_test[nmds_test$outlier == FALSE & nmds_test$type == "New data", ]
+  # Remove samples that are not applicable
+  nmds_test <- nmds_test[nmds_test$outlier == FALSE, ]
   # Stop if no samples pass applicability test
   if (nrow(nmds_test) < 0) {
     stop(
@@ -269,7 +270,14 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
   final_data$slope <- slope
   final_data$intercept <- intercept
   final_data$Adjusted_IQI <- SIG((final_data$MeanIQI - intercept) / slope)
-
+  final_data <- dplyr::select(final_data,
+                eDNA2IQI_Version,
+                Denoised_Reads,
+                Minimum_read_requirement,
+                nmds_applicability_test,
+                SampleID,
+                dplyr::everything()
+  )
 
 
 
