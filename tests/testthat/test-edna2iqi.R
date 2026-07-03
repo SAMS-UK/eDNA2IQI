@@ -1,5 +1,5 @@
 test_that("edna2iqi function works", {
-
+skip("Needs threads creds to login (maybe add as secret to repo for testing purposes?")
   path <- list.dirs(
     system.file("extdata/example_data/input", package = "eDNA2IQI"),
     full.names = TRUE)[1]

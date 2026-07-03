@@ -1,22 +1,20 @@
+#' eDNA2IQI External Downloads
+#'
 #' Download the random forest models,  cutadapt.exe file and SILVA 138.1 taxa
-#' reference database from the SAMS THREDDS server, or
-#' from source.
+#' reference database from the SAMS THREDDS server, or from source.
+#'
 #' @param auto_download Boolean to override console prompt to automatically
 #'   download external dependencies. This can be useful for automating or
 #'   testing this function.
-#'
 #' @export
 #' @return NULL
 #'
 #' @section Example usage: eDNA2IQI::downloadExternal()
-#'
 
-# eDNA2IQI external downloads
-# This code will prompt user to register to access data from for the SAMS THREDDS server. It tries alternative endpoints too.
-# Fields we ask:
+# This function will prompt user to register to access data from for the SAMS
+# THREDDS server. It tries alternative endpoints too. Fields we ask:
 # - NAME/EMAIL
 # - SECTOR / APPLICATION / INSTITUTE
-
 
 print_consent_box <- function() {
   cat(
@@ -54,23 +52,23 @@ edna2iqi_splash <- function(animated = TRUE, cycles = 2L) {
   has_ansi <- identical(getOption("cli.num_colors", 8) > 1, TRUE) || Sys.info()[["sysname"]] != "Windows"
   C <- function(x, code) if (has_ansi) paste0("\033[", code, "m", x, "\033[0m") else x
   fg <- list(cyan="36", green="32", magenta="35", blue="34", yellow="33", gray="90", white="97")
-  
+
   title1 <- C("  ███████╗", fg$cyan)
   title2 <- C("  ██╔════╝", fg$cyan)
   title3 <- C("  ███████╗", fg$cyan)
   title4 <- C("  ╚════██║", fg$cyan)
   title5 <- C("  ███████║", fg$cyan)
   title6 <- C("  ╚══════╝", fg$cyan)
-  
+
   band1 <- C("███████╗", fg$green)
   band2 <- C("███████║", fg$green)
   band3 <- C("╚════██║", fg$green)
   band4 <- C("███████║", fg$green)
   band5 <- C("╚══════╝", fg$green)
-  
+
   name <- C("eDNA2IQI", fg$magenta)
   tagline <- C("Environmental DNA → IQI prediction", fg$gray)
-  
+
   art <- c(
     paste0(" ", title1, "  ", band1, "   ", name),
     paste0(" ", title2, "  ", band2, "   ", tagline),
@@ -79,39 +77,39 @@ edna2iqi_splash <- function(animated = TRUE, cycles = 2L) {
     paste0(" ", title5, "  ", band5),
     paste0(" ", title6)
   )
-  
+
   border <- paste0(C("┌", fg$blue),
                    C(strrep("─", max(nchar(art)) + 2), fg$blue),
                    C("┐", fg$blue))
   footer <- paste0(C("└", fg$blue),
                    C(strrep("─", max(nchar(art)) + 2), fg$blue),
                    C("┘", fg$blue))
-  
+
   cat("\n", border, "\n", sep = "")
   for (line in art) cat(C("│ ", fg$blue), line,
                         strrep(" ", max(nchar(art)) - nchar(line) + 1),
                         C("│", fg$blue), "\n", sep = "")
   cat(footer, "\n", sep = "")
-  
+
   if (!animated) {
     cat(C("\n→ Preparing secure downloads…\n\n", fg$yellow))
     return(invisible())
   }
-  
+
   cat("\r", C("✓", fg$green), " Ready\n\n", sep = "")
 }
 
 
 
- 
+
 
 
 
 # Handle thredds 1st time user reg, and store token for subsequent downloads
 # Download with token; prefers libcurl headers; falls back to curl package
 
-.flask_base      <- "https://thredds.sams.ac.uk" # 
-.register_url  <- paste0(.flask_base, "/api/register")  
+.flask_base      <- "https://thredds.sams.ac.uk" #
+.register_url  <- paste0(.flask_base, "/api/register")
 .api  <- paste0(.flask_base, "/") # GET with Bearer token is fine
 
 
@@ -136,8 +134,8 @@ flaskcli_token <- function(fileq, cfgpath) {
   cfg <- flaskcli_load_cfg(cfgpath)
   # Saved credentials is found so return token
   if (!is.null(cfg) && !is.null(cfg$token) && nzchar(cfg$token)) return(cfg$token)
-  
-  # No saved credentials so prompt for registration 
+
+  # No saved credentials so prompt for registration
 
   # ---- helpers ----
 .ask_menu <- function(title, choices, other_label = "Other") {
@@ -212,7 +210,7 @@ flaskcli_save_cfg(list(
   sector = sector,
   application_env = application_env,
   application = application,
-  institute=institute 
+  institute=institute
 ), cfgpath)
 token
 }
@@ -225,29 +223,29 @@ sanitizeEmail <- function(email) {
     return(list(valid = FALSE, value = NA_character_, reason = "missing"))
   }
   e <- as.character(email[[1]])
-  
+
   # trim & strip wrappers
   e <- trimws(e)
   e <- sub("^<\\s*(.+?)\\s*>$", "\\1", e)                 # remove <> if present
   e <- gsub("[\u00A0\u200B\u200C\u200D\uFEFF]", "", e)     # strip NBSP/zero-width
-  
+
   # must contain exactly one "@"
   parts <- strsplit(e, "@", fixed = TRUE)[[1]]
   if (length(parts) != 2) {
     return(list(valid = FALSE, value = e, reason = "must contain one @"))
   }
-  
+
   local  <- parts[1]
   domain <- parts[2]
-  
+
   # normalise dots & case
   local  <- gsub("\\.+", ".", local)
   domain <- tolower(gsub("\\.+", ".", domain))
-  
+
   # no leading/trailing dots
   local  <- gsub("^\\.|\\.$", "", local)
   domain <- gsub("^\\.|\\.$", "", domain)
-  
+
   # length limits (RFC-ish)
   if (nchar(local) == 0L || nchar(local) > 64L) {
     return(list(valid = FALSE, value = NA_character_, reason = "local-part length"))
@@ -255,12 +253,12 @@ sanitizeEmail <- function(email) {
   if ((nchar(local) + 1 + nchar(domain)) > 254L) {
     return(list(valid = FALSE, value = NA_character_, reason = "address too long"))
   }
-  
+
   # local-part allowed chars (dots already checked for edges/dupes)
   if (!grepl("^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+$", local)) {
     return(list(valid = FALSE, value = NA_character_, reason = "invalid local-part chars"))
   }
-  
+
   # domain must have at least one dot and valid labels
   labels <- strsplit(domain, ".", fixed = TRUE)[[1]]
   if (length(labels) < 2L) {
@@ -281,7 +279,7 @@ sanitizeEmail <- function(email) {
   if (!grepl("^[A-Za-z]{2,63}$", tld)) {
     return(list(valid = FALSE, value = NA_character_, reason = "invalid TLD"))
   }
-  
+
   sanitized <- paste0(local, "@", paste(labels, collapse = "."))
   list(valid = TRUE, value = sanitized, reason = NA_character_)
 }
@@ -292,9 +290,9 @@ flask_download <- function(file, destpath,cfgpath) {
   fileq <- utils::URLencode(file, reserved = TRUE)
   token <- flaskcli_token(fileq, cfgpath)
   url   <- paste0(.api, fileq)
-  url <- gsub("//thredds/fileServer", "/thredds/fileServer", url, fixed = TRUE) 
+  url <- gsub("//thredds/fileServer", "/thredds/fileServer", url, fixed = TRUE)
   print(url)
-  
+
   utils::download.file(
     url      = url,
     destfile = destpath,
@@ -310,12 +308,12 @@ flask_download <- function(file, destpath,cfgpath) {
 
 
 downloadExternal <- function(auto_download = FALSE) {
-  
+
   edna2iqi_splash()
-  
+
   print_consent_box()
 
-  
+
   # File paths
   filePathDB <- file.path(find.package("eDNA2IQI"), "extdata", "referenceDatabase_full.fa.gz")
   cfgpath <- file.path(find.package("eDNA2IQI"), "extdata", "thredds_creds.json") # needed to store credentials for thredds api after successful registration
@@ -414,7 +412,7 @@ downloadExternal <- function(auto_download = FALSE) {
         url <- "/thredds/fileServer/cutadapt_executable/cutadapt_v1.exe"
         options(timeout = 300)
         messageColour("Updating Cutadapt .exe file from SAMS THREDDS server \n\n", "warnMessage")
- 
+
 
         flask_download(url, filePathCutadapt, cfgpath)
 

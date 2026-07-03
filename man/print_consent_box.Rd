@@ -2,9 +2,7 @@
 % Please edit documentation in R/downloadExternal.R
 \name{print_consent_box}
 \alias{print_consent_box}
-\title{Download the random forest models,  cutadapt.exe file and SILVA 138.1 taxa
-reference database from the SAMS THREDDS server, or
-from source.}
+\title{eDNA2IQI External Downloads}
 \usage{
 print_consent_box()
 }
@@ -15,8 +13,7 @@ testing this function.}
 }
 \description{
 Download the random forest models,  cutadapt.exe file and SILVA 138.1 taxa
-reference database from the SAMS THREDDS server, or
-from source.
+reference database from the SAMS THREDDS server, or from source.
 }
 \section{Example usage}{
  eDNA2IQI::downloadExternal()

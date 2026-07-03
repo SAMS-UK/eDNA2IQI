@@ -15,9 +15,7 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Imports: 
-    caret,
     crayon,
-    curl,
     dada2,
     dplyr,
     fs,
@@ -34,7 +32,6 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    tools,
     utils,
     vegan,
     vroom

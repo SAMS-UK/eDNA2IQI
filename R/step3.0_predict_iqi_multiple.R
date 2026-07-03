@@ -121,7 +121,6 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
     return(NULL)
   }
   # Test applicability --------------------------------------------------------
-  browser()
   training_data_file <- list.files(system.file("extdata/bmb_training_data",
                                                package = "eDNA2IQI"),
                                    full.names = TRUE)[1]
@@ -150,8 +149,8 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
     nmds_fails <- NULL
   }
 
-  # Remove samples that are not applicable
-  nmds_test <- nmds_test[nmds_test$outlier == FALSE, ]
+  # Remove samples that are not applicable and training samples
+  nmds_test <- nmds_test[nmds_test$outlier == FALSE & nmds_test$type == "New data", ]
   # Stop if no samples pass applicability test
   if (nrow(nmds_test) < 0) {
     stop(
@@ -162,7 +161,7 @@ step3.0_predict_iqi_multiple <- function(folder, AnnotatedASVs, auto_download = 
 
 
   # Include only samples that pass applicability test
-  AnnotatedASVs <- AnnotatedASVs[row.names(AnnotatedASVs) == row.names(nmds_test), ]
+  AnnotatedASVs <- AnnotatedASVs[row.names(AnnotatedASVs) %in% row.names(nmds_test), ]
 
   #set seed safely across parallel sessions for testthat
   RNGkind("L'Ecuyer-CMRG")
