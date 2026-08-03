@@ -1,6 +1,6 @@
 Package: eDNA2IQI
 Title: eDNA2IQI: A package to predict the Infaunal Quality Index (IQI) in benthic sediments from eDNA
-Version: 3.0.0
+Version: 4.0.0
 Authors@R: c(
     person("Adam", "Wyness", role = c("aut", "cre"), email = "adam.wyness@sams.ac.uk", comment = c(ORCID = "0000-0003-1202-6358")),
     person("Tom", "Wilding", role = "aut", email = "tom.wilding@sams.ac.uk", comment = c(ORCID = "0000-0002-4946-4020")),
