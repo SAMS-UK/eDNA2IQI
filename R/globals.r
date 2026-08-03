@@ -16,6 +16,10 @@ utils::globalVariables(
     "NMDS2",
     "alpha",
     "label",
-    "outlier"
+    "outlier",
+    "eDNA2IQI_Version",
+    "Denoised_Reads",
+    "Minimum_read_requirement",
+    "ntaxa"
   )
 )
