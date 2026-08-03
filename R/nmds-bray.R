@@ -25,11 +25,17 @@
 #' @return Dataframe of observed samples.
 #' @keywords internal
 
-nmds_bray <- function(data,
-                      training_data,
-                      trymax = 20,
-                      probs = 0.95,
-                      data_output_only = TRUE) {
+nmds_bray <- function(
+  data,
+  training_data,
+  trymax = 20,
+  probs = 0.95,
+  data_output_only = TRUE
+) {
+  message(
+    "Internal Function Starting: 'nmds_bray()'
+Testing the applicability of the data against the reference dataset used to train the model"
+  )
   # Set seed for reproducibility
   set.seed(56)
   # Format 'new' data to test against the training data. Row names get removed
@@ -43,6 +49,7 @@ nmds_bray <- function(data,
     data[missing_names] <- 0
   }
   data[is.na(data)] <- 0
+  # Only include RF model taxa with reads
   data <- data[stats::complete.cases(data), ]
   row.names(data) <- row_names
 
@@ -50,29 +57,40 @@ nmds_bray <- function(data,
   combined <- dplyr::bind_rows(data, training_data)
 
   # Run metaMDS
-  nmds_result <- vegan::metaMDS(
+  nmds_result <- suppressMessages(vegan::metaMDS(
     combined,
     distance = "bray",
     k = 2,
     trymax = trymax,
     try = trymax
-  )
+  ))
 
   site_scores <- as.data.frame(vegan::scores(nmds_result, display = "sites"))
   site_scores$Sample <- row.names(combined)
 
   # Get centroid for training data only and measure distance to that centroid
-  training_scores <- site_scores[(nrow(site_scores) -
-                                    nrow(training_data) + 1):nrow(site_scores), ]
+  training_scores <- site_scores[
+    (nrow(site_scores) -
+      nrow(training_data) +
+      1):nrow(site_scores),
+  ]
 
   centroid <- colMeans(training_scores[, c("NMDS1", "NMDS2")])
-  site_scores$dist_to_centroid <- sqrt((site_scores$NMDS1 - centroid[1])^2 +
-                                         (site_scores$NMDS2 - centroid[2])^2)
+  site_scores$dist_to_centroid <- sqrt(
+    (site_scores$NMDS1 - centroid[1])^2 +
+      (site_scores$NMDS2 - centroid[2])^2
+  )
 
   # Take the distance to centroid using the training data only quantile distance
   # to centroid
-  quantile <- stats::quantile(site_scores$dist_to_centroid[(nrow(site_scores) -
-                                                              nrow(training_data) + 1):nrow(site_scores)], probs = probs)
+  quantile <- stats::quantile(
+    site_scores$dist_to_centroid[
+      (nrow(site_scores) -
+        nrow(training_data) +
+        1):nrow(site_scores)
+    ],
+    probs = probs
+  )
   site_scores$quantile <- quantile
   site_scores$diff <- site_scores$quantile - site_scores$dist_to_centroid
 
@@ -80,6 +98,10 @@ nmds_bray <- function(data,
   site_scores <- site_scores %>%
     dplyr::mutate(outlier = ifelse(diff < 0, TRUE, FALSE))
 
+  # Add Number of Taxa column (ntaxa)
+  combined[combined > 0] <- 1
+  combined$ntaxa <- rowSums(combined)
+  site_scores$n_taxa <- combined$ntaxa
   # Add variable to show if training data or observed data
   site_scores$type <- ""
   site_scores$type[(nrow(data) + 1):nrow(site_scores)] <- "Training"
@@ -89,8 +111,6 @@ nmds_bray <- function(data,
   if (data_output_only == TRUE) {
     site_scores <-
       site_scores[nrow(site_scores) - nrow(training_data):nrow(site_scores), ]
-  } else {
-
-  }
+  } else {}
   return(site_scores)
 }
