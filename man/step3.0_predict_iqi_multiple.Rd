@@ -8,8 +8,7 @@ step3.0_predict_iqi_multiple(
   folder,
   AnnotatedASVs,
   auto_download = FALSE,
-  remove_outliers = TRUE,
-  retain_outlier_value = 0.7169
+  remove_outliers = TRUE
 )
 }
 \arguments{
@@ -21,16 +20,6 @@ should be used to predict the IQI values.}
 \item{auto_download}{Logical. If \code{TRUE}, automatically downloads dependencies.}
 
 \item{remove_outliers}{Remove outliers detected by \code{nmds_test()}.}
-
-\item{retain_outlier_value}{Sample IQI values the same or greater than this
-number will be retained for reporting. The default value 0.7169, which is
-set based on samples having this value or higher in testing not having a
-fauna IQI <0.64. In other words, a sample being predicted an eDNA meanIQI
-of >= 0.7169, is very unlikely to have a failing fauna IQI. As these
-samples are unlikely to fail, it is pragmatic to retain them for reporting,
-however the eDNA IQI value may not be as accurate as other samples and
-using fauna analysis may provide more accurate values, additionally fauna
-analysis may provide more data for further tuning of the model in future.}
 }
 \value{
 A data frame with 14 columns. As inputted, with added predicted_IQI
@@ -41,8 +30,7 @@ development purposes.
 \description{
 Generate predicted IQI values based on the optimized random forest models.
 Test assigned taxa and reads are similar to training data used in random
-forest model see \code{nmds_test()} for details. If samples are not applicable,
-only remove if less than \code{retain_outlier_value}, see param for details.
+forest model see \code{nmds_test()} for details.
 }
 \section{Example usage}{
  myPREDs <- step3.0_predict_iqi(folder =
