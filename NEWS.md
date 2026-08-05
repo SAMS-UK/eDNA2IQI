@@ -1,10 +1,11 @@
 # eDNA2IQI 4.0.0
-A Non-parametric Multidimensional Scaling (NMDS) based test to check if data is
-similar to training dataset used for model. If data fails test, results should
-be used with caution and re-analysis or fauna analysis considered. By default,
-samples failing NMDS test will return `NA` IQI results. This behavior is a
-'breaking change' and version number has been bump to 4.0.0 to indicate results
-may now in some cases be different to previously returned results.
+Added a Non-parametric Multidimensional Scaling (NMDS) based test to check if
+data is similar to training dataset used for model. If data fails test, results
+should be used with caution and re-analysis or fauna analysis considered. By
+default, samples failing NMDS test will return `NA` IQI results. This behaviour
+is a 'breaking change' and the version number has been bump to 4.0.0 to indicate
+results may now return `NA` in some cases where previously IQI values were
+returned.
 
 # eDNA2IQI 3.0.0
 eDNA2IQI now includes and adjusted IQI prediction alongside the previous prediction.  

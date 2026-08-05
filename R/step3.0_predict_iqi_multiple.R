@@ -2,28 +2,17 @@
 #'
 #' Generate predicted IQI values based on the optimized random forest models.
 #' Test assigned taxa and reads are similar to training data used in random
-#' forest model see `nmds_test()` for details. If samples are not applicable,
-#' only remove if less than `retain_outlier_value`, see param for details.
+#' forest model see `nmds_test()` for details.
 #'
 #' @param folder A string. Location of raw fastq data files.
 #' @param AnnotatedASVs A data frame. Contains the bacterial taxa read counts which
 #' should be used to predict the IQI values.
 #' @param auto_download Logical. If `TRUE`, automatically downloads dependencies.
 #' @param remove_outliers Remove outliers detected by `nmds_test()`.
-#' @param retain_outlier_value Sample IQI values the same or greater than this
-#'   number will be retained for reporting. The default value 0.7169, which is
-#'   set based on samples having this value or higher in testing not having a
-#'   fauna IQI <0.64. In other words, a sample being predicted an eDNA meanIQI
-#'   of >= 0.7169, is very unlikely to have a failing fauna IQI. As these
-#'   samples are unlikely to fail, it is pragmatic to retain them for reporting,
-#'   however the eDNA IQI value may not be as accurate as other samples and
-#'   using fauna analysis may provide more accurate values, additionally fauna
-#'   analysis may provide more data for further tuning of the model in future.
 #' @importFrom utils glob2rx
 #' @importFrom randomForest randomForest
 #' @importFrom stats sd
 #' @importFrom utils packageVersion
-
 #' @return A data frame with 14 columns. As inputted, with added predicted_IQI
 #'   columns as well as `ntaxa` and `outlier` (nmds applicability testing).
 #'   `Adjusted_IQI`, `slope` and `intercept` columns calculated for future
@@ -36,8 +25,7 @@ step3.0_predict_iqi_multiple <- function(
   folder,
   AnnotatedASVs,
   auto_download = FALSE,
-  remove_outliers = TRUE,
-  retain_outlier_value = 0.7169
+  remove_outliers = TRUE
 ) {
   messageColour(
     "Function starting: 'step3.0_predict_iqi_multiple'
@@ -340,12 +328,6 @@ step3.0_predict_iqi_multiple <- function(
 
   final_data$outlier <- nmds_test$outlier
   final_data$ntaxa <- nmds_test$n_taxa
-
-  # Only flag outliers if meanIQI < 0.7169 otherwise very unlikely to be less
-  # than 0.64 fauna IQI
-  final_data$outlier[
-    final_data$outlier == TRUE & final_data$meanIQI >= retain_outlier_value
-  ] <- FALSE
 
   if (remove_outliers == TRUE) {
     # remove IQI values for sampled detected by nmds test as non-applicable (so
