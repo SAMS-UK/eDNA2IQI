@@ -30,7 +30,7 @@ development purposes.
 \description{
 Generate predicted IQI values based on the optimized random forest models.
 Test assigned taxa and reads are similar to training data used in random
-forest model see \code{nmds_test()} for details.
+forest model see \code{?eDNA2IQI:::nmds_test()} for details.
 }
 \section{Example usage}{
  myPREDs <- step3.0_predict_iqi(folder =
