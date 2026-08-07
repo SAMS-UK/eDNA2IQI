@@ -7,8 +7,12 @@ export(step2.0_annotate_ASVs)
 export(step3.0_predict_iqi_multiple)
 importFrom(magrittr,"%>%")
 importFrom(randomForest,randomForest)
-importFrom(stats,median)
-importFrom(stats,sd)
-importFrom(utils,glob2rx)
-importFrom(utils,packageVersion)
-importFrom(utils,tail)
+importFrom(stats,
+  median,
+  sd
+)
+importFrom(utils,
+  glob2rx,
+  packageVersion,
+  tail
+)
