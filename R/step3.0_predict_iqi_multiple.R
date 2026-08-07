@@ -2,7 +2,7 @@
 #'
 #' Generate predicted IQI values based on the optimized random forest models.
 #' Test assigned taxa and reads are similar to training data used in random
-#' forest model see `nmds_test()` for details.
+#' forest model see `eDNA2IQI:::nmds_test()` for details.
 #'
 #' @param folder A string. Location of raw fastq data files.
 #' @param AnnotatedASVs A data frame. Contains the bacterial taxa read counts which
@@ -322,15 +322,14 @@ step3.0_predict_iqi_multiple <- function(
   # Save nmds_test output for reference
   utils::write.csv(
     nmds_test,
-    file.path(folder, "/outputData/mds_test.csv", fsep = ""),
+    file.path(folder, "/outputData/nmds_test.csv", fsep = ""),
     row.names = TRUE
   )
-
-  final_data$outlier <- nmds_test$outlier
-  final_data$ntaxa <- nmds_test$n_taxa
+  # Add test outcome to predicted IQI score output
+  final_data$nmds_applicability_outlier <- nmds_test$outlier
 
   if (remove_outliers == TRUE) {
-    # remove IQI values for sampled detected by nmds test as non-applicable (so
+    # Remove IQI values for sampled detected by nmds test as non-applicable (so
     # they cannot be reported)
     final_data[
       final_data$outlier == TRUE,
