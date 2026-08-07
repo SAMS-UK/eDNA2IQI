@@ -2,7 +2,7 @@
 #'
 #' Generate predicted IQI values based on the optimized random forest models.
 #' Test assigned taxa and reads are similar to training data used in random
-#' forest model see `eDNA2IQI:::nmds_test()` for details.
+#' forest model see `?eDNA2IQI:::nmds_test()` for details.
 #'
 #' @param folder A string. Location of raw fastq data files.
 #' @param AnnotatedASVs A data frame. Contains the bacterial taxa read counts which
