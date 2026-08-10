@@ -19,11 +19,11 @@ should be used to predict the IQI values.}
 
 \item{auto_download}{Logical. If \code{TRUE}, automatically downloads dependencies.}
 
-\item{remove_outliers}{Remove outliers detected by \code{nmds_test()}.}
+\item{remove_outliers}{Remove outliers detected by \code{?eDNA2IQI:::nmds_test()}.}
 }
 \value{
-A data frame with 14 columns. As inputted, with added predicted_IQI
-columns as well as \code{ntaxa} and \code{outlier} (nmds applicability testing).
+A data frame with 13 columns. As inputted, with added predicted_IQI
+columns as well as \code{nmds_applicability_outlier} (nmds applicability testing).
 \code{Adjusted_IQI}, \code{slope} and \code{intercept} columns calculated for future
 development purposes.
 }
