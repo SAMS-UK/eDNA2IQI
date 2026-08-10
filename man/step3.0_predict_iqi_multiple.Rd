@@ -2,10 +2,14 @@
 % Please edit documentation in R/step3.0_predict_iqi_multiple.R
 \name{step3.0_predict_iqi_multiple}
 \alias{step3.0_predict_iqi_multiple}
-\title{Generates the predicted IQI values based on the optimized random forest
-models.}
+\title{Predict IQI values and test applicability of taxa community}
 \usage{
-step3.0_predict_iqi_multiple(folder, AnnotatedASVs, auto_download = FALSE)
+step3.0_predict_iqi_multiple(
+  folder,
+  AnnotatedASVs,
+  auto_download = FALSE,
+  remove_outliers = TRUE
+)
 }
 \arguments{
 \item{folder}{A string. Location of raw fastq data files.}
@@ -14,15 +18,22 @@ step3.0_predict_iqi_multiple(folder, AnnotatedASVs, auto_download = FALSE)
 should be used to predict the IQI values.}
 
 \item{auto_download}{Logical. If \code{TRUE}, automatically downloads dependencies.}
+
+\item{remove_outliers}{Remove outliers detected by \code{?eDNA2IQI:::nmds_test()}.}
 }
 \value{
-A data frame. As inputted, with added 'predicted_IQI' column
+A data frame with 13 columns. As inputted, with added predicted_IQI
+columns as well as \code{nmds_applicability_outlier} (nmds applicability testing).
+\code{Adjusted_IQI}, \code{slope} and \code{intercept} columns calculated for future
+development purposes.
 }
 \description{
-Generates the predicted IQI values based on the optimized random forest
-models.
+Generate predicted IQI values based on the optimized random forest models.
+Test assigned taxa and reads are similar to training data used in random
+forest model see \code{?eDNA2IQI:::nmds_test()} for details.
 }
 \section{Example usage}{
- myPREDs <- step3.0_predict_iqi(folder = "C:/full/file/path/to/fastqs/", S16_reads = myTAXA)
+ myPREDs <- step3.0_predict_iqi(folder =
+"C:/full/file/path/to/fastqs/", S16_reads = myTAXA)
 }
 

@@ -5,7 +5,12 @@
 \title{Wrapper function to perform all steps of reading and denoising raw reads,
 allocating taxa and predicting IQI from multiple random forests}
 \usage{
-edna2iqi(folder, parameteroptions, auto_download = FALSE)
+edna2iqi(
+  folder,
+  parameteroptions,
+  auto_download = FALSE,
+  remove_outliers = TRUE
+)
 }
 \arguments{
 \item{folder}{A string. Location of raw fastq data files.}
@@ -15,6 +20,8 @@ edna2iqi(folder, parameteroptions, auto_download = FALSE)
 \item{auto_download}{Boolean to override console prompt to automatically
 download external dependencies. This can be useful for automating or
 testing this function.}
+
+\item{remove_outliers}{Remove outliers detected by \code{?eDNA2IQI:::nmds_test()}.}
 }
 \value{
 dataframes containing denoised ASVs (myASVs),

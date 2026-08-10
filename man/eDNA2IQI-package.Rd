@@ -13,6 +13,7 @@ The package denoises demultiplexed Illumina miseq fastq files from 16S amplicon 
 
 Authors:
 \itemize{
+  \item Adam Wyness \email{adam.wyness@sams.ac.uk} (\href{https://orcid.org/0000-0003-1202-6358}{ORCID})
   \item Tom Wilding \email{tom.wilding@sams.ac.uk} (\href{https://orcid.org/0000-0002-4946-4020}{ORCID})
   \item Stevie Brain (\href{https://orcid.org/0000-0001-8272-6996}{ORCID})
   \item Esmee Roosenmaallen (\href{https://orcid.org/0000-0003-0519-3721}{ORCID})

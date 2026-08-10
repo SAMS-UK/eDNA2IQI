@@ -3,7 +3,7 @@
 \docType{data}
 \name{parameteroptions}
 \alias{parameteroptions}
-\title{Parameter options}
+\title{Parameter options dataset}
 \format{
 \subsection{\code{parameteroptions}}{
 
@@ -20,6 +20,10 @@ A data frame with 52 rows and 4 columns:
 parameteroptions
 }
 \description{
-Parameter options
+A dataset listing all parameter options for denoising functions.
+}
+\details{
+Dataset used in examples and testing to configure denoising steps in
+the \code{edna2iqiRFtrainer} package.
 }
 \keyword{datasets}
