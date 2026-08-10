@@ -8,13 +8,13 @@
 #' @param AnnotatedASVs A data frame. Contains the bacterial taxa read counts which
 #' should be used to predict the IQI values.
 #' @param auto_download Logical. If `TRUE`, automatically downloads dependencies.
-#' @param remove_outliers Remove outliers detected by `nmds_test()`.
+#' @param remove_outliers Remove outliers detected by `?eDNA2IQI:::nmds_test()`.
 #' @importFrom utils glob2rx
 #' @importFrom randomForest randomForest
 #' @importFrom stats sd
 #' @importFrom utils packageVersion
-#' @return A data frame with 14 columns. As inputted, with added predicted_IQI
-#'   columns as well as `ntaxa` and `outlier` (nmds applicability testing).
+#' @return A data frame with 13 columns. As inputted, with added predicted_IQI
+#'   columns as well as `nmds_applicability_outlier` (nmds applicability testing).
 #'   `Adjusted_IQI`, `slope` and `intercept` columns calculated for future
 #'   development purposes.
 #' @export
@@ -274,22 +274,6 @@ step3.0_predict_iqi_multiple <- function(
   final_data$slope <- slope
   final_data$intercept <- intercept
   final_data$Adjusted_IQI <- SIG((final_data$MeanIQI - intercept) / slope)
-  final_data <- dplyr::select(
-    final_data,
-    eDNA2IQI_Version,
-    Denoised_Reads,
-    Minimum_read_requirement,
-    # nmds_applicability_test,
-    SampleID,
-    dplyr::everything()
-  )
-
-  #write file
-  utils::write.csv(
-    final_data,
-    file = file.path(folder, "/outputData/predicted_IQIs.csv", fsep = ""),
-    row.names = TRUE
-  )
 
   #6 drawBarplot of rarefied data----
 
@@ -325,14 +309,18 @@ step3.0_predict_iqi_multiple <- function(
     file.path(folder, "/outputData/nmds_test.csv", fsep = ""),
     row.names = TRUE
   )
-  # Add test outcome to predicted IQI score output
-  final_data$nmds_applicability_outlier <- nmds_test$outlier
+  # Add nmds test outcome to predicted IQI score output
+  final_data$nmds_applicability_outlier <- NA
+  final_data$nmds_applicability_outlier[
+    1:length(nmds_test$outlier)
+  ] <- nmds_test$outlier
 
   if (remove_outliers == TRUE) {
     # Remove IQI values for sampled detected by nmds test as non-applicable (so
     # they cannot be reported)
     final_data[
-      final_data$outlier == TRUE,
+      is.na(final_data$nmds_applicability_outlier) |
+        final_data$nmds_applicability_outlier == TRUE,
       c(
         "RF_1",
         "RF_2",
@@ -382,9 +370,15 @@ step3.0_predict_iqi_multiple <- function(
     eDNA2IQI_Version,
     Denoised_Reads,
     Minimum_read_requirement,
-    outlier,
-    ntaxa,
+    nmds_applicability_outlier,
     dplyr::everything()
+  )
+
+  #write file
+  utils::write.csv(
+    final_data,
+    file = file.path(folder, "/outputData/predicted_IQIs.csv", fsep = ""),
+    row.names = TRUE
   )
 
   message("Step 3 Start Date/Time:", step3_start_time)
