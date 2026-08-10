@@ -62,7 +62,8 @@ Testing the applicability of the data against the reference dataset used to trai
     distance = "bray",
     k = 2,
     trymax = trymax,
-    try = trymax
+    try = trymax,
+    trace = FALSE
   ))
 
   site_scores <- as.data.frame(vegan::scores(nmds_result, display = "sites"))
